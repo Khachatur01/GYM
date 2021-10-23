@@ -6,5 +6,6 @@ module com.fitness {
     requires org.apache.poi.poi;
 
     opens com.fitness.Controller to javafx.fxml;
+    opens com.fitness.Controller.Fragment to javafx.fxml;
     exports com.fitness;
 }

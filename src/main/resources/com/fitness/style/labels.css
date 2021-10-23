@@ -1,0 +1,20 @@
+.paragraph {
+    -fx-font-size: 15px;
+    -fx-padding: 5px;
+    -fx-text-fill: #777;
+}
+.info {
+    -fx-font-size: 15px;
+    -fx-padding: 5px;
+}
+.header1 {
+    -fx-font-size: 30px;
+    -fx-text-fill: #333333;
+    -fx-padding: 5px;
+}
+
+.header2 {
+    -fx-font-size: 20px;
+    -fx-text-fill: #367bf5;
+    -fx-padding: 5px;
+}

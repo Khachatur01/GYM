@@ -1,0 +1,40 @@
+.menu_button {
+    -fx-background-color: none;
+    -fx-pref-width: 300px;
+    -fx-effect: none;
+    -fx-font-size: 15px;
+}
+.menu_button:hover{
+    -fx-background-color: none;
+}
+
+.submenu_button {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #468BFF;
+    -fx-font-size: 15px;
+    -fx-effect: none;
+    -fx-pref-width: 150px;
+}
+.submenu_button:hover {
+    -fx-background-color: #468BFF;
+}
+
+.primary {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #367bf5;
+    -fx-background-radius: 5px;
+    -fx-effect: none;
+    -fx-border-insets: 5px;
+    -fx-cursor: hand;
+    -fx-font-size: 20px;
+}
+
+.secondary {
+    -fx-text-fill: #367bf5;
+    -fx-border-color: #367bf5;
+    -fx-background-color: transparent;
+    -fx-border-radius: 5px;
+    -fx-effect: none;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
