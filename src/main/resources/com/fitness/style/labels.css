@@ -12,9 +12,13 @@
     -fx-text-fill: #333333;
     -fx-padding: 5px;
 }
-
 .header2 {
     -fx-font-size: 20px;
     -fx-text-fill: #367bf5;
+    -fx-padding: 5px;
+}
+.header3 {
+    -fx-font-size: 10px;
+    -fx-text-fill: #458cff;
     -fx-padding: 5px;
 }

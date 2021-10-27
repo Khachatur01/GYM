@@ -1,13 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml"
-         prefHeight="400.0" prefWidth="600.0">
-
+<fx:root alignment="CENTER" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <rowConstraints>
+      <RowConstraints valignment="BOTTOM" />
+      <RowConstraints maxHeight="400.0" minHeight="400.0" prefHeight="400.0" valignment="BOTTOM" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints valignment="BOTTOM" vgrow="ALWAYS" />
+      <RowConstraints valignment="TOP" />
+      <RowConstraints valignment="TOP" />
+      <RowConstraints valignment="TOP" />
+   </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+   </columnConstraints>
+   <children>
+      <Label styleClass="header1" stylesheets="@../../style/labels.css" text="Ծառայություններ" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM" />
+      <ScrollPane hbarPolicy="NEVER" maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minViewportHeight="100.0" minWidth="700.0" prefHeight="400.0" prefViewportHeight="200.0" prefWidth="700.0" style="-fx-background-color: transparent;" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
+         <content>
+            <GridPane fx:id="servicesGridPane" alignment="CENTER" maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="700.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+                  <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" styleClass="service_box_selected" text="Box" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Button mnemonicParsing="false" styleClass="service_box" text="Մարզում" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" styleClass="service_box" text="Մերսում" GridPane.columnIndex="2" />
+                  <Button mnemonicParsing="false" styleClass="service_box" text="Բոքս" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" styleClass="service_box" text="Մարզում" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" styleClass="service_box" text="Մերսում" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets top="10.0" />
+         </GridPane.margin>
+      </Separator>
+      <GridPane GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="editButton" contentDisplay="CENTER" mnemonicParsing="false" styleClass="secondary" text="Փոփոխել" textAlignment="CENTER" GridPane.halignment="LEFT">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="addButton" contentDisplay="CENTER" mnemonicParsing="false" styleClass="primary" text="Ավելացնել" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+      <Label styleClass="paragraph" text="Անվանում" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets bottom="5.0" />
+         </GridPane.margin>
+      </Label>
+      <Label styleClass="paragraph" text="Մեկ ծառայության գին (դրամ)" GridPane.halignment="LEFT" GridPane.rowIndex="7">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+      </Label>
+      <TextField fx:id="nameTextField" alignment="CENTER_RIGHT" styleClass="textField" text="Box" GridPane.columnIndex="2" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets bottom="5.0" />
+         </GridPane.margin>
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="priceTextField" alignment="CENTER_RIGHT" styleClass="textField" text="2000" GridPane.columnIndex="2" GridPane.rowIndex="7">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+         <font>
+            <Font size="17.0" />
+         </font>
+      </TextField>
+   </children>
+   <stylesheets>
+      <URL value="@../../style/button.css" />
+      <URL value="@../../style/labels.css" />
+      <URL value="@../../style/text_field.css" />
+   </stylesheets>
 </fx:root>

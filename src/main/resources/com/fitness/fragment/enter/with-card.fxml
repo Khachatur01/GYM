@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -34,11 +35,16 @@
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="193.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="193.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
@@ -47,48 +53,50 @@
       <RowConstraints maxHeight="193.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label styleClass="header1" stylesheets="@../../style/labels.css" text="Մուտք քարտով" GridPane.columnSpan="4" />
-      <Label alignment="CENTER" contentDisplay="CENTER" styleClass="paragraph" stylesheets="@../../style/labels.css" text="Քարտի համար" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-      <Label styleClass="paragraph" stylesheets="@../../style/labels.css" text="Ծառայություն" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-      <Label styleClass="paragraph" stylesheets="@../../style/labels.css" text="Աշխատող" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-      <TextField fx:id="cardNumberTextField" alignment="CENTER" maxWidth="100.0" minWidth="50.0" prefWidth="50.0" styleClass="textField" stylesheets="@../../style/text_field.css" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+      <Label styleClass="header1" text="Մուտք քարտով" GridPane.columnSpan="4" />
+      <Label alignment="CENTER" contentDisplay="CENTER" styleClass="paragraph" text="Քարտի համար" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <TextField fx:id="cardTextField" alignment="CENTER" maxWidth="100.0" minWidth="50.0" prefWidth="50.0" styleClass="textField" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <font>
             <Font size="18.0" />
          </font></TextField>
-      <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="combo-box" stylesheets="@../../style/combo_box.css" visibleRowCount="5" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+      <Label styleClass="paragraph" text="Ծառայություն" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <ComboBox fx:id="serviceComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="combo-box" visibleRowCount="5" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ComboBox>
-      <ComboBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="combo-box" stylesheets="@../../style/combo_box.css" visibleRowCount="5" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+      <Label styleClass="paragraph" text="Աշխատող" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <ComboBox fx:id="employeeComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="combo-box" visibleRowCount="5" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </ComboBox>
-      <Button fx:id="confirmButton" mnemonicParsing="false" styleClass="secondary" stylesheets="@../../style/button.css" text="Հաստատել" GridPane.columnIndex="3" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets left="10.0" />
-         </GridPane.margin></Button>
       <Separator prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets bottom="10.0" top="10.0" />
          </GridPane.margin></Separator>
-      <Label styleClass="header2" stylesheets="@../../style/labels.css" text="Հաճախորդի տվյալներ" GridPane.columnSpan="4" GridPane.rowIndex="5" />
-      <Label styleClass="paragraph" stylesheets="@../../style/labels.css" text="Անուն Ազգանուն" GridPane.columnSpan="2" GridPane.rowIndex="6" />
-      <Label styleClass="paragraph" stylesheets="@../../style/labels.css" text="Հեռախոս" GridPane.columnSpan="2" GridPane.rowIndex="7" />
-      <Label styleClass="paragraph" stylesheets="@../../style/labels.css" text="Հեռախոս 2֊րդ" GridPane.columnSpan="2" GridPane.rowIndex="8" />
-      <Label styleClass="paragraph" stylesheets="@../../style/labels.css" text="Հասցե" GridPane.rowIndex="9" />
-      <Label styleClass="paragraph" stylesheets="@../../style/labels.css" text="Աբոնեմենտ" GridPane.columnSpan="2" GridPane.rowIndex="10" />
-      <Label styleClass="paragraph" stylesheets="@../../style/labels.css" text="Վերջին այց" GridPane.columnSpan="2" GridPane.rowIndex="11" />
-      <Label styleClass="info" stylesheets="@../../style/labels.css" text="Անուն Ազգանուն" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
-      <Label styleClass="info" stylesheets="@../../style/labels.css" text="098 10 10 10" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
-      <Label styleClass="info" stylesheets="@../../style/labels.css" text="-" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
-      <Label styleClass="info" stylesheets="@../../style/labels.css" text="Gold" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-      <Label styleClass="info" stylesheets="@../../style/labels.css" text="15-10-2021" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="11" />
-      <TableView nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" style="-fx-border-width: 1px;" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+      <Label styleClass="header2" text="Հաճախորդի տվյալներ" GridPane.columnSpan="4" GridPane.rowIndex="5" />
+      <Label styleClass="paragraph" text="Անուն Ազգանուն" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+      <Label styleClass="paragraph" text="Հեռախոս" GridPane.columnSpan="2" GridPane.rowIndex="8" />
+      <Label styleClass="paragraph" text="Հեռախոս 2֊րդ" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+      <Label styleClass="paragraph" text="Հասցե" GridPane.rowIndex="12" />
+      <Label styleClass="paragraph" text="Աբոնեմենտ" GridPane.columnSpan="2" GridPane.rowIndex="14" />
+      <Label styleClass="paragraph" text="Վերջին այց" GridPane.columnSpan="2" GridPane.rowIndex="16" />
+      <Label fx:id="fullNameLabel" styleClass="info" text="Անուն Ազգանուն" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+      <Separator prefWidth="200.0" style="-fx-border-style: dashed; -fx-border-color: #888888;" GridPane.columnSpan="4" GridPane.rowIndex="7" />
+      <Label fx:id="phoneLabel" styleClass="info" text="098 10 10 10" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+      <Separator prefWidth="200.0" style="-fx-border-style: dashed; -fx-border-color: #888888;" GridPane.columnSpan="4" GridPane.rowIndex="9" />
+      <Label fx:id="phone2Label" styleClass="info" text="-" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+      <Separator prefWidth="200.0" style="-fx-border-style: dashed; -fx-border-color: #888888;" GridPane.columnSpan="4" GridPane.rowIndex="11" />
+      <Label fx:id="addressLabel" text="Հասցե" GridPane.columnIndex="3" GridPane.rowIndex="12" />
+      <Separator prefWidth="200.0" style="-fx-border-style: dashed; -fx-border-color: #888888;" GridPane.columnSpan="4" GridPane.rowIndex="13" />
+      <Label fx:id="subscriptionLabel" styleClass="info" text="Gold" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="14" />
+      <Separator prefWidth="200.0" style="-fx-border-style: dashed; -fx-border-color: #888888;" GridPane.columnSpan="4" GridPane.rowIndex="15" />
+      <Label fx:id="lastVisitLabel" styleClass="info" text="15-10-2021" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="16" />
+      <TableView fx:id="serviceTable" nodeOrientation="LEFT_TO_RIGHT" prefHeight="150.0" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="17" GridPane.valignment="CENTER">
         <columns>
-          <TableColumn editable="false" prefWidth="620.0" text="Ծառայություն" />
-          <TableColumn editable="false" prefWidth="120.0" text="Քանակ" />
+          <TableColumn fx:id="serviceColumn" editable="false" prefWidth="620.0" text="Ծառայություն" />
+          <TableColumn fx:id="quantityColumn" editable="false" prefWidth="120.0" text="Քանակ" />
         </columns>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -97,34 +105,44 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <CheckBox alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Մուտք հետին թվով" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+      <CheckBox fx:id="pastTenseCheckbox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Մուտք հետին թվով" wrapText="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="18" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
          <GridPane.margin>
             <Insets right="5.0" />
          </GridPane.margin>
          <font>
             <Font size="20.0" />
-         </font></CheckBox>
-      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="13" GridPane.valignment="CENTER">
-         <children>
-            <DatePicker styleClass="combo-box" stylesheets="@../../style/combo_box.css" HBox.hgrow="ALWAYS" />
-            <TextField alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefWidth="20.0" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font size="18.0" />
-               </font></TextField>
-            <Label alignment="CENTER" contentDisplay="CENTER" text=":" HBox.hgrow="ALWAYS">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <font>
-                  <Font size="32.0" />
-               </font>
-            </Label>
-            <TextField nodeOrientation="LEFT_TO_RIGHT" prefWidth="20.0" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font size="18.0" />
-               </font></TextField>
-         </children>
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></CheckBox>
+      <HBox fx:id="tenseHBox" alignment="CENTER" disable="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="18" GridPane.valignment="CENTER">
+         <DatePicker fx:id="tenseDatePicker" styleClass="combo-box" HBox.hgrow="ALWAYS" />
+         <TextField fx:id="tenseHourTextField" alignment="CENTER_RIGHT" maxWidth="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="50.0" HBox.hgrow="ALWAYS">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </TextField>
+         <Label alignment="CENTER" contentDisplay="CENTER" text=":" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+            <font>
+               <Font size="32.0" />
+            </font>
+         </Label>
+         <TextField fx:id="tenseMinuteTextField" maxWidth="50.0" minWidth="50.0" nodeOrientation="LEFT_TO_RIGHT" prefWidth="50.0" HBox.hgrow="ALWAYS">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </TextField>
       </HBox>
-      <Button mnemonicParsing="false" styleClass="primary" stylesheets="@../../style/button.css" text="Մուտք" GridPane.columnIndex="3" GridPane.rowIndex="13" />
+      <Button fx:id="enterButton" mnemonicParsing="false" styleClass="primary" text="Մուտք" GridPane.columnIndex="3" GridPane.rowIndex="18" />
    </children>
+
+   <stylesheets>
+      <URL value="@../../style/combo_box.css" />
+      <URL value="@../../style/text_field.css" />
+      <URL value="@../../style/labels.css" />
+      <URL value="@../../style/button.css" />
+   </stylesheets>
 </fx:root>

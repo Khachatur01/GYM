@@ -1,18 +1,30 @@
 package com.fitness;
 
-import com.fitness.Controller.Fragment.WithCardController;
+import com.fitness.Controller.Constant.Fragment;
+import com.fitness.Controller.Fragment.*;
+import com.fitness.Controller.Fragment.Customer.CustomerController;
+import com.fitness.Controller.Fragment.Employee.EmployeeController;
+import com.fitness.Controller.Fragment.Enter.WithCardController;
+import com.fitness.Controller.Fragment.Enter.WithoutCardController;
+import com.fitness.Controller.Fragment.Report.ReportController;
+import com.fitness.Controller.Fragment.Service.ServiceController;
+import com.fitness.Controller.Fragment.Subscription.SubscriptionController;
+import com.fitness.Style.ButtonStyle;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Window {
-    private static WithCardController withCard;
+    private static Button active;
+    private static Map<Fragment, Pane> controllers = new HashMap<>();
 
     public void close(Stage stage){
         stage.close();
@@ -25,12 +37,25 @@ public class Window {
         return stage;
     }
 
-    public void initMenuPanes() throws IOException {
-        withCard = new WithCardController();
-
+    private static void changeActiveButton(Button selected){
+        ButtonStyle.unselect(Window.active);
+        ButtonStyle.select(selected);
+        Window.active = selected;
     }
 
-    public WithCardController getWithCardLoader() {
-        return withCard;
+    public void initMenuPanes() throws IOException {
+        controllers.put(Fragment.WITH_CARD, new WithCardController());
+        controllers.put(Fragment.WITHOUT_CARD, new WithoutCardController());
+        controllers.put(Fragment.CUSTOMER, new CustomerController());
+        controllers.put(Fragment.EMPLOYEE, new EmployeeController());
+        controllers.put(Fragment.SERVICE, new ServiceController());
+        controllers.put(Fragment.SUBSCRIPTION, new SubscriptionController());
+        controllers.put(Fragment.REPORT, new ReportController());
+        controllers.put(Fragment.SETTINGS, new SettingsController());
+    }
+
+    public static void openFragment(Fragment fragment, Pane activePane, Button selected){
+        activePane.getChildren().setAll((GridPane)controllers.get(fragment));
+        changeActiveButton(selected);
     }
 }

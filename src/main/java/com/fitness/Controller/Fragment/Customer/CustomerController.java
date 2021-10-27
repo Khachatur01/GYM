@@ -1,4 +1,4 @@
-package com.fitness.Controller.Fragment;
+package com.fitness.Controller.Fragment.Customer;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +32,7 @@ public class CustomerController extends GridPane {
     private Button deleteButton;
 
     public CustomerController() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/customer.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/customer/customer.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         loader.load();

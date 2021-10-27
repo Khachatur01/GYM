@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
-
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ProgressIndicator layoutX="226.0" layoutY="247.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="117.0" prefWidth="149.0" />
+      <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/preload.jpg" />
+         </image>
+      </ImageView>
+      <ProgressIndicator layoutX="449.0" layoutY="274.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="117.0" prefWidth="149.0" />
    </children>
 </Pane>

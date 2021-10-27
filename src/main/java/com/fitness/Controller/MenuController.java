@@ -1,5 +1,6 @@
 package com.fitness.Controller;
 
+import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Style.ButtonStyle;
 import com.fitness.Window;
 import javafx.fxml.FXML;
@@ -32,15 +33,31 @@ public class MenuController implements Initializable {
     @FXML
     private GridPane activePane;
 
-    Window window = new Window();
-    Button selected;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cardButton.setOnAction(event -> {
-            activePane.getChildren().setAll(window.getWithCardLoader());
-            ButtonStyle.select(enterButton);
-            selected = enterButton;
+            Window.openFragment(Fragment.WITH_CARD, activePane, enterButton);
+        });
+        withoutCardButton.setOnAction(event -> {
+            Window.openFragment(Fragment.WITHOUT_CARD, activePane, enterButton);
+        });
+        customersButton.setOnAction(event -> {
+            Window.openFragment(Fragment.CUSTOMER, activePane, customersButton);
+        });
+        employeesButton.setOnAction(event -> {
+            Window.openFragment(Fragment.EMPLOYEE, activePane, employeesButton);
+        });
+        servicesButton.setOnAction(event -> {
+            Window.openFragment(Fragment.SERVICE, activePane, servicesButton);
+        });
+        subscriptionButton.setOnAction(event -> {
+            Window.openFragment(Fragment.SUBSCRIPTION, activePane, subscriptionButton);
+        });
+        reportButton.setOnAction(event -> {
+            Window.openFragment(Fragment.REPORT, activePane, reportButton);
+        });
+        settingsButton.setOnAction(event -> {
+            Window.openFragment(Fragment.SETTINGS, activePane, settingsButton);
         });
     }
 }

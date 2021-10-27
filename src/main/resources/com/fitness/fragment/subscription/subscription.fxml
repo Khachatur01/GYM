@@ -1,13 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx"
-         xmlns:fx="http://javafx.com/fxml"
-         prefHeight="400.0" prefWidth="600.0">
 
+<fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints halignment="LEFT" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints valignment="TOP" />
+   </rowConstraints>
+   <children>
+      <Label styleClass="header1" text="Աբոնեմենտ" />
+      <ScrollPane hbarPolicy="NEVER" maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minViewportHeight="100.0" minWidth="700.0" prefHeight="400.0" prefViewportHeight="200.0" prefWidth="700.0" style="-fx-background-color: transparent;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+         <content>
+            <GridPane fx:id="subscriptionsGridPane" alignment="CENTER" maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="700.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button mnemonicParsing="false" styleClass="subscription_box_selected" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Label styleClass="header2" text="Անուն" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="paragraph" text="12 մարզում" />
+                              <Label styleClass="paragraph" text="3 մերսում" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="header3" text="12000 դրամ" />
+                           </children>
+                        </VBox>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="subscription_box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Label styleClass="header2" text="Անուն" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="paragraph" text="12 մարզում" />
+                              <Label styleClass="paragraph" text="3 մերսում" />
+                              <Label styleClass="paragraph" text="..." />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="header3" text="12000 դրամ" />
+                           </children>
+                        </VBox>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="subscription_box" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Label styleClass="header2" text="Անուն" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="paragraph" text="12 մարզում" />
+                              <Label styleClass="paragraph" text="3 մերսում" />
+                              <Label styleClass="paragraph" text="..." />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="header3" text="12000 դրամ" />
+                           </children>
+                        </VBox>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="subscription_box" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Label styleClass="header2" text="Անուն" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="paragraph" text="12 մարզում" />
+                              <Label styleClass="paragraph" text="3 մերսում" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="header3" text="12000 դրամ" />
+                           </children>
+                        </VBox>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="subscription_box" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Label styleClass="header2" text="Անուն" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="paragraph" text="12 մարզում" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="header3" text="12000 դրամ" />
+                           </children>
+                        </VBox>
+                     </graphic>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="subscription_box" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <graphic>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <Label styleClass="header2" text="Անուն" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="paragraph" text="3 մերսում" />
+                              <Label styleClass="paragraph" text="5 բոքս" />
+                              <Separator prefWidth="200.0" />
+                              <Label styleClass="header3" text="12000 դրամ" />
+                           </children>
+                        </VBox>
+                     </graphic>
+                  </Button>
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+      <GridPane alignment="TOP_CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Button fx:id="editButton" contentDisplay="CENTER" mnemonicParsing="false" styleClass="secondary" text="Փոփոխել" textAlignment="CENTER" GridPane.halignment="LEFT">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="addButton" contentDisplay="CENTER" mnemonicParsing="false" styleClass="primary" text="Ավելացնել" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+   </children>
+   <stylesheets>
+      <URL value="@../../style/button.css" />
+      <URL value="@../../style/labels.css" />
+      <URL value="@../../style/VBox.css" />
+   </stylesheets>
 </fx:root>

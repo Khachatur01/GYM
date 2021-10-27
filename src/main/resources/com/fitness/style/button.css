@@ -38,3 +38,26 @@
     -fx-cursor: hand;
     -fx-font-size: 13px;
 }
+
+.service_box {
+    -fx-pref-width: 150px;
+    -fx-pref-height: 150px;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #367bf5;
+    -fx-background-radius: 20px;
+    -fx-font-size: 20px;
+    -fx-cursor: hand;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0);
+}
+.service_box_selected {
+    -fx-pref-width: 150px;
+    -fx-pref-height: 150px;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #367bf5;
+    -fx-background-radius: 25px;
+    -fx-font-size: 20px;
+    -fx-cursor: hand;
+    -fx-wrap-text: true;
+    -fx-effect: dropshadow(three-pass-box, #367bf5cc, 10, 0, 0, 0);
+}

@@ -1,0 +1,17 @@
+.subscription_box {
+    -fx-pref-width: 150px;
+    -fx-pref-height: 150px;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0);
+}
+
+.subscription_box_selected {
+    -fx-pref-width: 150px;
+    -fx-pref-height: 150px;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 25px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, #367bf5cc, 10, 0, 0, 0);
+}
