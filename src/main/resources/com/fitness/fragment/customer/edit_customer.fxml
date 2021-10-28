@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label styleClass="header1" text="Փոփոխել հաճախորդի տվյալները" GridPane.columnSpan="2147483647">
+         <GridPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </GridPane.margin>
+      </Label>
+      <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+      <Label styleClass="paragraph" text="Քարտի համար" GridPane.rowIndex="2" />
+      <Label styleClass="paragraph" text="Անուն" GridPane.rowIndex="3" />
+      <Label styleClass="paragraph" text="Ազգանուն" GridPane.rowIndex="4" />
+      <Label styleClass="paragraph" text="Հեռախոս" GridPane.rowIndex="5" />
+      <Label styleClass="paragraph" text="Հեռախոս 2-րդ (ոչ պարտադիր)" GridPane.rowIndex="6" />
+      <Label styleClass="paragraph" text="Հասցե" GridPane.rowIndex="7" />
+      <Label styleClass="paragraph" text="Աբոնեմենտ" GridPane.rowIndex="9" />
+      <TextField fx:id="cardTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="nameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="surnameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <TextField fx:id="phoneTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <TextField fx:id="phone2TextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <TextField fx:id="addressTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <ComboBox fx:id="subscriptionComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="9">
+         <GridPane.margin>
+            <Insets left="50.0" right="50.0" />
+         </GridPane.margin></ComboBox>
+      <Button fx:id="previousButton" mnemonicParsing="false" styleClass="secondary" text="Հետ" GridPane.halignment="LEFT" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+      <Button fx:id="editButton" mnemonicParsing="false" styleClass="primary" text="Փոփոխել" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10" GridPane.valignment="CENTER" />
+   </children>
+   <stylesheets>
+      <URL value="@../../style/button.css" />
+      <URL value="@../../style/combo_box.css" />
+      <URL value="@../../style/labels.css" />
+      <URL value="@../../style/text_field.css" />
+   </stylesheets>
+</fx:root>

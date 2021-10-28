@@ -3,6 +3,7 @@ package com.fitness.Model.Person;
 import java.util.Date;
 
 public abstract class Person {
+    public static long ID_NOT_SET = -1;
     public static class Name {
         private String firstName;
         private String lastName;
@@ -27,24 +28,27 @@ public abstract class Person {
         public void setLastName(String lastName) {
             this.lastName = lastName;
         }
+
+        @Override
+        public String toString(){
+            return this.firstName + " " + this.lastName;
+        }
     }
 
-    private long id;
+    private long id = ID_NOT_SET;
     private Name name;
-    private String phone1;
+    private String phone;
     private String phone2;
     private String address;
-    private Date registrationDate;
 
     public Person(){}
 
-    public Person(long id, Name name, String phone1, String phone2, String address, Date registrationDate) {
+    public Person(long id, Name name, String phone, String phone2, String address) {
         this.id = id;
         this.name = name;
-        this.phone1 = phone1;
+        this.phone = phone;
         this.phone2 = phone2;
         this.address = address;
-        this.registrationDate = registrationDate;
     }
 
     public long getId() {
@@ -63,12 +67,12 @@ public abstract class Person {
         this.name = name;
     }
 
-    public String getPhone1() {
-        return phone1;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhone1(String phone1) {
-        this.phone1 = phone1;
+    public void setPhone(String phone1) {
+        this.phone = phone1;
     }
 
     public String getPhone2() {
@@ -87,11 +91,8 @@ public abstract class Person {
         this.address = address;
     }
 
-    public Date getRegistrationDate() {
-        return registrationDate;
+    public String getFullName(){
+        return this.name.toString();
     }
 
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
-    }
 }

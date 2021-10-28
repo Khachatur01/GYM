@@ -1,5 +1,5 @@
 .paragraph {
-    -fx-font-size: 15px;
+    -fx-font-size: 25px;
     -fx-padding: 5px;
     -fx-text-fill: #777;
 }
@@ -8,17 +8,17 @@
     -fx-padding: 5px;
 }
 .header1 {
-    -fx-font-size: 30px;
+    -fx-font-size: 50px;
     -fx-text-fill: #333333;
     -fx-padding: 5px;
 }
 .header2 {
-    -fx-font-size: 20px;
+    -fx-font-size: 40px;
     -fx-text-fill: #367bf5;
     -fx-padding: 5px;
 }
 .header3 {
-    -fx-font-size: 10px;
+    -fx-font-size: 30px;
     -fx-text-fill: #458cff;
     -fx-padding: 5px;
 }

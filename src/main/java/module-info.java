@@ -5,6 +5,9 @@ module com.fitness {
     requires java.desktop;
     requires org.apache.poi.poi;
 
+    opens com.fitness.Model.Person to javafx.base;
+    opens com.fitness.Model.Work to javafx.base;
+
     opens com.fitness.Controller to javafx.fxml;
     opens com.fitness.Controller.Fragment to javafx.fxml;
     opens com.fitness.Controller.Fragment.Customer to javafx.fxml;

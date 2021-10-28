@@ -28,11 +28,11 @@
     </Label>
     <Button fx:id="editButton" mnemonicParsing="false" styleClass="secondary" text="Փոփոխել" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
     <Button fx:id="deleteButton" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-    <Button fx:id="registerButton" mnemonicParsing="false" styleClass="primary" text="Գրանցել" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+    <Button fx:id="addButton" mnemonicParsing="false" styleClass="primary" text="Գրանցել" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
     <TableView fx:id="customersTable" editable="true" fixedCellSize="0.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
       <columns>
-          <TableColumn fx:id="cardColumn" minWidth="-Infinity" prefWidth="50.0" text="Քարտ" />
-          <TableColumn fx:id="fullNameColumn" minWidth="136.0" prefWidth="136.0" text="Անուն Ազգանուն" />
+          <TableColumn fx:id="cardColumn" minWidth="-1.0" prefWidth="50.0" text="Քարտ" />
+          <TableColumn fx:id="fullNameColumn" minWidth="-Infinity" prefWidth="136.0" text="Անուն Ազգանուն" />
           <TableColumn fx:id="subscriptionColumn" minWidth="-Infinity" prefWidth="127.0" text="Աբոնեմենտ" />
           <TableColumn fx:id="phoneColumn" minWidth="-Infinity" prefWidth="116.0" text="Հեռ." />
           <TableColumn fx:id="phone2Column" minWidth="-Infinity" prefWidth="121.0" text="Հեռ. 2֊րդ" />

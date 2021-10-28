@@ -25,7 +25,7 @@ public class EmployeeController extends GridPane {
     @FXML
     private Button editButton;
     @FXML
-    private Button registerButton;
+    private Button addButton;
     @FXML
     private Button deleteButton;
 

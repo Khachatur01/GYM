@@ -35,29 +35,31 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Window.setActivePane(activePane);
+
         cardButton.setOnAction(event -> {
-            Window.openFragment(Fragment.WITH_CARD, activePane, enterButton);
+            Window.openFragment(Fragment.WITH_CARD, enterButton);
         });
         withoutCardButton.setOnAction(event -> {
-            Window.openFragment(Fragment.WITHOUT_CARD, activePane, enterButton);
+            Window.openFragment(Fragment.WITHOUT_CARD, enterButton);
         });
         customersButton.setOnAction(event -> {
-            Window.openFragment(Fragment.CUSTOMER, activePane, customersButton);
+            Window.openFragment(Fragment.CUSTOMER, customersButton);
         });
         employeesButton.setOnAction(event -> {
-            Window.openFragment(Fragment.EMPLOYEE, activePane, employeesButton);
+            Window.openFragment(Fragment.EMPLOYEE, employeesButton);
         });
         servicesButton.setOnAction(event -> {
-            Window.openFragment(Fragment.SERVICE, activePane, servicesButton);
+            Window.openFragment(Fragment.SERVICE, servicesButton);
         });
         subscriptionButton.setOnAction(event -> {
-            Window.openFragment(Fragment.SUBSCRIPTION, activePane, subscriptionButton);
+            Window.openFragment(Fragment.SUBSCRIPTION, subscriptionButton);
         });
         reportButton.setOnAction(event -> {
-            Window.openFragment(Fragment.REPORT, activePane, reportButton);
+            Window.openFragment(Fragment.REPORT, reportButton);
         });
         settingsButton.setOnAction(event -> {
-            Window.openFragment(Fragment.SETTINGS, activePane, settingsButton);
+            Window.openFragment(Fragment.SETTINGS, settingsButton);
         });
     }
 }

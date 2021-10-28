@@ -3,14 +3,24 @@ package com.fitness.Model.Work;
 import java.util.Map;
 
 public class Subscription {
+    private long id;
     private String name;
     private int price;
     private Map<Offer, Integer> offers;
 
-    public Subscription(String name, int price, Map<Offer, Integer> offers) {
+    public Subscription(long id, String name, int price, Map<Offer, Integer> offers) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.offers = offers;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
