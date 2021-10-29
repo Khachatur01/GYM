@@ -1,7 +1,7 @@
 package com.fitness.Service;
 
 
-import com.fitness.Model.Work.Offer;
+import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Subscription;
 import javafx.scene.control.ComboBox;
@@ -69,13 +69,13 @@ public class Verify {
         return true;
     }
 
-    public static boolean offer(Offer offer, ComboBox<Offer> offerComboBox) {
-        if(offer == null){
-            offerComboBox.getStyleClass().add("combo-box_error");
+    public static boolean service(Service service, ComboBox<Service> serviceComboBox) {
+        if(service == null){
+            serviceComboBox.getStyleClass().add("combo-box_error");
             return false;
         }
 
-        offerComboBox.getStyleClass().remove("combo-box_error");
+        serviceComboBox.getStyleClass().remove("combo-box_error");
         return true;
     }
 

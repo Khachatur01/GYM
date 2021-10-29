@@ -48,6 +48,12 @@ public class WithoutCardController extends GridPane implements Controller {
 
     @Override
     public void start() {
+        makeActive();
+
+    }
+
+    @Override
+    public void stop() {
 
     }
 }

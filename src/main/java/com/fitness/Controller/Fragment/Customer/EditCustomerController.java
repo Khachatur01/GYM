@@ -71,22 +71,28 @@ public class EditCustomerController extends GridPane implements Controller {
 
         previousButton.setOnAction(event -> {
             customerService.setCache(null);
-            Clear.textField(
-                    cardTextField,
-                    nameTextField,
-                    surnameTextField,
-                    phoneTextField,
-                    phone2TextField,
-                    addressTextField
-            );
-            Clear.comboBox(subscriptionComboBox);
+            this.stop();
             Window.getFragment(Fragment.CUSTOMER).start();
         });
     }
 
     @Override
     public void start() {
+        makeActive();
         initListeners();
         loadOldData();
+    }
+
+    @Override
+    public void stop() {
+        Clear.textField(
+                cardTextField,
+                nameTextField,
+                surnameTextField,
+                phoneTextField,
+                phone2TextField,
+                addressTextField
+        );
+        Clear.comboBox(subscriptionComboBox);
     }
 }

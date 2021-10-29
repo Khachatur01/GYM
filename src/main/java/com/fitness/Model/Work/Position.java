@@ -2,11 +2,11 @@ package com.fitness.Model.Work;
 
 public class Position {
     private String name;
-    private Offer offer;
+    private Service service;
 
-    public Position(String name, Offer offer) {
+    public Position(String name, Service service) {
         this.name = name;
-        this.offer = offer;
+        this.service = service;
     }
 
     public String getName() {
@@ -17,12 +17,12 @@ public class Position {
         this.name = name;
     }
 
-    public Offer getOffer() {
-        return offer;
+    public Service getService() {
+        return service;
     }
 
-    public void setOffer(Offer offer) {
-        this.offer = offer;
+    public void setService(Service service) {
+        this.service = service;
     }
 
     @Override

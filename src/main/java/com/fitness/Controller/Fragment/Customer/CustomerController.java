@@ -109,7 +109,13 @@ public class CustomerController extends GridPane implements Controller {
 
     @Override
     public void start() {
+        makeActive();
         initTable();
         initListeners();
+    }
+
+    @Override
+    public void stop() {
+
     }
 }

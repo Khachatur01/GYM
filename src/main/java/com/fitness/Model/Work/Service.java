@@ -1,11 +1,11 @@
 package com.fitness.Model.Work;
 
-public class Offer {
+public class Service {
     private long id;
     private String name;
     private int price;
 
-    public Offer(long id, String name, int price) {
+    public Service(long id, String name, int price) {
         this.id = id;
         this.name = name;
         this.price = price;

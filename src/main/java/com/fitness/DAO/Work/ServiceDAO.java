@@ -1,5 +1,5 @@
 package com.fitness.DAO.Work;
 
-public class OfferDAO {
+public class ServiceDAO {
     //@TODO
 }

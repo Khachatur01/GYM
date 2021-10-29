@@ -37,28 +37,60 @@ public class MenuController implements Initializable {
         Window.setActivePane(activePane);
 
         cardButton.setOnAction(event -> {
-            Window.getFragment(Fragment.WITH_CARD, enterButton).start();
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.WITH_CARD, enterButton);
+            Window.setActiveController(controller);
+
+            controller.start();
         });
         withoutCardButton.setOnAction(event -> {
-            Window.getFragment(Fragment.WITHOUT_CARD, enterButton).start();
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.WITHOUT_CARD, enterButton);
+            Window.setActiveController(controller);
+
+            controller.start();
         });
         customersButton.setOnAction(event -> {
-            Window.getFragment(Fragment.CUSTOMER, customersButton).start();
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.CUSTOMER, customersButton);
+            Window.setActiveController(controller);
+
+            controller.start();
         });
         employeesButton.setOnAction(event -> {
-            Window.getFragment(Fragment.EMPLOYEE, employeesButton).start();
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.EMPLOYEE, employeesButton);
+            Window.setActiveController(controller);
+
+            controller.start();
         });
         servicesButton.setOnAction(event -> {
-            Window.getFragment(Fragment.SERVICE, servicesButton).start();
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.SERVICE, servicesButton);
+            Window.setActiveController(controller);
+
+            controller.start();
         });
         subscriptionButton.setOnAction(event -> {
-            Window.getFragment(Fragment.SUBSCRIPTION, subscriptionButton).start();
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.SUBSCRIPTION, subscriptionButton);
+            Window.setActiveController(controller);
+
+            controller.start();
         });
         reportButton.setOnAction(event -> {
-            Window.getFragment(Fragment.REPORT, reportButton).start();
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.REPORT, reportButton);
+            Window.setActiveController(controller);
+
+            controller.start();
         });
         settingsButton.setOnAction(event -> {
-            Window.getFragment(Fragment.SETTINGS, settingsButton).start();
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.SETTINGS, settingsButton);
+            Window.setActiveController(controller);
+
+            controller.start();
         });
     }
 }

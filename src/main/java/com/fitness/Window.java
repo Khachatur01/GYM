@@ -29,6 +29,7 @@ import java.util.Map;
 public class Window {
     private static Button activeButton;
     private static Pane activePane;
+    private static Controller activeController;
     private static Map<Fragment, Controller> controllers = new HashMap<>();
 
     public void close(Stage stage){
@@ -68,9 +69,9 @@ public class Window {
     }
 
     private static Controller onlyGetFragment(Fragment fragment){
-        Controller pane = controllers.get(fragment);
-        activePane.getChildren().setAll((Pane)pane);
-        return pane;
+        Controller controller = controllers.get(fragment);
+        activePane.getChildren().setAll((Pane)controller);
+        return controller;
     }
     public static Controller getFragment(Fragment fragment, Button selected){
         changeActiveButton(selected);
@@ -78,5 +79,14 @@ public class Window {
     }
     public static Controller getFragment(Fragment fragment){
         return onlyGetFragment(fragment);
+    }
+
+    public static void setActiveController(Controller controller){
+        Window.activeController = controller;
+    }
+
+    public static void stopActiveController() {
+        if(Window.activeController != null)
+            Window.activeController.stop();
     }
 }

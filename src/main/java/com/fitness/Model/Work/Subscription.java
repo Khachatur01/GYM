@@ -6,13 +6,13 @@ public class Subscription {
     private long id;
     private String name;
     private int price;
-    private Map<Offer, Integer> offers;
+    private Map<Service, Integer> services;
 
-    public Subscription(long id, String name, int price, Map<Offer, Integer> offers) {
+    public Subscription(long id, String name, int price, Map<Service, Integer> services) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.offers = offers;
+        this.services = services;
     }
 
     public long getId() {
@@ -39,12 +39,12 @@ public class Subscription {
         this.price = price;
     }
 
-    public Map<Offer, Integer> getOffers() {
-        return offers;
+    public Map<Service, Integer> getServices() {
+        return services;
     }
 
-    public void setOffers(Map<Offer, Integer> offers) {
-        this.offers = offers;
+    public void setServices(Map<Service, Integer> services) {
+        this.services = services;
     }
 
     @Override

@@ -3,12 +3,12 @@ package com.fitness.Controller.Fragment.Employee;
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Person.Employee;
-import com.fitness.Model.Work.Offer;
+import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.EmployeeService;
-import com.fitness.Service.Work.OfferService;
+import com.fitness.Service.Work.ServiceService;
 import com.fitness.Service.Work.PositionService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
@@ -33,7 +33,7 @@ public class EditEmployeeController extends GridPane implements Controller {
     @FXML
     private TextField addressTextField;
     @FXML
-    private ComboBox<Offer> serviceComboBox;
+    private ComboBox<Service> serviceComboBox;
     @FXML
     private ComboBox<Position> positionComboBox;
     @FXML
@@ -42,7 +42,7 @@ public class EditEmployeeController extends GridPane implements Controller {
     private Button editButton;
 
     private EmployeeService employeeService = new EmployeeService();
-    private OfferService offerService = new OfferService();
+    private ServiceService serviceService = new ServiceService();
     private PositionService positionService = new PositionService();
 
     public EditEmployeeController() throws IOException {
@@ -52,7 +52,7 @@ public class EditEmployeeController extends GridPane implements Controller {
         loader.load();
     }
     public void loadOldData(){
-        serviceComboBox.setItems(FXCollections.observableArrayList(offerService.getOffers()));
+        serviceComboBox.setItems(FXCollections.observableArrayList(serviceService.getServices()));
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getPositions()));
         Employee employee = employeeService.getCache();
         if(employee != null)
@@ -74,21 +74,27 @@ public class EditEmployeeController extends GridPane implements Controller {
 
         previousButton.setOnAction(event -> {
             employeeService.setCache(null);
-            Clear.textField(
-                    nameTextField,
-                    surnameTextField,
-                    phoneTextField,
-                    phone2TextField,
-                    addressTextField
-            );
-            Clear.comboBox(serviceComboBox, positionComboBox);
+            this.stop();
             Window.getFragment(Fragment.EMPLOYEE).start();
         });
     }
 
     @Override
     public void start() {
+        makeActive();
         initListeners();
         loadOldData();
+    }
+
+    @Override
+    public void stop() {
+        Clear.textField(
+                nameTextField,
+                surnameTextField,
+                phoneTextField,
+                phone2TextField,
+                addressTextField
+        );
+        Clear.comboBox(serviceComboBox, positionComboBox);
     }
 }

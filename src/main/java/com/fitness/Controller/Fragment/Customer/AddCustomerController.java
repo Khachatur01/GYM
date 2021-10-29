@@ -88,16 +88,7 @@ public class AddCustomerController extends GridPane implements Controller {
 
         previousButton.setOnAction(event -> {
             customerService.setCache(null);
-            Clear.textField(
-                    oldCardTextField,
-                    cardTextField,
-                    nameTextField,
-                    surnameTextField,
-                    phoneTextField,
-                    phone2TextField,
-                    addressTextField
-            );
-            Clear.comboBox(subscriptionComboBox);
+            this.stop();
             Window.getFragment(Fragment.CUSTOMER).start();
         });
 
@@ -108,7 +99,22 @@ public class AddCustomerController extends GridPane implements Controller {
 
     @Override
     public void start() {
+        makeActive();
         initListeners();
         initComboBox();
+    }
+
+    @Override
+    public void stop() {
+        Clear.textField(
+                oldCardTextField,
+                cardTextField,
+                nameTextField,
+                surnameTextField,
+                phoneTextField,
+                phone2TextField,
+                addressTextField
+        );
+        Clear.comboBox(subscriptionComboBox);
     }
 }

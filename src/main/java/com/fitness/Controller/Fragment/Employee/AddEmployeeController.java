@@ -2,11 +2,11 @@ package com.fitness.Controller.Fragment.Employee;
 
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
-import com.fitness.Model.Work.Offer;
+import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Person.EmployeeService;
-import com.fitness.Service.Work.OfferService;
+import com.fitness.Service.Work.ServiceService;
 import com.fitness.Service.Work.PositionService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
@@ -31,7 +31,7 @@ public class AddEmployeeController extends GridPane implements Controller {
     @FXML
     private TextField addressTextField;
     @FXML
-    private ComboBox<Offer> serviceComboBox;
+    private ComboBox<Service> serviceComboBox;
     @FXML
     private ComboBox<Position> positionComboBox;
     @FXML
@@ -40,7 +40,7 @@ public class AddEmployeeController extends GridPane implements Controller {
     private Button addButton;
 
     private EmployeeService employeeService = new EmployeeService();
-    private OfferService offerService = new OfferService();
+    private ServiceService serviceService = new ServiceService();
     private PositionService positionService = new PositionService();
 
     public AddEmployeeController() throws IOException {
@@ -66,26 +66,32 @@ public class AddEmployeeController extends GridPane implements Controller {
 
         previousButton.setOnAction(event -> {
             employeeService.setCache(null);
-            Clear.textField(
-                    nameTextField,
-                    surnameTextField,
-                    phoneTextField,
-                    phone2TextField,
-                    addressTextField
-            );
-            Clear.comboBox(serviceComboBox, positionComboBox);
+            this.stop();
             Window.getFragment(Fragment.EMPLOYEE).start();
         });
     }
 
     public void initComboBoxes(){
-        serviceComboBox.setItems(FXCollections.observableArrayList(offerService.getOffers()));
+        serviceComboBox.setItems(FXCollections.observableArrayList(serviceService.getServices()));
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getPositions()));
     }
 
     @Override
     public void start() {
+        makeActive();
         initListeners();
         initComboBoxes();
+    }
+
+    @Override
+    public void stop() {
+        Clear.textField(
+                nameTextField,
+                surnameTextField,
+                phoneTextField,
+                phone2TextField,
+                addressTextField
+        );
+        Clear.comboBox(serviceComboBox, positionComboBox);
     }
 }

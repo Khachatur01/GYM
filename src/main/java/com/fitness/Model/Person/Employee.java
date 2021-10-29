@@ -1,26 +1,26 @@
 package com.fitness.Model.Person;
 
-import com.fitness.Model.Work.Offer;
+import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Position;
 
 public class Employee extends Person{
-    private Offer offer;
+    private Service service;
     private Position position;
 
     public Employee() {}
 
-    public Employee(long id, Name name, String phone, String phone2, String address, Offer offer, Position position) {
+    public Employee(long id, Name name, String phone, String phone2, String address, Service service, Position position) {
         super(id, name, phone, phone2, address);
-        this.offer = offer;
+        this.service = service;
         this.position = position;
     }
 
-    public Offer getOffer() {
-        return offer;
+    public Service getService() {
+        return service;
     }
 
-    public void setOffer(Offer offer) {
-        this.offer = offer;
+    public void setService(Service service) {
+        this.service = service;
     }
 
     public Position getPosition() {
