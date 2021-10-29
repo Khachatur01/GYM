@@ -4,7 +4,6 @@ import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Person;
-import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Person.CustomerService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
@@ -52,8 +51,10 @@ public class CustomerController extends GridPane implements Controller {
 
     private void initListeners(){
         editButton.setOnAction(event -> {
-            customerService.setCache(customersTable.getSelectionModel().getSelectedItem());
-            Window.getFragment(Fragment.EDIT_CUSTOMER).start();
+            Customer customer = customersTable.getSelectionModel().getSelectedItem();
+            customerService.setCache(customer);
+            if(customer != null)
+                Window.getFragment(Fragment.EDIT_CUSTOMER).start();
         });
 
         addButton.setOnAction(event -> {
@@ -61,20 +62,22 @@ public class CustomerController extends GridPane implements Controller {
         });
 
         deleteButton.setOnAction(event -> {
-            ButtonType yes = new ButtonType("Այո", ButtonBar.ButtonData.OK_DONE);
-            ButtonType no = new ButtonType("Ոչ", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Customer customer = customersTable.getSelectionModel().getSelectedItem();
+            if(customer == null) return;
+
+            ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
             ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Հաստատում");
-            alert.setHeaderText("Հետևյալ հաճախորդը կջնջվի");
+            alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել հաճախորդին");
             alert.setContentText("Ցանկանու՞մ եք ջնջել հաճախորդին");
             alert.getButtonTypes().setAll(yes, removeHistory, no);
 
             Optional<ButtonType> result =  alert.showAndWait();
-            Customer customer = customersTable.getSelectionModel().getSelectedItem();
 
-            if(result.isPresent() && customer != null){
+            if(result.isPresent()){
                 if(result.get() == yes)
                     removeCustomer(customer, true);
                 else if (result.get() == removeHistory)
@@ -90,7 +93,6 @@ public class CustomerController extends GridPane implements Controller {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         phone2Column.setCellValueFactory(new PropertyValueFactory<>("phone2"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-
 
         customersTable.getItems().clear();
 

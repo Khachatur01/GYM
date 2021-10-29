@@ -1,17 +1,26 @@
 package com.fitness.Model.Person;
 
+import com.fitness.Model.Work.Offer;
 import com.fitness.Model.Work.Position;
 
-import java.util.Date;
-
 public class Employee extends Person{
+    private Offer offer;
     private Position position;
 
     public Employee() {}
 
-    public Employee(long id, Name name, String phone1, String phone2, String address, Date registrationDate, Position position) {
-        super(id, name, phone1, phone2, address);
+    public Employee(long id, Name name, String phone, String phone2, String address, Offer offer, Position position) {
+        super(id, name, phone, phone2, address);
+        this.offer = offer;
         this.position = position;
+    }
+
+    public Offer getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Offer offer) {
+        this.offer = offer;
     }
 
     public Position getPosition() {
@@ -21,4 +30,5 @@ public class Employee extends Person{
     public void setPosition(Position position) {
         this.position = position;
     }
+
 }

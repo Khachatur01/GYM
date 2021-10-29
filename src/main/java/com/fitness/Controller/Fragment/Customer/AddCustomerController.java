@@ -89,6 +89,7 @@ public class AddCustomerController extends GridPane implements Controller {
         previousButton.setOnAction(event -> {
             customerService.setCache(null);
             Clear.textField(
+                    oldCardTextField,
                     cardTextField,
                     nameTextField,
                     surnameTextField,

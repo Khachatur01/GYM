@@ -1,28 +1,36 @@
 package com.fitness.Controller.Fragment.Employee;
 
+import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.Model.Person.Employee;
+import com.fitness.Model.Person.Person;
+import com.fitness.Model.Work.Position;
+import com.fitness.Service.Person.EmployeeService;
+import com.fitness.Window;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class EmployeeController extends GridPane implements Controller {
     @FXML
-    private TableView<?> employeesTable;
+    private TableView<Employee> employeesTable;
     @FXML
-    private TableColumn<?, ?> positionColumn;
+    private TableColumn<Employee, Position> positionColumn;
     @FXML
-    private TableColumn<?, ?> fullNameColumn;
+    private TableColumn<Employee, Person.Name> fullNameColumn;
     @FXML
-    private TableColumn<?, ?> phoneColumn;
+    private TableColumn<Employee, String> phoneColumn;
     @FXML
-    private TableColumn<?, ?> phone2Column;
+    private TableColumn<Employee, String> phone2Column;
     @FXML
-    private TableColumn<?, ?> addressColumn;
+    private TableColumn<Employee, String> addressColumn;
     @FXML
     private Button editButton;
     @FXML
@@ -30,15 +38,75 @@ public class EmployeeController extends GridPane implements Controller {
     @FXML
     private Button deleteButton;
 
+    private ObservableList<Employee> employees = FXCollections.observableArrayList();
+    private EmployeeService employeeService = new EmployeeService();
+
     public EmployeeController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/employee/employee.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
     }
+    private void initListeners(){
+        editButton.setOnAction(event -> {
+            Employee employee = employeesTable.getSelectionModel().getSelectedItem();
+            employeeService.setCache(employee);
+            if(employee != null)
+                Window.getFragment(Fragment.EDIT_EMPLOYEE).start();
+        });
+
+        addButton.setOnAction(event -> {
+            Window.getFragment(Fragment.ADD_EMPLOYEE).start();
+        });
+
+        deleteButton.setOnAction(event -> {
+            Employee employee = employeesTable.getSelectionModel().getSelectedItem();
+            if(employee == null) return;
+
+            ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
+            ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Հաստատում");
+            alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել աշխատողին");
+            alert.setContentText("Ցանկանու՞մ եք ջնջել աշխատողին");
+            alert.getButtonTypes().setAll(yes, removeHistory, no);
+
+            Optional<ButtonType> result =  alert.showAndWait();
+
+            if(result.isPresent()){
+                if(result.get() == yes)
+                    removeEmployee(employee, true);
+                else if (result.get() == removeHistory)
+                    removeEmployee(employee, false);
+            }
+        });
+    }
+
+    private void initTable(){
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
+        fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        phone2Column.setCellValueFactory(new PropertyValueFactory<>("phone2"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+
+        employeesTable.getItems().clear();
+
+        employees.setAll(employeeService.getEmployees());
+
+        employeesTable.setItems(employees);
+    }
+
+    private void removeEmployee(Employee employee, boolean removeHistory) {
+        employeesTable.getItems().remove(employee);
+        employees.remove(employee);
+        employeeService.remove(employee, removeHistory);
+    }
 
     @Override
     public void start() {
-
+        initTable();
+        initListeners();
     }
 }

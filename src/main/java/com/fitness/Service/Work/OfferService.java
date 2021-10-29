@@ -2,7 +2,9 @@ package com.fitness.Service.Work;
 
 import com.fitness.Model.Work.Offer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class OfferService {
@@ -13,6 +15,10 @@ public class OfferService {
         offers.put(new Offer(3, "offer3", 1000), 3);
         offers.put(new Offer(4, "offer4", 1000), 2);
         return offers;
+    }
+
+    public List<Offer> getOffers() {
+        return new ArrayList<>();
     }
     //@TODO
 }

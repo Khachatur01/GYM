@@ -15,6 +15,19 @@ public class CustomerService {
     private static Customer cache = null;
     private CustomerDAO customerDAO = new CustomerDAO();
 
+    public Customer getCustomer(String card){
+        return customerDAO.getByCard(card);
+    }
+    public List<Customer> getCustomers() {
+        List<Customer> customers = new ArrayList<>();
+        customers.add(new Customer(-1, new Person.Name("name", "surname"), "123", "098", "099", "address", null));
+        customers.add(new Customer(-1, new Person.Name("name1", "surname"), "456", "098", "099", "address", null));
+        customers.add(new Customer(-1, new Person.Name("name2", "surname"), "789", "098", null, "address", null));
+        customers.add(new Customer(-1, new Person.Name("name3", "surname"), "147", "098", "099", "address", null));
+        //@TODO get from database
+        return customers;
+    }
+
     private Customer makeCustomer(TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
         Customer customer = null;
         String card = cardTextField.getText();
@@ -41,18 +54,6 @@ public class CustomerService {
             customer.setSubscription(subscription);
         }
         return customer;
-    }
-    public Customer getCustomer(String card){
-        return customerDAO.getByCard(card);
-    }
-    public List<Customer> getCustomers() {
-        List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer(-1, new Person.Name("name", "surname"), "123", "098", "099", "address", null));
-        customers.add(new Customer(-1, new Person.Name("name1", "surname"), "456", "098", "099", "address", null));
-        customers.add(new Customer(-1, new Person.Name("name2", "surname"), "789", "098", "099", "address", null));
-        customers.add(new Customer(-1, new Person.Name("name3", "surname"), "147", "098", "099", "address", null));
-        //@TODO get from database
-        return customers;
     }
 
     public boolean add(TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){

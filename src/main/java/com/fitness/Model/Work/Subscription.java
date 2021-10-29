@@ -49,6 +49,6 @@ public class Subscription {
 
     @Override
     public String toString(){
-        return this.getName();
+        return this.name;
     }
 }

@@ -24,4 +24,9 @@ public class Position {
     public void setOffer(Offer offer) {
         this.offer = offer;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

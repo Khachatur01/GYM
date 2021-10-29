@@ -5,6 +5,8 @@ import com.fitness.Controller.Controller;
 import com.fitness.Controller.Fragment.Customer.AddCustomerController;
 import com.fitness.Controller.Fragment.Customer.CustomerController;
 import com.fitness.Controller.Fragment.Customer.EditCustomerController;
+import com.fitness.Controller.Fragment.Employee.AddEmployeeController;
+import com.fitness.Controller.Fragment.Employee.EditEmployeeController;
 import com.fitness.Controller.Fragment.Employee.EmployeeController;
 import com.fitness.Controller.Fragment.Enter.WithCardController;
 import com.fitness.Controller.Fragment.Enter.WithoutCardController;
@@ -49,10 +51,12 @@ public class Window {
     public void initMenuPanes() throws IOException {
         controllers.put(Fragment.WITH_CARD, new WithCardController());
         controllers.put(Fragment.WITHOUT_CARD, new WithoutCardController());
-        controllers.put(Fragment.ADD_CUSTOMER, new AddCustomerController());
         controllers.put(Fragment.CUSTOMER, new CustomerController());
         controllers.put(Fragment.EDIT_CUSTOMER, new EditCustomerController());
+        controllers.put(Fragment.ADD_CUSTOMER, new AddCustomerController());
         controllers.put(Fragment.EMPLOYEE, new EmployeeController());
+        controllers.put(Fragment.EDIT_EMPLOYEE, new EditEmployeeController());
+        controllers.put(Fragment.ADD_EMPLOYEE, new AddEmployeeController());
         controllers.put(Fragment.SERVICE, new ServiceController());
         controllers.put(Fragment.SUBSCRIPTION, new SubscriptionController());
         controllers.put(Fragment.REPORT, new ReportController());

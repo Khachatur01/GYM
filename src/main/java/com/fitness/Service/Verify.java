@@ -1,6 +1,8 @@
 package com.fitness.Service;
 
 
+import com.fitness.Model.Work.Offer;
+import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Subscription;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -64,6 +66,26 @@ public class Verify {
         }
 
         subscriptionComboBox.getStyleClass().remove("combo-box_error");
+        return true;
+    }
+
+    public static boolean offer(Offer offer, ComboBox<Offer> offerComboBox) {
+        if(offer == null){
+            offerComboBox.getStyleClass().add("combo-box_error");
+            return false;
+        }
+
+        offerComboBox.getStyleClass().remove("combo-box_error");
+        return true;
+    }
+
+    public static boolean position(Position position, ComboBox<Position> positionComboBox) {
+        if(position == null){
+            positionComboBox.getStyleClass().add("combo-box_error");
+            return false;
+        }
+
+        positionComboBox.getStyleClass().remove("combo-box_error");
         return true;
     }
 }
