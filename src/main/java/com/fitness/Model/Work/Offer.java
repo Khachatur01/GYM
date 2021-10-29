@@ -1,12 +1,22 @@
 package com.fitness.Model.Work;
 
 public class Offer {
+    private long id;
     private String name;
     private int price;
 
-    public Offer(String name, int price) {
+    public Offer(long id, String name, int price) {
+        this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

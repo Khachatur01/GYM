@@ -46,4 +46,9 @@ public class Subscription {
     public void setOffers(Map<Offer, Integer> offers) {
         this.offers = offers;
     }
+
+    @Override
+    public String toString(){
+        return this.getName();
+    }
 }

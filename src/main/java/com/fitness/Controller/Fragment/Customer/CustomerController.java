@@ -1,8 +1,10 @@
 package com.fitness.Controller.Fragment.Customer;
 
 import com.fitness.Controller.Constant.Fragment;
+import com.fitness.Controller.Controller;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Person;
+import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Person.CustomerService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
@@ -16,7 +18,7 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.util.Optional;
 
-public class CustomerController extends GridPane {
+public class CustomerController extends GridPane implements Controller {
     @FXML
     private TableView<Customer> customersTable;
     @FXML
@@ -38,26 +40,24 @@ public class CustomerController extends GridPane {
     @FXML
     private Button deleteButton;
 
-    ObservableList<Customer> customers = FXCollections.observableArrayList();
-    CustomerService customerService = new CustomerService();
+    private ObservableList<Customer> customers = FXCollections.observableArrayList();
+    private CustomerService customerService = new CustomerService();
 
     public CustomerController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/customer/customer.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
-
-        initTable();
-        initListeners();
     }
 
     private void initListeners(){
         editButton.setOnAction(event -> {
-            Window.openFragment(Fragment.EDIT_CUSTOMER);
+            customerService.setCache(customersTable.getSelectionModel().getSelectedItem());
+            Window.getFragment(Fragment.EDIT_CUSTOMER).start();
         });
 
         addButton.setOnAction(event -> {
-            Window.openFragment(Fragment.ADD_CUSTOMER);
+            Window.getFragment(Fragment.ADD_CUSTOMER).start();
         });
 
         deleteButton.setOnAction(event -> {
@@ -92,10 +92,9 @@ public class CustomerController extends GridPane {
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
 
 
-        customers.add(new Customer(-1, new Person.Name("name", "surname"), "123", "098", "099", "address", null));
-        customers.add(new Customer(-1, new Person.Name("name1", "surname"), "123", "098", "099", "address", null));
-        customers.add(new Customer(-1, new Person.Name("name2", "surname"), "123", "098", "099", "address", null));
-        customers.add(new Customer(-1, new Person.Name("name3", "surname"), "123", "098", "099", "address", null));
+        customersTable.getItems().clear();
+
+        customers.setAll(customerService.getCustomers());
 
         customersTable.setItems(customers);
     }
@@ -106,4 +105,9 @@ public class CustomerController extends GridPane {
         customerService.remove(customer, removeHistory);
     }
 
+    @Override
+    public void start() {
+        initTable();
+        initListeners();
+    }
 }

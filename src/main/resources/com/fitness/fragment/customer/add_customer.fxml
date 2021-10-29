@@ -37,14 +37,14 @@
          </GridPane.margin>
       </Label>
       <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-      <Label styleClass="paragraph" text="Հին քարտի համար (ոչ պարտադիր)" GridPane.rowIndex="1" />
-      <Label styleClass="paragraph" text="Նոր քարտի համար" GridPane.rowIndex="3" />
-      <Label styleClass="paragraph" text="Անուն" GridPane.rowIndex="4" />
-      <Label styleClass="paragraph" text="Ազգանուն" GridPane.rowIndex="5" />
-      <Label styleClass="paragraph" text="Հեռախոս" GridPane.rowIndex="6" />
-      <Label styleClass="paragraph" text="Հեռախոս 2-րդ (ոչ պարտադիր)" GridPane.rowIndex="7" />
-      <Label styleClass="paragraph" text="Հասցե" GridPane.rowIndex="8" />
-      <Label styleClass="paragraph" text="Աբոնեմենտ" GridPane.rowIndex="10" />
+      <Label styleClass="paragraph" text="Հին քարտի համար" GridPane.rowIndex="1" />
+      <Label styleClass="paragraph" text="Նոր քարտի համար *" GridPane.rowIndex="3" />
+      <Label styleClass="paragraph" text="Անուն *" GridPane.rowIndex="4" />
+      <Label styleClass="paragraph" text="Ազգանուն *" GridPane.rowIndex="5" />
+      <Label styleClass="paragraph" text="Հեռախոս *" GridPane.rowIndex="6" />
+      <Label styleClass="paragraph" text="Հեռախոս 2-րդ" GridPane.rowIndex="7" />
+      <Label styleClass="paragraph" text="Հասցե *" GridPane.rowIndex="8" />
+      <Label styleClass="paragraph" text="Աբոնեմենտ *" GridPane.rowIndex="10" />
       <TextField fx:id="oldCardTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="cardTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <TextField fx:id="nameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.rowIndex="4" />

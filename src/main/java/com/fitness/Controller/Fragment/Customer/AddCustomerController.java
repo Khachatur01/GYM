@@ -1,12 +1,15 @@
 package com.fitness.Controller.Fragment.Customer;
 
 import com.fitness.Controller.Constant.Fragment;
+import com.fitness.Controller.Controller;
 import com.fitness.Model.Person.Customer;
-import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Subscription;
+import com.fitness.Service.Clear;
+import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
-import com.fitness.Service.Verifier;
+import com.fitness.Service.Work.SubscriptionService;
 import com.fitness.Window;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -16,7 +19,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
-public class AddCustomerController extends GridPane {
+public class AddCustomerController extends GridPane implements Controller {
     @FXML
     private TextField oldCardTextField;
     @FXML
@@ -38,49 +41,73 @@ public class AddCustomerController extends GridPane {
     @FXML
     private Button addButton;
 
-    CustomerService customerService = new CustomerService();
+    private CustomerService customerService = new CustomerService();
+    private SubscriptionService subscriptionService = new SubscriptionService();
+
+    private static boolean fieldAreClean = true;
 
     public AddCustomerController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/customer/add_customer.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
-        initListeners();
     }
-
     private void initListeners(){
-        addButton.setOnAction(event -> {
-            Customer customer = new Customer();
-            String card = cardTextField.getText();
-            String name = nameTextField.getText();
-            String surname = surnameTextField.getText();
-            String phone = phoneTextField.getText();
-            String phone2 = phone2TextField.getText();
-            String address = addressTextField.getText();
-            Subscription subscription = subscriptionComboBox.getValue();
-
-            if(     Verifier.correctCard(card, cardTextField) &&
-                    Verifier.correctName(name, nameTextField) &&
-                    Verifier.correctSurname(surname, surnameTextField) &&
-                    Verifier.correctPhone(phone, phoneTextField) &&
-                    Verifier.correctPhone(phone2, phone2TextField) &&
-                    Verifier.correctAddress(address, addressTextField) &&
-                    subscription != null
-            ){
-                customer.setCard(card);
-                customer.setName(new Person.Name(name, surname));
-                customer.setPhone(phone);
-                customer.setPhone2(phone2);
-                customer.setAddress(address);
-                customer.setSubscription(subscription);
-                customerService.add(customer);
+        oldCardTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            Customer customer = customerService.getCustomer(newValue);
+            if(!fieldAreClean) {
+                Clear.textField(
+                        cardTextField,
+                        nameTextField,
+                        surnameTextField,
+                        phoneTextField,
+                        phone2TextField,
+                        addressTextField
+                );
+                Clear.comboBox(subscriptionComboBox);
+                fieldAreClean = true;
+            } else if (customer != null){
+                customer.setCard(""); // don't fill card number field
+                Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
+                fieldAreClean = false;
             }
+        });
 
+        addButton.setOnAction(event -> {
+            //return null when something went wrong
+            customerService.add(
+                    cardTextField,
+                    nameTextField,
+                    surnameTextField,
+                    phoneTextField,
+                    phone2TextField,
+                    addressTextField,
+                    subscriptionComboBox
+            );
         });
 
         previousButton.setOnAction(event -> {
-            Window.openFragment(Fragment.CUSTOMER);
+            customerService.setCache(null);
+            Clear.textField(
+                    cardTextField,
+                    nameTextField,
+                    surnameTextField,
+                    phoneTextField,
+                    phone2TextField,
+                    addressTextField
+            );
+            Clear.comboBox(subscriptionComboBox);
+            Window.getFragment(Fragment.CUSTOMER).start();
         });
 
+    }
+    public void initComboBox(){
+        subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getSubscriptions()));
+    }
+
+    @Override
+    public void start() {
+        initListeners();
+        initComboBox();
     }
 }

@@ -7,6 +7,7 @@ module com.fitness {
 
     opens com.fitness.Model.Person to javafx.base;
     opens com.fitness.Model.Work to javafx.base;
+    opens com.fitness.Model.Configuration to javafx.base;
 
     opens com.fitness.Controller to javafx.fxml;
     opens com.fitness.Controller.Fragment to javafx.fxml;

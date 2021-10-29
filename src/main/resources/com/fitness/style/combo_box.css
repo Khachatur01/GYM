@@ -1,5 +1,5 @@
 .combo-box{
-    -fx-border-color:#367bf5;
+    -fx-border-color: #367bf5;
     -fx-border-radius: 5px;
     -fx-background-color: transparent;
     -fx-border-width:1px;
@@ -9,4 +9,7 @@
     -fx-focus-color: transparent;
     -fx-cursor: hand;
     -fx-font-size: 30px;
+}
+.combo-box_error {
+    -fx-border-color: #f53636;
 }

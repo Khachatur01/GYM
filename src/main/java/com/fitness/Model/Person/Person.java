@@ -1,7 +1,5 @@
 package com.fitness.Model.Person;
 
-import java.util.Date;
-
 public abstract class Person {
     public static long ID_NOT_SET = -1;
     public static class Name {

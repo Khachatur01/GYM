@@ -1,5 +1,6 @@
 package com.fitness.Controller.Fragment.Enter;
 
+import com.fitness.Controller.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -8,7 +9,7 @@ import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
-public class WithCardController extends GridPane{
+public class WithCardController extends GridPane implements Controller {
     @FXML
     private TextField cardTextField;
     @FXML
@@ -54,4 +55,8 @@ public class WithCardController extends GridPane{
     }
 
 
+    @Override
+    public void start() {
+
+    }
 }

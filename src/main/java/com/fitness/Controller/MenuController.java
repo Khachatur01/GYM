@@ -1,7 +1,6 @@
 package com.fitness.Controller;
 
 import com.fitness.Controller.Constant.Fragment;
-import com.fitness.Style.ButtonStyle;
 import com.fitness.Window;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,28 +37,28 @@ public class MenuController implements Initializable {
         Window.setActivePane(activePane);
 
         cardButton.setOnAction(event -> {
-            Window.openFragment(Fragment.WITH_CARD, enterButton);
+            Window.getFragment(Fragment.WITH_CARD, enterButton).start();
         });
         withoutCardButton.setOnAction(event -> {
-            Window.openFragment(Fragment.WITHOUT_CARD, enterButton);
+            Window.getFragment(Fragment.WITHOUT_CARD, enterButton).start();
         });
         customersButton.setOnAction(event -> {
-            Window.openFragment(Fragment.CUSTOMER, customersButton);
+            Window.getFragment(Fragment.CUSTOMER, customersButton).start();
         });
         employeesButton.setOnAction(event -> {
-            Window.openFragment(Fragment.EMPLOYEE, employeesButton);
+            Window.getFragment(Fragment.EMPLOYEE, employeesButton).start();
         });
         servicesButton.setOnAction(event -> {
-            Window.openFragment(Fragment.SERVICE, servicesButton);
+            Window.getFragment(Fragment.SERVICE, servicesButton).start();
         });
         subscriptionButton.setOnAction(event -> {
-            Window.openFragment(Fragment.SUBSCRIPTION, subscriptionButton);
+            Window.getFragment(Fragment.SUBSCRIPTION, subscriptionButton).start();
         });
         reportButton.setOnAction(event -> {
-            Window.openFragment(Fragment.REPORT, reportButton);
+            Window.getFragment(Fragment.REPORT, reportButton).start();
         });
         settingsButton.setOnAction(event -> {
-            Window.openFragment(Fragment.SETTINGS, settingsButton);
+            Window.getFragment(Fragment.SETTINGS, settingsButton).start();
         });
     }
 }

@@ -1,5 +1,6 @@
 package com.fitness.Controller.Fragment.Employee;
 
+import com.fitness.Controller.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -9,7 +10,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
-public class EmployeeController extends GridPane {
+public class EmployeeController extends GridPane implements Controller {
     @FXML
     private TableView<?> employeesTable;
     @FXML
@@ -34,5 +35,10 @@ public class EmployeeController extends GridPane {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+    }
+
+    @Override
+    public void start() {
+
     }
 }

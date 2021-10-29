@@ -1,7 +1,7 @@
 package com.fitness;
 
 import com.fitness.Controller.Constant.Fragment;
-import com.fitness.Controller.Fragment.*;
+import com.fitness.Controller.Controller;
 import com.fitness.Controller.Fragment.Customer.AddCustomerController;
 import com.fitness.Controller.Fragment.Customer.CustomerController;
 import com.fitness.Controller.Fragment.Customer.EditCustomerController;
@@ -10,6 +10,7 @@ import com.fitness.Controller.Fragment.Enter.WithCardController;
 import com.fitness.Controller.Fragment.Enter.WithoutCardController;
 import com.fitness.Controller.Fragment.Report.ReportController;
 import com.fitness.Controller.Fragment.Service.ServiceController;
+import com.fitness.Controller.Fragment.SettingsController;
 import com.fitness.Controller.Fragment.Subscription.SubscriptionController;
 import com.fitness.Style.ButtonStyle;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +27,7 @@ import java.util.Map;
 public class Window {
     private static Button activeButton;
     private static Pane activePane;
-    private static Map<Fragment, Pane> controllers = new HashMap<>();
+    private static Map<Fragment, Controller> controllers = new HashMap<>();
 
     public void close(Stage stage){
         stage.close();
@@ -62,14 +63,16 @@ public class Window {
         Window.activePane = activePane;
     }
 
-    private static void onlyOpenFragment(Fragment fragment){
-        activePane.getChildren().setAll(controllers.get(fragment));
+    private static Controller onlyGetFragment(Fragment fragment){
+        Controller pane = controllers.get(fragment);
+        activePane.getChildren().setAll((Pane)pane);
+        return pane;
     }
-    public static void openFragment(Fragment fragment, Button selected){
-        onlyOpenFragment(fragment);
+    public static Controller getFragment(Fragment fragment, Button selected){
         changeActiveButton(selected);
+        return onlyGetFragment(fragment);
     }
-    public static void openFragment(Fragment fragment){
-        onlyOpenFragment(fragment);
+    public static Controller getFragment(Fragment fragment){
+        return onlyGetFragment(fragment);
     }
 }

@@ -2,8 +2,6 @@ package com.fitness.Model.Person;
 
 import com.fitness.Model.Work.Subscription;
 
-import java.util.Date;
-
 public class Customer extends Person{
     private String card;
     private Subscription subscription;
