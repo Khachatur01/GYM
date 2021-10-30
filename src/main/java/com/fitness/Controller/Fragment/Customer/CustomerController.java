@@ -63,26 +63,9 @@ public class CustomerController extends GridPane implements Controller {
 
         deleteButton.setOnAction(event -> {
             Customer customer = customersTable.getSelectionModel().getSelectedItem();
-            if(customer == null) return;
-
-            ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
-            ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
-            ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Հաստատում");
-            alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել հաճախորդին");
-            alert.setContentText("Ցանկանու՞մ եք ջնջել հաճախորդին");
-            alert.getButtonTypes().setAll(yes, removeHistory, no);
-
-            Optional<ButtonType> result =  alert.showAndWait();
-
-            if(result.isPresent()){
-                if(result.get() == yes)
-                    removeCustomer(customer, true);
-                else if (result.get() == removeHistory)
-                    removeCustomer(customer, false);
-            }
+            customerService.remove(customer);
+            customersTable.getItems().remove(customer);
+            customers.remove(customer);
         });
     }
 
@@ -99,12 +82,6 @@ public class CustomerController extends GridPane implements Controller {
         customers.setAll(customerService.getCustomers());
 
         customersTable.setItems(customers);
-    }
-
-    private void removeCustomer(Customer customer, boolean removeHistory) {
-        customersTable.getItems().remove(customer);
-        customers.remove(customer);
-        customerService.remove(customer, removeHistory);
     }
 
     @Override

@@ -7,7 +7,6 @@ public interface Controller {
     void stop();
 
     default void makeActive(){
-        System.out.println("activate");
         Window.setActiveController(this);
     }
 }

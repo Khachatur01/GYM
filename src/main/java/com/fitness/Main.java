@@ -19,7 +19,7 @@ public class Main extends Application {
         // closes preloader(heavy task) page and opens main menu
         new Preloader(stage).start();
 
-        // 1070 x 610 min window size
+        // 1090 x 630 min window size
     }
 
     public static void main(String[] args) throws SQLException {

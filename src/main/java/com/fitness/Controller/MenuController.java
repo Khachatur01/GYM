@@ -24,6 +24,8 @@ public class MenuController implements Initializable {
     @FXML
     private Button servicesButton;
     @FXML
+    private Button positionsButton;
+    @FXML
     private Button subscriptionButton;
     @FXML
     private Button reportButton;
@@ -67,6 +69,13 @@ public class MenuController implements Initializable {
         servicesButton.setOnAction(event -> {
             Window.stopActiveController();
             Controller controller = Window.getFragment(Fragment.SERVICE, servicesButton);
+            Window.setActiveController(controller);
+
+            controller.start();
+        });
+        positionsButton.setOnAction(event -> {
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.POSITION, positionsButton);
             Window.setActiveController(controller);
 
             controller.start();

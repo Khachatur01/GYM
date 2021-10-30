@@ -4,11 +4,15 @@ public class Service {
     private long id;
     private String name;
     private int price;
+    private Position position;
 
-    public Service(long id, String name, int price) {
+    public Service(){}
+
+    public Service(long id, String name, int price, Position position) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.position = position;
     }
 
     public long getId() {
@@ -33,5 +37,13 @@ public class Service {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

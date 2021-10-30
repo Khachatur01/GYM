@@ -61,26 +61,9 @@ public class EmployeeController extends GridPane implements Controller {
 
         deleteButton.setOnAction(event -> {
             Employee employee = employeesTable.getSelectionModel().getSelectedItem();
-            if(employee == null) return;
-
-            ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
-            ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
-            ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
-
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Հաստատում");
-            alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել աշխատողին");
-            alert.setContentText("Ցանկանու՞մ եք ջնջել աշխատողին");
-            alert.getButtonTypes().setAll(yes, removeHistory, no);
-
-            Optional<ButtonType> result =  alert.showAndWait();
-
-            if(result.isPresent()){
-                if(result.get() == yes)
-                    removeEmployee(employee, true);
-                else if (result.get() == removeHistory)
-                    removeEmployee(employee, false);
-            }
+            employeeService.remove(employee);
+            employeesTable.getItems().remove(employee);
+            employees.remove(employee);
         });
     }
 
@@ -96,12 +79,6 @@ public class EmployeeController extends GridPane implements Controller {
         employees.setAll(employeeService.getEmployees());
 
         employeesTable.setItems(employees);
-    }
-
-    private void removeEmployee(Employee employee, boolean removeHistory) {
-        employeesTable.getItems().remove(employee);
-        employees.remove(employee);
-        employeeService.remove(employee, removeHistory);
     }
 
     @Override

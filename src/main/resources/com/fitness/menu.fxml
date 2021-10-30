@@ -177,6 +177,31 @@
                         <String fx:value="menu_item" />
                      </styleClass>
                   </Button>
+                  <Button fx:id="positionsButton" mnemonicParsing="false">
+                     <graphic>
+                        <HBox prefWidth="200.0">
+                           <children>
+                              <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                                 <image>
+                                    <Image url="@assets/position.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                              </ImageView>
+                              <Label styleClass="menu_label" stylesheets="@style/menu.css" text="Հաստիքներ" />
+                           </children>
+                        </HBox>
+                     </graphic>
+                     <stylesheets>
+                        <URL value="@style/button.css" />
+                        <URL value="@style/menu.css" />
+                     </stylesheets>
+                     <styleClass>
+                        <String fx:value="menu_button" />
+                        <String fx:value="menu_item" />
+                     </styleClass>
+                  </Button>
                   <Button fx:id="subscriptionButton" mnemonicParsing="false">
                      <graphic>
                         <HBox prefWidth="200.0">

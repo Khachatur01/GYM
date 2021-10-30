@@ -88,4 +88,26 @@ public class Verify {
         positionComboBox.getStyleClass().remove("combo-box_error");
         return true;
     }
+
+    public static boolean serviceName(String name, TextField nameTextField){
+        if(name.trim().equals("")){
+            nameTextField.getStyleClass().add("textField_error");
+            nameTextField.requestFocus();
+            return false;
+        }
+
+        nameTextField.getStyleClass().remove("textField_error");
+        return true;
+    }
+
+    public static boolean servicePrice(String price, TextField priceTextField){
+        if(price.trim().equals("")){
+            priceTextField.getStyleClass().add("textField_error");
+            priceTextField.requestFocus();
+            return false;
+        }
+
+        priceTextField.getStyleClass().remove("textField_error");
+        return true;
+    }
 }

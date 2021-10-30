@@ -5,11 +5,11 @@ import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Verify;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CustomerService {
     private static Customer cache = null;
@@ -68,7 +68,29 @@ public class CustomerService {
         return customer != null;
     }
 
-    public void remove(Customer customer, boolean removeHistory){
+    public void remove(Customer customer){
+        if(customer == null) return;
+
+        ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
+        ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Հաստատում");
+        alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել հաճախորդին");
+        alert.setContentText("Ցանկանու՞մ եք ջնջել հաճախորդին");
+        alert.getButtonTypes().setAll(yes, removeHistory, no);
+
+        Optional<ButtonType> result =  alert.showAndWait();
+
+        if(result.isPresent()){
+            if(result.get() == yes)
+                remove(customer, true);
+            else if (result.get() == removeHistory)
+                remove(customer, false);
+        }
+    }
+    private void remove(Customer customer, boolean removeHistory){
         //@TODO
         System.out.println("removed");
     }
