@@ -22,3 +22,19 @@
     -fx-text-fill: #458cff;
     -fx-padding: 5px;
 }
+
+.subscription_header{
+    -fx-font-size: 20px;
+    -fx-text-fill: #367bf5;
+    -fx-padding: 5px;
+}
+.subscription_label{
+    -fx-font-size: 15px;
+    -fx-text-fill: #333333;
+    -fx-padding: 5px;
+}
+.subscription_footer{
+    -fx-font-size: 20px;
+    -fx-text-fill: #367bf5;
+    -fx-padding: 5px;
+}

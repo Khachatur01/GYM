@@ -1,16 +1,13 @@
 package com.fitness.Service.Work;
 
-import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Service;
 import com.fitness.Service.Verify;
 import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.util.*;
-import java.util.List;
 
 public class ServiceService {
     private PositionService positionService = new PositionService();
@@ -107,6 +104,10 @@ public class ServiceService {
         offers.put(new Service(1, "Բոքս", 1500, new Position(0, "Բոքսի մարզիչ")), 5);
         offers.put(new Service(2, "Մարզում", 1200, new Position(1, "Մարզիչ")), 5);
         offers.put(new Service(3, "Մերսում", 1000, new Position(2, "Մերսող")), 3);
+        if(id == 2){
+            offers.put(new Service(4, "Մերսում 2", 1000, new Position(2, "Մերսող")), 3);
+            offers.put(new Service(5, "Մերսում 3", 1000, new Position(2, "Մերսող")), 3);
+        }
         return offers;
     }
 

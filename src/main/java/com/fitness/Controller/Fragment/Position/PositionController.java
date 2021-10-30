@@ -44,6 +44,7 @@ public class PositionController extends GridPane implements Controller {
     }
 
     private void initGridPane(){
+        row = 0; col = 0;
         positionsGridPane = new GridPane();
         positionsGridPane.setMaxWidth(800);
         positionsGridPane.setMinWidth(800);

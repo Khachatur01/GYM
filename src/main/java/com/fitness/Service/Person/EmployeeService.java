@@ -2,8 +2,8 @@ package com.fitness.Service.Person;
 
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
-import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Position;
+import com.fitness.Model.Work.Service;
 import com.fitness.Service.Verify;
 import javafx.scene.control.*;
 

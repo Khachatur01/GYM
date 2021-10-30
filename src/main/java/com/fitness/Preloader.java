@@ -29,7 +29,12 @@ public class Preloader extends Thread{
         Platform.runLater(() -> {
             try {
                 window.close(this.stage);
-                window.open(Page.MENU.getValue(), new Stage());
+
+                Stage stage = new Stage();
+                stage.setMinWidth(1090);
+                stage.setMinHeight(640);
+
+                window.open(Page.MENU.getValue(), stage);
             } catch (IOException e) {
                 e.printStackTrace();
             }

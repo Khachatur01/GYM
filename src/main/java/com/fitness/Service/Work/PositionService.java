@@ -1,14 +1,14 @@
 package com.fitness.Service.Work;
 
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Service;
 import com.fitness.Service.Verify;
-import javafx.collections.FXCollections;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class PositionService {
 

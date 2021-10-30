@@ -5,20 +5,15 @@ import com.fitness.Element.ServiceButton;
 import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Service;
 import com.fitness.Service.Grid;
-import com.fitness.Service.Work.PositionService;
 import com.fitness.Service.Work.ServiceService;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +50,7 @@ public class ServiceController extends GridPane implements Controller {
     }
 
     private void initGridPane(){
+        row = 0; col = 0;
         servicesGridPane = new GridPane();
         servicesGridPane.setMaxWidth(800);
         servicesGridPane.setMinWidth(800);
@@ -78,7 +74,9 @@ public class ServiceController extends GridPane implements Controller {
             ServiceButton.editSelected(service);
         });
         deleteButton.setOnAction(event -> {
-            serviceService.remove(ServiceButton.getSelected().getService());
+            ServiceButton service = ServiceButton.getSelected();
+            if(service == null) return;
+            serviceService.remove(service.getService());
             ServiceButton.removeSelected();
             initGridPane();
         });

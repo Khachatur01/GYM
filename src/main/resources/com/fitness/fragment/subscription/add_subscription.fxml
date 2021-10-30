@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints valignment="TOP" />
+   </rowConstraints>
+   <children>
+      <Label styleClass="header1" text="Ավելացնել աբոնեմենտ" />
+   </children>
+   <stylesheets>
+      <URL value="@../../style/button.css" />
+      <URL value="@../../style/labels.css" />
+   </stylesheets>
+</fx:root>

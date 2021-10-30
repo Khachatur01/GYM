@@ -42,10 +42,10 @@ public class ServiceButton {
     public void setOnAction(TextField serviceNameTextField, ComboBox<Position> positionComboBox, TextField priceTextField) {
         this.button.setOnAction(event -> {
             if(selected != null)
-                selected.getButton().getStyleClass().remove("service_box_selected");
+                selected.getButton().getStyleClass().remove("selected");
 
             selected = this;
-            selected.getButton().getStyleClass().add("service_box_selected");
+            selected.getButton().getStyleClass().add("selected");
             serviceNameTextField.setText(selected.getService().getName());
             positionComboBox.getSelectionModel().select(selected.getService().getPosition());
             priceTextField.setText(selected.getService().getPrice() + "");

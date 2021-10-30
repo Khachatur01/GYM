@@ -1,7 +1,7 @@
 package com.fitness.Model.Person;
 
-import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Position;
+import com.fitness.Model.Work.Service;
 
 public class Employee extends Person{
     private Service service;

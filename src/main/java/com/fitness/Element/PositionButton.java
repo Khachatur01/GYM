@@ -40,10 +40,10 @@ public class PositionButton {
     public void setOnAction(TextField positionNameTextField) {
         this.button.setOnAction(event -> {
             if(selected != null)
-                selected.getButton().getStyleClass().remove("position_box_selected");
+                selected.getButton().getStyleClass().remove("selected");
 
             selected = this;
-            selected.getButton().getStyleClass().add("position_box_selected");
+            selected.getButton().getStyleClass().add("selected");
             positionNameTextField.setText(selected.getPosition().getName());
         });
     }

@@ -12,6 +12,8 @@ public enum Fragment {
     SERVICE,
     POSITION,
     SUBSCRIPTION,
+    EDIT_SUBSCRIPTION,
+    ADD_SUBSCRIPTION,
     REPORT,
     SETTINGS;
 }

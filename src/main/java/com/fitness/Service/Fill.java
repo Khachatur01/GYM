@@ -2,8 +2,8 @@ package com.fitness.Service;
 
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
-import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Position;
+import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Subscription;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;

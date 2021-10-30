@@ -1,22 +1,37 @@
 package com.fitness.Controller.Fragment.Subscription;
 
 import com.fitness.Controller.Controller;
+import com.fitness.Element.SubscriptionButton;
+import com.fitness.Model.Work.Subscription;
+import com.fitness.Service.Grid;
+import com.fitness.Service.Work.SubscriptionService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubscriptionController extends GridPane implements Controller {
     @FXML
-    private GridPane subscriptionsGridPane;
+    private ScrollPane subscriptionsScrollPane;
     @FXML
     private Button editButton;
     @FXML
     private Button addButton;
     @FXML
     private Button deleteButton;
+
+    private GridPane subscriptionsGridPane = null;
+
+    private int row = 0, col = 0;
+    private final byte SUBSCRIPTION_PER_ROW = 3;
+    private SubscriptionService subscriptionService = new SubscriptionService();
+    private List<SubscriptionButton> subscriptionButtons = new ArrayList<>();
 
     public SubscriptionController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/subscription/subscription.fxml"));
@@ -25,10 +40,59 @@ public class SubscriptionController extends GridPane implements Controller {
         loader.load();
     }
 
+    private void initGridPane(){
+        row = 0; col = 0;
+        subscriptionsGridPane = new GridPane();
+        subscriptionsGridPane.setMaxWidth(800);
+        subscriptionsGridPane.setMinWidth(800);
+        subscriptionsGridPane.setPrefWidth(800);
+        subscriptionsGridPane.setVgap(20);
+        subscriptionsGridPane.setPadding(new Insets(20, 20, 20, 20));
+        subscriptionsScrollPane.setContent(subscriptionsGridPane);
+
+        List<Subscription> subscriptions = subscriptionService.getSubscriptions();
+        Grid.addColumns(subscriptionsGridPane, SUBSCRIPTION_PER_ROW);
+        Grid.addRows(subscriptionsGridPane, (int)Math.ceil(subscriptions.size() / SUBSCRIPTION_PER_ROW));
+
+        for(Subscription subscription: subscriptions){
+            addSubscriptionToGrid(subscription);
+        }
+    }
+
+    private void initListeners(){
+        editButton.setOnAction(event -> {
+
+        });
+        deleteButton.setOnAction(event -> {
+            SubscriptionButton subscription = SubscriptionButton.getSelected();
+            if(subscription == null) return;
+            subscriptionService.remove(subscription.getSubscription());
+            SubscriptionButton.removeSelected();
+            initGridPane();
+        });
+        addButton.setOnAction(event -> {
+
+        });
+    }
+
+    private void addSubscriptionToGrid(Subscription subscription) {
+        SubscriptionButton subscriptionButton = new SubscriptionButton(subscription);
+        subscriptionButton.setOnAction();
+        subscriptionButtons.add(subscriptionButton);
+
+        if(col == SUBSCRIPTION_PER_ROW){
+            col = 0;
+            row++;
+        }
+        subscriptionsGridPane.add(subscriptionButton.getButton(), col, row);
+        col++;
+    }
+
     @Override
     public void start() {
         makeActive();
-
+        initGridPane();
+        initListeners();
     }
 
     @Override

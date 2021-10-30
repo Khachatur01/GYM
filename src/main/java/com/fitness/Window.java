@@ -14,6 +14,8 @@ import com.fitness.Controller.Fragment.Position.PositionController;
 import com.fitness.Controller.Fragment.Report.ReportController;
 import com.fitness.Controller.Fragment.Service.ServiceController;
 import com.fitness.Controller.Fragment.SettingsController;
+import com.fitness.Controller.Fragment.Subscription.AddSubscriptionController;
+import com.fitness.Controller.Fragment.Subscription.EditSubscriptionController;
 import com.fitness.Controller.Fragment.Subscription.SubscriptionController;
 import com.fitness.Style.ButtonStyle;
 import javafx.fxml.FXMLLoader;
@@ -62,6 +64,8 @@ public class Window {
         controllers.put(Fragment.SERVICE, new ServiceController());
         controllers.put(Fragment.POSITION, new PositionController());
         controllers.put(Fragment.SUBSCRIPTION, new SubscriptionController());
+        controllers.put(Fragment.EDIT_SUBSCRIPTION, new EditSubscriptionController());
+        controllers.put(Fragment.ADD_SUBSCRIPTION, new AddSubscriptionController());
         controllers.put(Fragment.REPORT, new ReportController());
         controllers.put(Fragment.SETTINGS, new SettingsController());
     }
