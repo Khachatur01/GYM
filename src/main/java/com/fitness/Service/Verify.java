@@ -110,4 +110,15 @@ public class Verify {
         priceTextField.getStyleClass().remove("textField_error");
         return true;
     }
+
+    public static boolean positionName(String name, TextField nameTextField) {
+        if(name.trim().equals("")){
+            nameTextField.getStyleClass().add("textField_error");
+            nameTextField.requestFocus();
+            return false;
+        }
+
+        nameTextField.getStyleClass().remove("textField_error");
+        return true;
+    }
 }

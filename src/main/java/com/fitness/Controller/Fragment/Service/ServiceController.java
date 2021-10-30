@@ -1,6 +1,7 @@
 package com.fitness.Controller.Fragment.Service;
 
 import com.fitness.Controller.Controller;
+import com.fitness.Element.ServiceButton;
 import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Service;
 import com.fitness.Service.Grid;
@@ -20,6 +21,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceController extends GridPane implements Controller {
@@ -40,11 +42,10 @@ public class ServiceController extends GridPane implements Controller {
 
     private GridPane servicesGridPane = null;
 
+    private int row = 0, col = 0;
     private final byte SERVICE_PER_ROW = 3;
     private ServiceService serviceService = new ServiceService();
-    private Button selectedServiceButton;
-    private Service selectedService;
-    private List<Service> services = serviceService.getServices();
+    private List<ServiceButton> serviceButtons = new ArrayList<>();
 
     public ServiceController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/service/service.fxml"));
@@ -62,53 +63,45 @@ public class ServiceController extends GridPane implements Controller {
         servicesGridPane.setPadding(new Insets(20, 20, 20, 20));
         servicesScrollPane.setContent(servicesGridPane);
 
-        int row = 0, col = 0;
-
+        List<Service> services = serviceService.getServices();
         Grid.addColumns(servicesGridPane, SERVICE_PER_ROW);
         Grid.addRows(servicesGridPane, (int)Math.ceil(services.size() / SERVICE_PER_ROW));
 
         for(Service service: services){
-            positionComboBox.getItems().add(service.getPosition());
-
-            String serviceName = service.getName();
-
-            Button serviceButton = new Button(serviceName);
-            serviceButton.getStyleClass().add("service_box");
-            serviceButton.setOnAction(event -> {
-                if(selectedServiceButton != null)
-                    selectedServiceButton.getStyleClass().remove("service_box_selected");
-
-                selectedServiceButton = serviceButton;
-                selectedService = service;
-
-                selectedServiceButton.getStyleClass().add("service_box_selected");
-                serviceNameTextField.setText(serviceName);
-                positionComboBox.getSelectionModel().select(service.getPosition());
-                priceTextField.setText(service.getPrice() + "");
-            });
-
-            if(col == SERVICE_PER_ROW){
-                col = 0;
-                row++;
-            }
-            servicesGridPane.add(serviceButton, col, row);
-            col++;
+            addServiceToGrid(service);
         }
     }
 
     private void initListeners(){
         editButton.setOnAction(event -> {
-            serviceService.edit(serviceNameTextField, positionComboBox, priceTextField);
+            Service service = serviceService.edit(serviceNameTextField, positionComboBox, priceTextField);
+            ServiceButton.editSelected(service);
         });
         deleteButton.setOnAction(event -> {
-            serviceService.remove(selectedService);
-            selectedService = null;
-            selectedServiceButton = null;
+            serviceService.remove(ServiceButton.getSelected().getService());
+            ServiceButton.removeSelected();
             initGridPane();
         });
         addButton.setOnAction(event -> {
-            serviceService.add();
+            Service service = serviceService.add();
+            if(service != null)
+                addServiceToGrid(service);
         });
+    }
+
+    private void addServiceToGrid(Service service){
+        positionComboBox.getItems().add(service.getPosition());
+
+        ServiceButton serviceButton = new ServiceButton(service);
+        serviceButton.setOnAction(serviceNameTextField, positionComboBox, priceTextField);
+        serviceButtons.add(serviceButton);
+
+        if(col == SERVICE_PER_ROW){
+            col = 0;
+            row++;
+        }
+        servicesGridPane.add(serviceButton.getButton(), col, row);
+        col++;
     }
 
     @Override

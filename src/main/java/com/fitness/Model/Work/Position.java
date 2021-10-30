@@ -1,10 +1,22 @@
 package com.fitness.Model.Work;
 
 public class Position {
+    private long id;
     private String name;
 
-    public Position(String name) {
+    public Position(){}
+
+    public Position(long id, String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
