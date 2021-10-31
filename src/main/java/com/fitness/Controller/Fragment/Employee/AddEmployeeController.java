@@ -3,11 +3,11 @@ package com.fitness.Controller.Fragment.Employee;
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Service;
+import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Person.EmployeeService;
 import com.fitness.Service.Work.PositionService;
-import com.fitness.Service.Work.ServiceService;
+import com.fitness.Service.Work.EmploymentService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -31,7 +31,7 @@ public class AddEmployeeController extends GridPane implements Controller {
     @FXML
     private TextField addressTextField;
     @FXML
-    private ComboBox<Service> serviceComboBox;
+    private ComboBox<Employment> employmentComboBox;
     @FXML
     private ComboBox<Position> positionComboBox;
     @FXML
@@ -40,7 +40,7 @@ public class AddEmployeeController extends GridPane implements Controller {
     private Button addButton;
 
     private EmployeeService employeeService = new EmployeeService();
-    private ServiceService serviceService = new ServiceService();
+    private EmploymentService employmentService = new EmploymentService();
     private PositionService positionService = new PositionService();
 
     public AddEmployeeController() throws IOException {
@@ -53,15 +53,17 @@ public class AddEmployeeController extends GridPane implements Controller {
     private void initListeners(){
         addButton.setOnAction(event -> {
             //return null when something went wrong
-            employeeService.add(
+            if(employeeService.add(
                     nameTextField,
                     surnameTextField,
                     phoneTextField,
                     phone2TextField,
                     addressTextField,
-                    serviceComboBox,
-                    positionComboBox
-            );
+                    employmentComboBox,
+                    positionComboBox) != null) {
+                this.stop();
+                Window.getFragment(Fragment.CUSTOMER).start();
+            }
         });
 
         previousButton.setOnAction(event -> {
@@ -72,7 +74,7 @@ public class AddEmployeeController extends GridPane implements Controller {
     }
 
     public void initComboBoxes(){
-        serviceComboBox.setItems(FXCollections.observableArrayList(serviceService.getServices()));
+        employmentComboBox.setItems(FXCollections.observableArrayList(employmentService.getEmployments()));
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getPositions()));
     }
 
@@ -92,6 +94,6 @@ public class AddEmployeeController extends GridPane implements Controller {
                 phone2TextField,
                 addressTextField
         );
-        Clear.comboBox(serviceComboBox, positionComboBox);
+        Clear.comboBox(employmentComboBox, positionComboBox);
     }
 }

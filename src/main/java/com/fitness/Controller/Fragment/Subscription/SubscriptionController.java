@@ -1,10 +1,12 @@
 package com.fitness.Controller.Fragment.Subscription;
 
+import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Element.SubscriptionButton;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Grid;
 import com.fitness.Service.Work.SubscriptionService;
+import com.fitness.Window;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -61,7 +63,9 @@ public class SubscriptionController extends GridPane implements Controller {
 
     private void initListeners(){
         editButton.setOnAction(event -> {
-
+            if(SubscriptionButton.getSelected() != null){
+                Window.getFragment(Fragment.EDIT_SUBSCRIPTION).start();
+            }
         });
         deleteButton.setOnAction(event -> {
             SubscriptionButton subscription = SubscriptionButton.getSelected();
@@ -71,7 +75,7 @@ public class SubscriptionController extends GridPane implements Controller {
             initGridPane();
         });
         addButton.setOnAction(event -> {
-
+            Window.getFragment(Fragment.ADD_SUBSCRIPTION).start();
         });
     }
 

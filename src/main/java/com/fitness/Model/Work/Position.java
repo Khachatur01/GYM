@@ -1,7 +1,9 @@
 package com.fitness.Model.Work;
 
+import com.fitness.Controller.Constant.Default;
+
 public class Position {
-    private long id;
+    private long id = Default.ID.getValue();
     private String name;
 
     public Position(){}

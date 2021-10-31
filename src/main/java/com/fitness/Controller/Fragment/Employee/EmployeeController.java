@@ -63,7 +63,6 @@ public class EmployeeController extends GridPane implements Controller {
         deleteButton.setOnAction(event -> {
             Employee employee = employeesTable.getSelectionModel().getSelectedItem();
             employeeService.remove(employee);
-            employeesTable.getItems().remove(employee);
             employees.remove(employee);
         });
     }

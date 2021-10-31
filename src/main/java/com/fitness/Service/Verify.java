@@ -2,7 +2,7 @@ package com.fitness.Service;
 
 
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Service;
+import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Subscription;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -69,13 +69,13 @@ public class Verify {
         return true;
     }
 
-    public static boolean service(Service service, ComboBox<Service> serviceComboBox) {
-        if(service == null){
-            serviceComboBox.getStyleClass().add("combo-box_error");
+    public static boolean employment(Employment employment, ComboBox<Employment> employmentComboBox) {
+        if(employment == null){
+            employmentComboBox.getStyleClass().add("combo-box_error");
             return false;
         }
 
-        serviceComboBox.getStyleClass().remove("combo-box_error");
+        employmentComboBox.getStyleClass().remove("combo-box_error");
         return true;
     }
 
@@ -89,7 +89,7 @@ public class Verify {
         return true;
     }
 
-    public static boolean serviceName(String name, TextField nameTextField){
+    public static boolean employmentName(String name, TextField nameTextField){
         if(name.trim().equals("")){
             nameTextField.getStyleClass().add("textField_error");
             nameTextField.requestFocus();
@@ -100,7 +100,7 @@ public class Verify {
         return true;
     }
 
-    public static boolean servicePrice(String price, TextField priceTextField){
+    public static boolean price(String price, TextField priceTextField){
         if(price.trim().equals("")){
             priceTextField.getStyleClass().add("textField_error");
             priceTextField.requestFocus();
@@ -119,6 +119,17 @@ public class Verify {
         }
 
         nameTextField.getStyleClass().remove("textField_error");
+        return true;
+    }
+
+    public static boolean quantity(String quantity, TextField quantityTextField) {
+        if(quantity.trim().equals("")){
+            quantityTextField.getStyleClass().add("textField_error");
+            quantityTextField.requestFocus();
+            return false;
+        }
+
+        quantityTextField.getStyleClass().remove("textField_error");
         return true;
     }
 }

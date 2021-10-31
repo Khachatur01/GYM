@@ -3,7 +3,7 @@ package com.fitness.Service.Person;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Service;
+import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Verify;
 import javafx.scene.control.*;
 
@@ -15,21 +15,21 @@ public class EmployeeService {
     private static Employee cache = null;
 
 
-    private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Service> serviceComboBox, ComboBox<Position> positionComboBox){
+    private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Employment> employmentComboBox, ComboBox<Position> positionComboBox){
         Employee employee = null;
         String name = nameTextField.getText();
         String surname = surnameTextField.getText();
         String phone = phoneTextField.getText();
         String phone2 = phone2TextField.getText();
         String address = addressTextField.getText();
-        Service offer = serviceComboBox.getValue();
+        Employment employment = employmentComboBox.getValue();
         Position position = positionComboBox.getValue();
 
         if(     Verify.name(name, nameTextField) &&
                 Verify.surname(surname, surnameTextField) &&
                 Verify.phone(phone, phoneTextField) &&
                 Verify.address(address, addressTextField) &&
-                Verify.service(offer, serviceComboBox) &&
+                Verify.employment(employment, employmentComboBox) &&
                 Verify.position(position, positionComboBox)
         ){
             employee = new Employee();
@@ -37,22 +37,22 @@ public class EmployeeService {
             employee.setPhone(phone);
             employee.setPhone2(phone2);
             employee.setAddress(address);
-            employee.setService(offer);
+            employee.setEmployment(employment);
             employee.setPosition(position);
         }
         return employee;
     }
 
-    public boolean add(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Service> offerComboBox, ComboBox<Position> positionComboBox){
+    public Employee add(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Employment> offerComboBox, ComboBox<Position> positionComboBox){
         Employee employee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, offerComboBox, positionComboBox);
         //@TODO add customer to database;
-        return employee != null;
+        return employee;
     }
 
-    public boolean edit(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Service> offerComboBox, ComboBox<Position> positionComboBox){
+    public Employee edit(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Employment> offerComboBox, ComboBox<Position> positionComboBox){
         Employee employee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, offerComboBox, positionComboBox);
         //@TODO update customer in database;
-        return employee != null;
+        return employee;
     }
 
     public void remove(Employee employee){

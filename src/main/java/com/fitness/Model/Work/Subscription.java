@@ -1,18 +1,22 @@
 package com.fitness.Model.Work;
 
-import java.util.Map;
+import com.fitness.Controller.Constant.Default;
+
+import java.util.List;
 
 public class Subscription {
-    private long id;
+    private long id = Default.ID.getValue();
     private String name;
     private int price;
-    private Map<Service, Integer> services;
+    private List<EmploymentQuantity> employmentsQuantity;
 
-    public Subscription(long id, String name, int price, Map<Service, Integer> services) {
+    public Subscription(){}
+
+    public Subscription(long id, String name, int price, List<EmploymentQuantity> employmentsQuantity) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.services = services;
+        this.employmentsQuantity = employmentsQuantity;
     }
 
     public long getId() {
@@ -39,16 +43,21 @@ public class Subscription {
         this.price = price;
     }
 
-    public Map<Service, Integer> getServices() {
-        return services;
+    public List<EmploymentQuantity> getEmploymentsQuantity() {
+        return employmentsQuantity;
     }
 
-    public void setServices(Map<Service, Integer> services) {
-        this.services = services;
+    public void setEmploymentsQuantity(List<EmploymentQuantity> employmentsQuantity) {
+        this.employmentsQuantity = employmentsQuantity;
     }
 
     @Override
     public String toString(){
         return this.name;
+    }
+
+    @Override
+    public boolean equals(Object subscription){
+        return subscription != null && this.id == ((Subscription)subscription).id;
     }
 }

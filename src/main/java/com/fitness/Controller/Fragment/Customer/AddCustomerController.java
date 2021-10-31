@@ -75,15 +75,17 @@ public class AddCustomerController extends GridPane implements Controller {
 
         addButton.setOnAction(event -> {
             //return null when something went wrong
-            customerService.add(
+            if(customerService.add(
                     cardTextField,
                     nameTextField,
                     surnameTextField,
                     phoneTextField,
                     phone2TextField,
                     addressTextField,
-                    subscriptionComboBox
-            );
+                    subscriptionComboBox) != null) {
+                this.stop();
+                Window.getFragment(Fragment.CUSTOMER).start();
+            }
         });
 
         previousButton.setOnAction(event -> {

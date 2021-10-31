@@ -9,7 +9,7 @@ public enum Fragment {
     EMPLOYEE,
     EDIT_EMPLOYEE,
     ADD_EMPLOYEE,
-    SERVICE,
+    EMPLOYMENT,
     POSITION,
     SUBSCRIPTION,
     EDIT_SUBSCRIPTION,

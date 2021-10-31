@@ -1,19 +1,24 @@
 package com.fitness.Element;
 
-import com.fitness.Model.Work.Service;
 import com.fitness.Model.Work.Subscription;
+import com.fitness.Model.Work.EmploymentQuantity;
+import com.fitness.Service.Work.EmploymentService;
+import com.fitness.Service.Work.SubscriptionService;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 
-import java.util.Map;
+import java.util.List;
 
 public class SubscriptionButton {
     private static SubscriptionButton selected = null;
     private Button button;
     private Subscription subscription;
+
+    private EmploymentService employmentService = new EmploymentService();
+    private SubscriptionService subscriptionService = new SubscriptionService();
 
     public SubscriptionButton(Subscription subscription){
         this.subscription = subscription;
@@ -26,24 +31,24 @@ public class SubscriptionButton {
 
         vBox.getChildren().add(new Separator());
 
-        Map<Service, Integer> services = subscription.getServices();
-        int servicesCount = services.size();
-        int currentServiceNumber = 0;
+        List<EmploymentQuantity> subscriptionEmployments = subscriptionService.getEmploymentBySubscriptionId(subscription.getId());
+        int servicesCount = subscriptionEmployments.size();
+        int currentEmploymentNumber = 0;
 
-        for(Map.Entry<Service, Integer> service: services.entrySet()){
+        for(EmploymentQuantity subscriptionEmployment: subscriptionEmployments){
             Label label;
-            if(currentServiceNumber == 2 && servicesCount > 3) {
+            if(currentEmploymentNumber == 2 && servicesCount > 3) {
                 label = new Label("...");
                 label.getStyleClass().add("subscription_label");
                 vBox.getChildren().add(label);
                 break;
             } else {
-                label = new Label(service.getValue() + " " + service.getKey().getName());
+                label = new Label(subscriptionEmployment.getEmployment() + " " + subscriptionEmployment.getQuantity());
                 label.getStyleClass().add("subscription_label");
                 vBox.getChildren().add(label);
             }
 
-            currentServiceNumber++;
+            currentEmploymentNumber++;
         }
         vBox.getChildren().add(new Separator());
 
@@ -54,13 +59,6 @@ public class SubscriptionButton {
         this.button = new Button("", vBox);
         button.getStyleClass().add("subscription_box");
     }
-
-    public static void editSelected(Subscription subscription) {
-        if(subscription == null) return;
-        selected.setSubscription(subscription);
-        selected.getButton().setText(subscription.getName());
-    }
-
     public Button getButton() {
         return button;
     }
@@ -94,4 +92,11 @@ public class SubscriptionButton {
     public static void removeSelected() {
         SubscriptionButton.selected = null;
     }
+
+    public static void editSelected(Subscription subscription) {
+        if(subscription == null) return;
+        selected.setSubscription(subscription);
+        selected.getButton().setText(subscription.getName());
+    }
+
 }

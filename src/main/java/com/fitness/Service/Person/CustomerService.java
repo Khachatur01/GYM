@@ -28,8 +28,7 @@ public class CustomerService {
         return customers;
     }
 
-    private Customer makeCustomer(TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
-        Customer customer = null;
+    private Customer makeCustomer(Customer customer, TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
         String card = cardTextField.getText();
         String name = nameTextField.getText();
         String surname = surnameTextField.getText();
@@ -45,7 +44,6 @@ public class CustomerService {
                 Verify.address(address, addressTextField) &&
                 Verify.subscription(subscription, subscriptionComboBox)
         ){
-            customer = new Customer();
             customer.setCard(card);
             customer.setName(new Person.Name(name, surname));
             customer.setPhone(phone);
@@ -56,16 +54,16 @@ public class CustomerService {
         return customer;
     }
 
-    public boolean add(TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
-        Customer customer = this.makeCustomer(cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
+    public Customer add(TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
+        Customer newCustomer = this.makeCustomer(new Customer(), cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
         //@TODO add customer to database;
-        return customer != null;
+        return newCustomer;
     }
 
-    public boolean edit(TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
-        Customer customer = this.makeCustomer(cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
+    public Customer edit(Customer customer, TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
+        Customer newCustomer = this.makeCustomer(customer, cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
         //@TODO update customer in database;
-        return customer != null;
+        return newCustomer;
     }
 
     public void remove(Customer customer){

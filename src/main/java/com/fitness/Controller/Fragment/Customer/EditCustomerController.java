@@ -41,6 +41,7 @@ public class EditCustomerController extends GridPane implements Controller {
 
     private CustomerService customerService = new CustomerService();
     private SubscriptionService subscriptionService = new SubscriptionService();
+    private Customer customer;
 
     public EditCustomerController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/customer/edit_customer.fxml"));
@@ -51,22 +52,25 @@ public class EditCustomerController extends GridPane implements Controller {
 
     public void loadOldData(){
         subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getSubscriptions()));
-        Customer customer = customerService.getCache();
+        customer = customerService.getCache();
         if(customer != null)
             Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
     }
     public void initListeners(){
         editButton.setOnAction(event -> {
             //return null when something went wrong
-            customerService.edit(
+            if(customerService.edit(
+                    customer,
                     cardTextField,
                     nameTextField,
                     surnameTextField,
                     phoneTextField,
                     phone2TextField,
                     addressTextField,
-                    subscriptionComboBox
-            );
+                    subscriptionComboBox) != null) {
+                this.stop();
+                Window.getFragment(Fragment.CUSTOMER).start();
+            }
         });
 
         previousButton.setOnAction(event -> {
@@ -79,8 +83,8 @@ public class EditCustomerController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        initListeners();
         loadOldData();
+        initListeners();
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.fitness.Model.Person;
 
+import com.fitness.Controller.Constant.Default;
+
 public abstract class Person {
-    public static long ID_NOT_SET = -1;
     public static class Name {
         private String firstName;
         private String lastName;
@@ -33,7 +34,7 @@ public abstract class Person {
         }
     }
 
-    private long id = ID_NOT_SET;
+    private long id = Default.ID.getValue();
     private Name name;
     private String phone;
     private String phone2;

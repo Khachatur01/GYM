@@ -15,7 +15,7 @@ module com.fitness {
     opens com.fitness.Controller.Fragment.Employee to javafx.fxml;
     opens com.fitness.Controller.Fragment.Enter to javafx.fxml;
     opens com.fitness.Controller.Fragment.Report to javafx.fxml;
-    opens com.fitness.Controller.Fragment.Service to javafx.fxml;
+    opens com.fitness.Controller.Fragment.Employment to javafx.fxml;
     opens com.fitness.Controller.Fragment.Position to javafx.fxml;
     opens com.fitness.Controller.Fragment.Subscription to javafx.fxml;
     exports com.fitness;

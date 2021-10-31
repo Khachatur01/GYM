@@ -65,7 +65,6 @@ public class CustomerController extends GridPane implements Controller {
         deleteButton.setOnAction(event -> {
             Customer customer = customersTable.getSelectionModel().getSelectedItem();
             customerService.remove(customer);
-            customersTable.getItems().remove(customer);
             customers.remove(customer);
         });
     }

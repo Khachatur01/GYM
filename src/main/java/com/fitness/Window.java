@@ -12,7 +12,7 @@ import com.fitness.Controller.Fragment.Enter.WithCardController;
 import com.fitness.Controller.Fragment.Enter.WithoutCardController;
 import com.fitness.Controller.Fragment.Position.PositionController;
 import com.fitness.Controller.Fragment.Report.ReportController;
-import com.fitness.Controller.Fragment.Service.ServiceController;
+import com.fitness.Controller.Fragment.Employment.EmploymentController;
 import com.fitness.Controller.Fragment.SettingsController;
 import com.fitness.Controller.Fragment.Subscription.AddSubscriptionController;
 import com.fitness.Controller.Fragment.Subscription.EditSubscriptionController;
@@ -61,7 +61,7 @@ public class Window {
         controllers.put(Fragment.EMPLOYEE, new EmployeeController());
         controllers.put(Fragment.EDIT_EMPLOYEE, new EditEmployeeController());
         controllers.put(Fragment.ADD_EMPLOYEE, new AddEmployeeController());
-        controllers.put(Fragment.SERVICE, new ServiceController());
+        controllers.put(Fragment.EMPLOYMENT, new EmploymentController());
         controllers.put(Fragment.POSITION, new PositionController());
         controllers.put(Fragment.SUBSCRIPTION, new SubscriptionController());
         controllers.put(Fragment.EDIT_SUBSCRIPTION, new EditSubscriptionController());

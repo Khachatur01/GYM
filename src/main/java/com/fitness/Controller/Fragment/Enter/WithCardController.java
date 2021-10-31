@@ -1,6 +1,8 @@
 package com.fitness.Controller.Fragment.Enter;
 
 import com.fitness.Controller.Controller;
+import com.fitness.Model.Person.Employee;
+import com.fitness.Model.Work.Employment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -13,9 +15,9 @@ public class WithCardController extends GridPane implements Controller {
     @FXML
     private TextField cardTextField;
     @FXML
-    private ComboBox<?> serviceComboBox;
+    private ComboBox<Employment> employmentComboBox;
     @FXML
-    private ComboBox<?> employeeComboBox;
+    private ComboBox<Employee> employeeComboBox;
     @FXML
     private Label fullNameLabel;
     @FXML
@@ -29,11 +31,11 @@ public class WithCardController extends GridPane implements Controller {
     @FXML
     private Label lastVisitLabel;
     @FXML
-    private TableView<?> serviceTable;
+    private TableView<Employment> employmentTable;
     @FXML
-    private TableColumn<?, ?> serviceColumn;
+    private TableColumn<Employment, String> employmentColumn;
     @FXML
-    private TableColumn<?, ?> quantityColumn;
+    private TableColumn<Employment, Integer> quantityColumn;
     @FXML
     private CheckBox pastTenseCheckbox;
     @FXML
@@ -48,7 +50,7 @@ public class WithCardController extends GridPane implements Controller {
     private Button enterButton;
 
     public WithCardController() throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/enter/with-card.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/enter/with_card.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         loader.load();

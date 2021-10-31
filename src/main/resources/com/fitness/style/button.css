@@ -39,9 +39,7 @@
     -fx-font-size: 13px;
 }
 
-.service_box {
-    /*-fx-pref-width: 150px;*/
-    /*-fx-pref-height: 150px;*/
+.employment_box {
     -fx-padding: 20px;
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #367bf5;

@@ -1,7 +1,7 @@
 package com.fitness.Service.Work;
 
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Service;
+import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Verify;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -9,29 +9,29 @@ import javafx.scene.layout.GridPane;
 
 import java.util.*;
 
-public class ServiceService {
+public class EmploymentService {
     private PositionService positionService = new PositionService();
 
-    private Service makeService(TextField nameTextField, ComboBox<Position> positionComboBox, TextField priceTextField){
-        Service service = null;
+    private Employment makeEmployment(TextField nameTextField, ComboBox<Position> positionComboBox, TextField priceTextField){
+        Employment employment = null;
         String name = nameTextField.getText();
         Position position = positionComboBox.getValue();
         String price = priceTextField.getText();
-        if(     Verify.serviceName(name, nameTextField) &&
+        if(     Verify.employmentName(name, nameTextField) &&
                 Verify.position(position, positionComboBox) &&
-                Verify.servicePrice(price, priceTextField)
+                Verify.price(price, priceTextField)
         ){
-            service = new Service();
-            service.setName(name);
-            service.setPosition(position);
-            service.setPrice(Integer.parseInt(price));
+            employment = new Employment();
+            employment.setName(name);
+            employment.setPosition(position);
+            employment.setPrice(Integer.parseInt(price));
         }
 
-        return service;
+        return employment;
     }
 
-    public Service add(){
-        Service service = null;
+    public Employment add(){
+        Employment employment = null;
         ButtonType add = new ButtonType("Ավելացնել", ButtonBar.ButtonData.OK_DONE);
         ButtonType close = new ButtonType("Փակել", ButtonBar.ButtonData.CANCEL_CLOSE);
 
@@ -61,19 +61,19 @@ public class ServiceService {
         Optional<ButtonType> result = alert.showAndWait();
 
         if(result.isPresent() && result.get() == add){
-            service = this.makeService(nameTextField, positionComboBox, priceTextField);
-            //@TODO add service to database;
+            employment = this.makeEmployment(nameTextField, positionComboBox, priceTextField);
+            //@TODO add employment to database;
         }
 
-        return service;
+        return employment;
     }
-    public Service edit(TextField nameTextField, ComboBox<Position> positionComboBox, TextField priceTextField){
-        Service service = this.makeService(nameTextField, positionComboBox, priceTextField);
-        //@TODO edit service in database;
-        return service;
+    public Employment edit(TextField nameTextField, ComboBox<Position> positionComboBox, TextField priceTextField){
+        Employment employment = this.makeEmployment(nameTextField, positionComboBox, priceTextField);
+        //@TODO edit employment in database;
+        return employment;
     }
-    public void remove(Service service){
-        if(service == null) return;
+    public void remove(Employment employment){
+        if(employment == null) return;
 
         ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
         ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -89,34 +89,22 @@ public class ServiceService {
 
         if(result.isPresent()){
             if(result.get() == yes)
-                remove(service, true);
+                remove(employment, true);
             else if (result.get() == removeHistory)
-                remove(service, false);
+                remove(employment, false);
         }
     }
-    private void remove(Service service, boolean removeHistory){
+    private void remove(Employment employment, boolean removeHistory){
         //TODO
         System.out.println("removed");
     }
 
-    public Map<Service, Integer> getServiceBySubscriptionId(long id){
-        Map<Service, Integer> offers = new HashMap<>();
-        offers.put(new Service(1, "Բոքս", 1500, new Position(0, "Բոքսի մարզիչ")), 5);
-        offers.put(new Service(2, "Մարզում", 1200, new Position(1, "Մարզիչ")), 5);
-        offers.put(new Service(3, "Մերսում", 1000, new Position(2, "Մերսող")), 3);
-        if(id == 2){
-            offers.put(new Service(4, "Մերսում 2", 1000, new Position(2, "Մերսող")), 3);
-            offers.put(new Service(5, "Մերսում 3", 1000, new Position(2, "Մերսող")), 3);
-        }
-        return offers;
-    }
-
-    public List<Service> getServices() {
+    public List<Employment> getEmployments() {
+        //@TODO
         return new ArrayList<>(Arrays.asList(
-                new Service(1, "Բոքս", 1500, new Position(0, "Բոքսի մարզիչ")),
-                new Service(2, "Մարզում", 1200, new Position(1, "Մարզիչ")),
-                new Service(3, "Մերսում", 1000, new Position(2, "Մերսող"))
+                new Employment(1, "Բոքս", 1500, new Position(0, "Բոքսի մարզիչ")),
+                new Employment(2, "Մարզում", 1200, new Position(1, "Մարզիչ")),
+                new Employment(3, "Մերսում", 1000, new Position(2, "Մերսող"))
         ));
     }
-    //@TODO
 }

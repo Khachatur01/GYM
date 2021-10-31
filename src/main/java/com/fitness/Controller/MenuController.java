@@ -68,7 +68,7 @@ public class MenuController implements Initializable {
         });
         servicesButton.setOnAction(event -> {
             Window.stopActiveController();
-            Controller controller = Window.getFragment(Fragment.SERVICE, servicesButton);
+            Controller controller = Window.getFragment(Fragment.EMPLOYMENT, servicesButton);
             Window.setActiveController(controller);
 
             controller.start();
