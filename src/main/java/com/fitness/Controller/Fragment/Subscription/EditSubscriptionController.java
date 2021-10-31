@@ -18,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class EditSubscriptionController extends GridPane implements Controller {
     @FXML
@@ -57,8 +58,8 @@ public class EditSubscriptionController extends GridPane implements Controller {
 
     private void initTable(){
         subscriptionEmployments.addAll(
-                subscriptionService.getEmploymentBySubscriptionId(
-                        selectedSubscription.getId()
+                subscriptionService.getEmploymentsQuantity(
+                        selectedSubscription
                 )
         );
 
@@ -72,7 +73,7 @@ public class EditSubscriptionController extends GridPane implements Controller {
         priceTextField.setText(selectedSubscription.getPrice() + "");
     }
 
-    private void initComboBox(){
+    private void initComboBox() throws SQLException {
         employmentComboBox.setItems(FXCollections.observableArrayList(
                 employmentService.getEmployments()
         ));
@@ -115,7 +116,11 @@ public class EditSubscriptionController extends GridPane implements Controller {
         selectedSubscription = SubscriptionButton.getSelected().getSubscription();
         initTable();
         initTextFields();
-        initComboBox();
+        try {
+            initComboBox();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         initListeners();
     }
 

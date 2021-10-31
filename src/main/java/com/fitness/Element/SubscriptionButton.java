@@ -31,7 +31,7 @@ public class SubscriptionButton {
 
         vBox.getChildren().add(new Separator());
 
-        List<EmploymentQuantity> subscriptionEmployments = subscriptionService.getEmploymentBySubscriptionId(subscription.getId());
+        List<EmploymentQuantity> subscriptionEmployments = subscriptionService.getEmploymentsQuantity(subscription);
         int servicesCount = subscriptionEmployments.size();
         int currentEmploymentNumber = 0;
 

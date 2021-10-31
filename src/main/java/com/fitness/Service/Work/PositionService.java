@@ -1,64 +1,52 @@
 package com.fitness.Service.Work;
 
+import com.fitness.DAO.Work.PositionDAO;
+import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Verify;
+import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class PositionService {
+    private EmploymentService employmentService = new EmploymentService();
+    private PositionDAO positionDAO = new PositionDAO();
 
-    private Position makePosition(TextField nameTextField){
+    private Position makePosition(TextField nameTextField, ComboBox<Employment> employmentComboBox){
         Position position = null;
         String name = nameTextField.getText();
+        Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
 
-        if(     Verify.positionName(name, nameTextField)
+        if(     Verify.positionName(name, nameTextField) &&
+                Verify.employment(employment, employmentComboBox)
         ){
             position = new Position();
             position.setName(name);
+            position.setEmployment(employment);
         }
 
         return position;
     }
 
-    public Position add(){
-        Position position = null;
-        ButtonType add = new ButtonType("Ավելացնել", ButtonBar.ButtonData.OK_DONE);
-        ButtonType close = new ButtonType("Փակել", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-        GridPane gridPane = new GridPane();
-        TextField nameTextField = new TextField();
-
-        gridPane.add(new Label("Անուն"), 0, 0);
-
-        gridPane.setVgap(20);
-        gridPane.setHgap(20);
-
-        gridPane.add(nameTextField, 1, 0);
-
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setTitle("Հաստիք");
-        alert.setHeaderText("Ավելացնել հաստիք");
-        alert.getDialogPane().setContent(gridPane);
-        alert.getButtonTypes().setAll(add, close);
-
-        Optional<ButtonType> result = alert.showAndWait();
-
-        if(result.isPresent() && result.get() == add){
-            position = this.makePosition(nameTextField);
-            //@TODO add service to database;
+    public Position add(TextField positionNameTextField, ComboBox<Employment> employmentComboBox){
+        Position position = this.makePosition(positionNameTextField, employmentComboBox);
+        try {
+            positionDAO.add(position);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return position;
     }
-    public Position edit(TextField nameTextField){
-        Position position = this.makePosition(nameTextField);
-        //@TODO edit service in database;
-        return position;
+    public Position edit(Position position, TextField nameTextField, ComboBox<Employment> employmentComboBox) throws SQLException {
+        Position newPosition = this.makePosition(nameTextField, employmentComboBox);
+        newPosition.setId(position.getId());
+        positionDAO.edit(newPosition);
+        return newPosition;
     }
     public void remove(Position position){
         if(position == null) return;
@@ -87,16 +75,12 @@ public class PositionService {
         System.out.println("removed");
     }
 
-    public Position getPositionByServiceId(long id){
-        return new Position(0, "Բոքսի մարզիչ");
+    public Position getEmployment(Position position){
+        return null;
     }
 
-    public List<Position> getPositions() {
-        return new ArrayList<>(Arrays.asList(
-                new Position(0, "Բոքսի մարզիչ"),
-                new Position(1, "Մարզիչ"),
-                new Position(2, "Մերսող")
-        ));
+    public List<Position> getPositions() throws SQLException {
+        return positionDAO.getNonArchived();
     }
     //@TODO
 }

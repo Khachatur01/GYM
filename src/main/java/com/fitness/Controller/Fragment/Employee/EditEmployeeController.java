@@ -20,6 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class EditEmployeeController extends GridPane implements Controller {
     @FXML
@@ -51,7 +52,7 @@ public class EditEmployeeController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
     }
-    public void loadOldData(){
+    public void loadOldData() throws SQLException {
         employmentComboBox.setItems(FXCollections.observableArrayList(employmentService.getEmployments()));
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getPositions()));
         Employee employee = employeeService.getCache();
@@ -85,7 +86,11 @@ public class EditEmployeeController extends GridPane implements Controller {
     public void start() {
         makeActive();
         initListeners();
-        loadOldData();
+        try {
+            loadOldData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

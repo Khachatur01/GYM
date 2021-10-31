@@ -98,30 +98,13 @@ public class SubscriptionService {
     }
 
 
-    public List<EmploymentQuantity> getEmploymentBySubscriptionId(long id){
-        //@TODO
-        List<EmploymentQuantity> subscriptionEmployments= new ArrayList<>(Arrays.asList(
-                new EmploymentQuantity(new Employment(0, "emp1", 1000, new Position(0, "pos")), 5),
-                new EmploymentQuantity(new Employment(1, "emp2", 1200, new Position(1, "pos1")), 3)
-        ));
-        if(id == 2){
-            subscriptionEmployments.add(new EmploymentQuantity(new Employment(2, "emp2", 1200, new Position(2, "pos2")), 3));
-            subscriptionEmployments.add(new EmploymentQuantity(new Employment(3, "emp3", 1500, new Position(3, "pos3")), 4));
-        }
+    public List<EmploymentQuantity> getEmploymentsQuantity(Subscription subscription){
+        List<EmploymentQuantity> subscriptionEmployments = new ArrayList<>();
         return subscriptionEmployments;
     }
 
     public List<Subscription> getSubscriptions(){
         List<Subscription> subscriptions = new ArrayList<>();
-        subscriptions.add(new Subscription(1, "sub1", 5000, Arrays.asList(
-                new EmploymentQuantity(new Employment(2, "emp2", 1200, new Position(2, "pos2")), 3),
-                new EmploymentQuantity(new Employment(3, "emp3", 1000, new Position(3, "pos3")), 3)
-        )));
-        subscriptions.add(new Subscription(2, "sub2", 6000, Arrays.asList(
-                new EmploymentQuantity(new Employment(2, "emp2", 1200, new Position(2, "pos2")), 5),
-                new EmploymentQuantity(new Employment(3, "emp3", 1000, new Position(3, "pos3")), 4)
-        )));
-
         return subscriptions;
     }
 

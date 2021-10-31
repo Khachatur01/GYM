@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
 <fx:root alignment="CENTER" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <rowConstraints>
       <RowConstraints valignment="BOTTOM" />
       <RowConstraints maxHeight="300.0" minHeight="300.0" prefHeight="300.0" valignment="BOTTOM" />
       <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+      <RowConstraints valignment="BOTTOM" vgrow="ALWAYS" />
       <RowConstraints valignment="BOTTOM" vgrow="ALWAYS" />
       <RowConstraints valignment="TOP" />
    </rowConstraints>
@@ -33,7 +42,7 @@
             <Insets top="10.0" />
          </GridPane.margin>
       </Separator>
-      <GridPane GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+      <GridPane GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" />
             <ColumnConstraints hgrow="SOMETIMES" />
@@ -60,19 +69,21 @@
             </Button>
          </children>
       </GridPane>
-      <Label styleClass="paragraph" text="Հաստիք" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+      <Label styleClass="paragraph" text="Հաստիք" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets bottom="5.0" />
          </GridPane.margin>
       </Label>
-      <TextField fx:id="positionNameTextField" alignment="CENTER_RIGHT" styleClass="textField" GridPane.columnIndex="2" GridPane.rowIndex="3">
+      <TextField fx:id="positionNameTextField" alignment="CENTER_RIGHT" styleClass="textField" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <GridPane.margin>
-            <Insets bottom="5.0" />
+            <Insets left="5.0" right="5.0" />
          </GridPane.margin>
          <font>
             <Font size="17.0" />
          </font>
       </TextField>
+      <Label styleClass="paragraph" text="Ծառայություն" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <ComboBox fx:id="employmentComboBox" maxWidth="1.7976931348623157E308" styleClass="combo-box" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
    </children>
    <stylesheets>
       <URL value="@../../style/button.css" />

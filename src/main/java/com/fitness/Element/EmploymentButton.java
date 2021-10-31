@@ -39,7 +39,7 @@ public class EmploymentButton {
         this.employment = employment;
     }
 
-    public void setOnAction(TextField employmentNameTextField, ComboBox<Position> positionComboBox, TextField priceTextField) {
+    public void setOnAction(TextField employmentNameTextField, TextField priceTextField) {
         this.button.setOnAction(event -> {
             if(selected != null)
                 selected.getButton().getStyleClass().remove("selected");
@@ -47,7 +47,6 @@ public class EmploymentButton {
             selected = this;
             selected.getButton().getStyleClass().add("selected");
             employmentNameTextField.setText(selected.employment.getName());
-            positionComboBox.getSelectionModel().select(selected.employment.getPosition());
             priceTextField.setText(selected.employment.getPrice() + "");
         });
     }

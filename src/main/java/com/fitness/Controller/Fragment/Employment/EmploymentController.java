@@ -16,16 +16,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmploymentController extends GridPane implements Controller {
     @FXML
-    private ScrollPane employmentScrollPane;
+    private ScrollPane employmentsScrollPane;
     @FXML
     private TextField employmentNameTextField;
-    @FXML
-    private ComboBox<Position> positionComboBox;
     @FXML
     private TextField priceTextField;
     @FXML
@@ -49,7 +48,7 @@ public class EmploymentController extends GridPane implements Controller {
         loader.load();
     }
 
-    private void initGridPane(){
+    private void initGridPane() throws SQLException {
         row = 0; col = 0;
         employmentsGridPane = new GridPane();
         employmentsGridPane.setMaxWidth(800);
@@ -57,7 +56,7 @@ public class EmploymentController extends GridPane implements Controller {
         employmentsGridPane.setPrefWidth(800);
         employmentsGridPane.setVgap(20);
         employmentsGridPane.setPadding(new Insets(20, 20, 20, 20));
-        employmentScrollPane.setContent(employmentsGridPane);
+        employmentsScrollPane.setContent(employmentsGridPane);
 
         List<Employment> employments = employmentService.getEmployments();
         Grid.addColumns(employmentsGridPane, EMPLOYMENT_PER_ROW);
@@ -70,28 +69,36 @@ public class EmploymentController extends GridPane implements Controller {
 
     private void initListeners(){
         editButton.setOnAction(event -> {
-            Employment employment = employmentService.edit(employmentNameTextField, positionComboBox, priceTextField);
+            if(EmploymentButton.getSelected() == null) return;
+            Employment employment = EmploymentButton.getSelected().getEmployment();
+            try {
+                employment = employmentService.edit(employment, employmentNameTextField, priceTextField);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             EmploymentButton.editSelected(employment);
         });
         deleteButton.setOnAction(event -> {
-            EmploymentButton employment = EmploymentButton.getSelected();
-            if(employment == null) return;
-            employmentService.remove(employment.getEmployment());
+            EmploymentButton employmentButton = EmploymentButton.getSelected();
+            if(employmentButton == null) return;
+            employmentService.remove(employmentButton.getEmployment());
             EmploymentButton.removeSelected();
-            initGridPane();
+            try {
+                initGridPane();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         });
         addButton.setOnAction(event -> {
-            Employment employment = employmentService.add();
+            Employment employment = employmentService.add(employmentNameTextField, priceTextField);
             if(employment != null)
                 addEmploymentToGrid(employment);
         });
     }
 
     private void addEmploymentToGrid(Employment employment){
-        positionComboBox.getItems().add(employment.getPosition());
-
         EmploymentButton employmentButton = new EmploymentButton(employment);
-        employmentButton.setOnAction(employmentNameTextField, positionComboBox, priceTextField);
+        employmentButton.setOnAction(employmentNameTextField, priceTextField);
         employmentButtons.add(employmentButton);
 
         if(col == EMPLOYMENT_PER_ROW){
@@ -105,14 +112,18 @@ public class EmploymentController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        initGridPane();
+        try {
+            initGridPane();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         initListeners();
     }
 
     @Override
     public void stop() {
         employmentNameTextField.setText("");
-        positionComboBox.getItems().clear();
         priceTextField.setText("");
+        EmploymentButton.removeSelected();
     }
 }
