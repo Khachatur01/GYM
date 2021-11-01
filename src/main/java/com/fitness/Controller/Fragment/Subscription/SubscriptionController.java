@@ -15,6 +15,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class SubscriptionController extends GridPane implements Controller {
         loader.load();
     }
 
-    private void initGridPane(){
+    private void initGridPane() throws SQLException {
         row = 0; col = 0;
         subscriptionsGridPane = new GridPane();
         subscriptionsGridPane.setMaxWidth(800);
@@ -70,9 +71,17 @@ public class SubscriptionController extends GridPane implements Controller {
         deleteButton.setOnAction(event -> {
             SubscriptionButton subscription = SubscriptionButton.getSelected();
             if(subscription == null) return;
-            subscriptionService.remove(subscription.getSubscription());
+            try {
+                subscriptionService.remove(subscription.getSubscription());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             SubscriptionButton.removeSelected();
-            initGridPane();
+            try {
+                initGridPane();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         });
         addButton.setOnAction(event -> {
             Window.getFragment(Fragment.ADD_SUBSCRIPTION).start();
@@ -95,7 +104,11 @@ public class SubscriptionController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        initGridPane();
+        try {
+            initGridPane();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         initListeners();
     }
 

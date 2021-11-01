@@ -23,7 +23,8 @@ public class EmploymentDAO {
                     new Employment(
                             resultSet.getInt("id"),
                             resultSet.getString("name"),
-                            resultSet.getInt("price")
+                            resultSet.getInt("price"),
+                            resultSet.getBoolean("archived")
                     )
             );
         }

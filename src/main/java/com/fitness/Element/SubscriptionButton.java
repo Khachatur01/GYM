@@ -31,7 +31,7 @@ public class SubscriptionButton {
 
         vBox.getChildren().add(new Separator());
 
-        List<EmploymentQuantity> subscriptionEmployments = subscriptionService.getEmploymentsQuantity(subscription);
+        List<EmploymentQuantity> subscriptionEmployments = subscription.getEmploymentsQuantities();
         int servicesCount = subscriptionEmployments.size();
         int currentEmploymentNumber = 0;
 
@@ -57,7 +57,10 @@ public class SubscriptionButton {
         vBox.getChildren().add(footer);
 
         this.button = new Button("", vBox);
-        button.getStyleClass().add("subscription_box");
+        this.button.getStyleClass().add("subscription_box");
+
+        if(subscription.isArchived())
+            this.button.setDisable(true);
     }
     public Button getButton() {
         return button;

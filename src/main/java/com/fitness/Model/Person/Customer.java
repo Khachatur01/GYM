@@ -5,13 +5,15 @@ import com.fitness.Model.Work.Subscription;
 public class Customer extends Person{
     private String card;
     private Subscription subscription;
+    private boolean archived;
 
     public Customer(){}
 
-    public Customer(long id, Name name, String card, String phone, String phone2, String address, Subscription subscription) {
+    public Customer(long id, Name name, String card, String phone, String phone2, String address, Subscription subscription, boolean archived) {
         super(id, name, phone, phone2, address);
         this.card = card;
         this.subscription = subscription;
+        this.archived = archived;
     }
 
     public String getCard() {
@@ -30,5 +32,11 @@ public class Customer extends Person{
         this.subscription = subscription;
     }
 
+    public boolean isArchived() {
+        return archived;
+    }
 
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
 }

@@ -6,13 +6,15 @@ public class Employment {
     private long id = Default.ID.getValue();
     private String name;
     private int price;
+    private boolean archived;
 
     public Employment(){}
 
-    public Employment(long id, String name, int price) {
+    public Employment(long id, String name, int price, boolean archived) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.archived = archived;
     }
 
     public long getId() {
@@ -37,6 +39,14 @@ public class Employment {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     @Override

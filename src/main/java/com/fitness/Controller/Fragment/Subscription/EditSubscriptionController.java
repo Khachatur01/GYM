@@ -59,9 +59,7 @@ public class EditSubscriptionController extends GridPane implements Controller {
 
     private void initTable(){
         employmentQuantities.addAll(
-                subscriptionService.getEmploymentsQuantity(
-                        selectedSubscription
-                )
+                selectedSubscription.getEmploymentsQuantities()
         );
 
         employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));

@@ -80,7 +80,7 @@ public class PositionService {
     }
 
     public List<Position> getPositions() throws SQLException {
-        return positionDAO.getNonArchived();
+        return positionDAO.getAll();
     }
     //@TODO
 }

@@ -84,10 +84,10 @@ public class EmployeeService {
 
     public List<Employee> getEmployees() {
         List<Employee> employee = new ArrayList<>();
-        employee.add(new Employee(-1, new Person.Name("name", "surname"), "123", "098", "addr", null, null));
-        employee.add(new Employee(-1, new Person.Name("name1", "surname"), "456", "098", "addr", null, null));
-        employee.add(new Employee(-1, new Person.Name("name2", "surname"), "789", "098", "addr", null, null));
-        employee.add(new Employee(-1, new Person.Name("name3", "surname"), "147", "098", "addr", null, null));
+        employee.add(new Employee(-1, new Person.Name("name", "surname"), "123", "098", "addr", null, null, false));
+        employee.add(new Employee(-1, new Person.Name("name1", "surname"), "456", "098", "addr", null, null, false));
+        employee.add(new Employee(-1, new Person.Name("name2", "surname"), "789", "098", "addr", null, null, false));
+        employee.add(new Employee(-1, new Person.Name("name3", "surname"), "147", "098", "addr", null, null, false));
         //@TODO get from database
         return employee;
     }

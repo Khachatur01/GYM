@@ -9,14 +9,16 @@ public class Subscription {
     private String name;
     private int price;
     private List<EmploymentQuantity> employmentsQuantities;
+    private boolean archived;
 
     public Subscription(){}
 
-    public Subscription(long id, String name, int price, List<EmploymentQuantity> employmentsQuantities) {
+    public Subscription(long id, String name, int price, List<EmploymentQuantity> employmentsQuantities, boolean archived) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.employmentsQuantities = employmentsQuantities;
+        this.archived = archived;
     }
 
     public long getId() {
@@ -49,6 +51,14 @@ public class Subscription {
 
     public void setEmploymentsQuantities(List<EmploymentQuantity> employmentsQuantities) {
         this.employmentsQuantities = employmentsQuantities;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     @Override

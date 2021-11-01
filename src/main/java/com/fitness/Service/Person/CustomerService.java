@@ -20,10 +20,10 @@ public class CustomerService {
     }
     public List<Customer> getCustomers() {
         List<Customer> customers = new ArrayList<>();
-        customers.add(new Customer(-1, new Person.Name("name", "surname"), "123", "098", "099", "address", null));
-        customers.add(new Customer(-1, new Person.Name("name1", "surname"), "456", "098", "099", "address", null));
-        customers.add(new Customer(-1, new Person.Name("name2", "surname"), "789", "098", null, "address", null));
-        customers.add(new Customer(-1, new Person.Name("name3", "surname"), "147", "098", "099", "address", null));
+        customers.add(new Customer(-1, new Person.Name("name", "surname"), "123", "098", "099", "address", null, false));
+        customers.add(new Customer(-1, new Person.Name("name1", "surname"), "456", "098", "099", "address", null, false));
+        customers.add(new Customer(-1, new Person.Name("name2", "surname"), "789", "098", null, "address", null, false));
+        customers.add(new Customer(-1, new Person.Name("name3", "surname"), "147", "098", "099", "address", null, false));
         //@TODO get from database
         return customers;
     }

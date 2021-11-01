@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class EditCustomerController extends GridPane implements Controller {
     @FXML
@@ -50,8 +51,8 @@ public class EditCustomerController extends GridPane implements Controller {
         loader.load();
     }
 
-    public void loadOldData(){
-        subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getSubscriptions()));
+    public void loadOldData() throws SQLException {
+        subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
         customer = customerService.getCache();
         if(customer != null)
             Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
@@ -83,7 +84,11 @@ public class EditCustomerController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        loadOldData();
+        try {
+            loadOldData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         initListeners();
     }
 

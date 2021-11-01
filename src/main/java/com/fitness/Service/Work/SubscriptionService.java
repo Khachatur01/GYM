@@ -47,10 +47,10 @@ public class SubscriptionService {
         return newSubscription;
     }
 
-    public void remove(Subscription subscription){
+    public void remove(Subscription subscription) throws SQLException {
         if(subscription == null) return;
 
-        ButtonType delete = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
+        ButtonType archive = new ButtonType("Արխիվացնել", ButtonBar.ButtonData.OK_DONE);
         ButtonType back = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
 
@@ -58,20 +58,16 @@ public class SubscriptionService {
         alert.setTitle("Հաստատում");
         alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել աբոնեմենտը");
         alert.setContentText("Ցանկանու՞մ եք ջնջել աբոնեմենտը");
-        alert.getButtonTypes().setAll(delete, removeHistory, back);
+        alert.getButtonTypes().setAll(archive, removeHistory, back);
 
         Optional<ButtonType> result =  alert.showAndWait();
 
         if(result.isPresent()){
-            if(result.get() == delete)
-                remove(subscription, false);
+            if(result.get() == archive)
+                subscriptionDAO.remove(subscription, false); /* archive */
             else if (result.get() == removeHistory)
-                remove(subscription, true);
+                subscriptionDAO.remove(subscription, true); /* full deleting */
         }
-    }
-    private void remove(Subscription subscription, boolean removeHistory){
-        //TODO
-        System.out.println("removed");
     }
 
 
@@ -92,22 +88,16 @@ public class SubscriptionService {
     }
 
     public EmploymentQuantity addEmploymentQuantity(ComboBox<Employment> employmentComboBox, TextField quantityTextField){
-        EmploymentQuantity employmentQuantity = makeEmploymentQuantity(employmentComboBox, quantityTextField);
         // don't add to database
-        return employmentQuantity;
+        return makeEmploymentQuantity(employmentComboBox, quantityTextField);
     }
 
-
-    public List<EmploymentQuantity> getEmploymentsQuantity(Subscription subscription){
-        List<EmploymentQuantity> subscriptionEmployments = new ArrayList<>();
-        return subscriptionEmployments;
+    public List<Subscription> getActual() throws SQLException {
+        return subscriptionDAO.getActual();
     }
 
-    public List<Subscription> getSubscriptions(){
-        List<Subscription> subscriptions = new ArrayList<>();
-        return subscriptions;
+    public List<Subscription> getSubscriptions() throws SQLException {
+        return subscriptionDAO.getAll();
     }
-
-    //@TODO
 
 }

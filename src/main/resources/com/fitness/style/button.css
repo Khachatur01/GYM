@@ -64,6 +64,9 @@
     -fx-background-radius: 20px;
     -fx-cursor: hand;
 }
+.subscription_box:disabled, .subscription_box:disabled > * {
+    -fx-opacity: 1.0;
+}
 
 .selected {
     -fx-effect: dropshadow(three-pass-box, #367bf5cc, 10, 0, 0, 0);

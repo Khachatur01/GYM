@@ -22,7 +22,7 @@ public class PositionDAO {
         preparedStatement.executeUpdate();
     }
 
-    public List<Position> getNonArchived() throws SQLException {
+    public List<Position> getAll() throws SQLException {
         Statement statement = DB.getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery(
                 "SELECT * FROM `position`, `employment` WHERE `position`.`employment_id` = `employment`.`id`"
@@ -36,8 +36,10 @@ public class PositionDAO {
                             new Employment(
                                     resultSet.getInt("employment.id"),
                                     resultSet.getString("employment.name"),
-                                    resultSet.getInt("employment.price")
-                            )
+                                    resultSet.getInt("employment.price"),
+                                    resultSet.getBoolean("employment.archived")
+                            ),
+                            resultSet.getBoolean("position.archived")
                     )
             );
 
