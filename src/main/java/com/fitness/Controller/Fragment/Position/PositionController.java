@@ -4,6 +4,7 @@ import com.fitness.Controller.Controller;
 import com.fitness.Element.PositionButton;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
+import com.fitness.Service.Clear;
 import com.fitness.Service.Grid;
 import com.fitness.Service.Work.EmploymentService;
 import com.fitness.Service.Work.PositionService;
@@ -130,8 +131,8 @@ public class PositionController extends GridPane implements Controller {
 
     @Override
     public void stop() {
-        positionNameTextField.setText("");
-        employmentComboBox.getSelectionModel().select(null);
+        Clear.textField(positionNameTextField);
+        Clear.comboBox(employmentComboBox);
         PositionButton.removeSelected();
     }
 }

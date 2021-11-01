@@ -44,7 +44,7 @@ public class AddCustomerController extends GridPane implements Controller {
     private CustomerService customerService = new CustomerService();
     private SubscriptionService subscriptionService = new SubscriptionService();
 
-    private static boolean fieldAreClean = true;
+    private static boolean fieldsAreClean = true;
 
     public AddCustomerController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/customer/add_customer.fxml"));
@@ -55,7 +55,7 @@ public class AddCustomerController extends GridPane implements Controller {
     private void initListeners(){
         oldCardTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             Customer customer = customerService.getCustomer(newValue);
-            if(!fieldAreClean) {
+            if(!fieldsAreClean) {
                 Clear.textField(
                         cardTextField,
                         nameTextField,
@@ -65,11 +65,11 @@ public class AddCustomerController extends GridPane implements Controller {
                         addressTextField
                 );
                 Clear.comboBox(subscriptionComboBox);
-                fieldAreClean = true;
+                fieldsAreClean = true;
             } else if (customer != null){
                 customer.setCard(""); // don't fill card number field
                 Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
-                fieldAreClean = false;
+                fieldsAreClean = false;
             }
         });
 

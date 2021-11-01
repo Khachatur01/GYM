@@ -5,6 +5,7 @@ import com.fitness.Controller.Controller;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Model.Work.EmploymentQuantity;
+import com.fitness.Service.Clear;
 import com.fitness.Service.Work.EmploymentService;
 import com.fitness.Service.Work.SubscriptionService;
 import com.fitness.Window;
@@ -45,7 +46,7 @@ public class AddSubscriptionController extends GridPane implements Controller {
 
     private EmploymentService employmentService = new EmploymentService();
     private SubscriptionService subscriptionService = new SubscriptionService();
-    private ObservableList<EmploymentQuantity> subscriptionEmployments = FXCollections.observableArrayList();
+    private ObservableList<EmploymentQuantity> employmentQuantities = FXCollections.observableArrayList();
 
     public AddSubscriptionController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/subscription/add_subscription.fxml"));
@@ -57,7 +58,7 @@ public class AddSubscriptionController extends GridPane implements Controller {
     private void initTable(){
         employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        subscriptionEmploymentTable.setItems(subscriptionEmployments);
+        subscriptionEmploymentTable.setItems(employmentQuantities);
     }
 
     private void initComboBox() throws SQLException {
@@ -68,27 +69,30 @@ public class AddSubscriptionController extends GridPane implements Controller {
 
     private void initListeners(){
         addEmploymentButton.setOnAction(event -> {
-            EmploymentQuantity subscriptionEmployment = subscriptionService.addSubscriptionEmployment(employmentComboBox, quantityTextField);
+            EmploymentQuantity employmentQuantity = subscriptionService.addEmploymentQuantity(employmentComboBox, quantityTextField);
 
-            if(subscriptionEmployment != null && !subscriptionEmployments.contains(subscriptionEmployment)) {
-                subscriptionEmployments.add(subscriptionEmployment);
+            if(employmentQuantity != null && !employmentQuantities.contains(employmentQuantity)) {
+                employmentQuantities.add(employmentQuantity);
             }
         });
         deleteEmploymentButton.setOnAction(event -> {
-            EmploymentQuantity subscriptionEmployment = subscriptionEmploymentTable.getSelectionModel().getSelectedItem();
-            if(subscriptionEmployment != null){
-                subscriptionEmployments.remove(subscriptionEmployment);
+            EmploymentQuantity employmentQuantity = subscriptionEmploymentTable.getSelectionModel().getSelectedItem();
+            if(employmentQuantity != null){
+                employmentQuantities.remove(employmentQuantity);
             }
         });
 
         addSubscriptionButton.setOnAction(event -> {
-            if(subscriptionService.add(
-                    new Subscription(),
-                    nameTextField,
-                    priceTextField,
-                    subscriptionEmployments) != null) {
-                this.stop();
-                Window.getFragment(Fragment.SUBSCRIPTION).start();
+            try {
+                if(subscriptionService.add(
+                        nameTextField,
+                        priceTextField,
+                        employmentQuantities) != null) {
+                    this.stop();
+                    Window.getFragment(Fragment.SUBSCRIPTION).start();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
         previousButton.setOnAction(event -> {
@@ -111,13 +115,12 @@ public class AddSubscriptionController extends GridPane implements Controller {
 
     @Override
     public void stop() {
-        nameTextField.setText("");
-        nameTextField.getStyleClass().remove("selected");
-        priceTextField.setText("");
-        priceTextField.getStyleClass().remove("selected");
-        quantityTextField.setText("");
-        quantityTextField.getStyleClass().remove("selected");
-        subscriptionEmploymentTable.getItems().clear();
-        employmentComboBox.getItems().clear();
+        Clear.textField(
+                nameTextField,
+                priceTextField,
+                quantityTextField
+        );
+        Clear.table(subscriptionEmploymentTable);
+        Clear.comboBox(employmentComboBox);
     }
 }

@@ -8,15 +8,15 @@ public class Subscription {
     private long id = Default.ID.getValue();
     private String name;
     private int price;
-    private List<EmploymentQuantity> employmentsQuantity;
+    private List<EmploymentQuantity> employmentsQuantities;
 
     public Subscription(){}
 
-    public Subscription(long id, String name, int price, List<EmploymentQuantity> employmentsQuantity) {
+    public Subscription(long id, String name, int price, List<EmploymentQuantity> employmentsQuantities) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.employmentsQuantity = employmentsQuantity;
+        this.employmentsQuantities = employmentsQuantities;
     }
 
     public long getId() {
@@ -43,12 +43,12 @@ public class Subscription {
         this.price = price;
     }
 
-    public List<EmploymentQuantity> getEmploymentsQuantity() {
-        return employmentsQuantity;
+    public List<EmploymentQuantity> getEmploymentsQuantities() {
+        return employmentsQuantities;
     }
 
-    public void setEmploymentsQuantity(List<EmploymentQuantity> employmentsQuantity) {
-        this.employmentsQuantity = employmentsQuantity;
+    public void setEmploymentsQuantities(List<EmploymentQuantity> employmentsQuantities) {
+        this.employmentsQuantities = employmentsQuantities;
     }
 
     @Override

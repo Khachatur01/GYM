@@ -4,6 +4,7 @@ import com.fitness.Controller.Controller;
 import com.fitness.Element.EmploymentButton;
 import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Employment;
+import com.fitness.Service.Clear;
 import com.fitness.Service.Grid;
 import com.fitness.Service.Work.EmploymentService;
 import javafx.fxml.FXML;
@@ -122,8 +123,10 @@ public class EmploymentController extends GridPane implements Controller {
 
     @Override
     public void stop() {
-        employmentNameTextField.setText("");
-        priceTextField.setText("");
+        Clear.textField(
+                employmentNameTextField,
+                priceTextField
+        );
         EmploymentButton.removeSelected();
     }
 }
