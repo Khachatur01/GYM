@@ -14,7 +14,9 @@ public class EmploymentButton {
     public EmploymentButton(Employment employment){
         this.employment = employment;
         this.button = new Button(employment.getName());
-        button.getStyleClass().add("employment_box");
+        this.button.getStyleClass().add("employment_box");
+        if(employment.isArchived())
+            this.button.setDisable(true);
     }
 
     public static void editSelected(Employment employment) {

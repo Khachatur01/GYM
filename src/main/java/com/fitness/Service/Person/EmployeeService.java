@@ -15,21 +15,19 @@ public class EmployeeService {
     private static Employee cache = null;
 
 
-    private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Employment> employmentComboBox, ComboBox<Position> positionComboBox){
+    private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox){
         Employee employee = null;
         String name = nameTextField.getText();
         String surname = surnameTextField.getText();
         String phone = phoneTextField.getText();
         String phone2 = phone2TextField.getText();
         String address = addressTextField.getText();
-        Employment employment = employmentComboBox.getValue();
         Position position = positionComboBox.getValue();
 
         if(     Verify.name(name, nameTextField) &&
                 Verify.surname(surname, surnameTextField) &&
                 Verify.phone(phone, phoneTextField) &&
                 Verify.address(address, addressTextField) &&
-                Verify.employment(employment, employmentComboBox) &&
                 Verify.position(position, positionComboBox)
         ){
             employee = new Employee();
@@ -37,20 +35,19 @@ public class EmployeeService {
             employee.setPhone(phone);
             employee.setPhone2(phone2);
             employee.setAddress(address);
-            employee.setEmployment(employment);
             employee.setPosition(position);
         }
         return employee;
     }
 
-    public Employee add(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Employment> offerComboBox, ComboBox<Position> positionComboBox){
-        Employee employee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, offerComboBox, positionComboBox);
+    public Employee add(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox){
+        Employee employee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
         //@TODO add customer to database;
         return employee;
     }
 
-    public Employee edit(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Employment> offerComboBox, ComboBox<Position> positionComboBox){
-        Employee employee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, offerComboBox, positionComboBox);
+    public Employee edit(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox){
+        Employee employee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
         //@TODO update customer in database;
         return employee;
     }
@@ -84,10 +81,10 @@ public class EmployeeService {
 
     public List<Employee> getEmployees() {
         List<Employee> employee = new ArrayList<>();
-        employee.add(new Employee(-1, new Person.Name("name", "surname"), "123", "098", "addr", null, null, false));
-        employee.add(new Employee(-1, new Person.Name("name1", "surname"), "456", "098", "addr", null, null, false));
-        employee.add(new Employee(-1, new Person.Name("name2", "surname"), "789", "098", "addr", null, null, false));
-        employee.add(new Employee(-1, new Person.Name("name3", "surname"), "147", "098", "addr", null, null, false));
+        employee.add(new Employee(-1, new Person.Name("name", "surname"), "123", "098", "addr", null, false));
+        employee.add(new Employee(-1, new Person.Name("name1", "surname"), "456", "098", "addr", null, false));
+        employee.add(new Employee(-1, new Person.Name("name2", "surname"), "789", "098", "addr", null, false));
+        employee.add(new Employee(-1, new Person.Name("name3", "surname"), "147", "098", "addr", null, false));
         //@TODO get from database
         return employee;
     }

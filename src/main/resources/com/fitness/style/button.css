@@ -48,6 +48,9 @@
     -fx-cursor: hand;
     -fx-wrap-text: true;
 }
+.employment_box:disabled, .employment_box:disabled > * {
+    -fx-opacity: 1.0;
+}
 .position_box {
     -fx-padding: 20px;
     -fx-background-color: #FFFFFF;
@@ -57,6 +60,10 @@
     -fx-cursor: hand;
     -fx-wrap-text: true;
 }
+.position_box:disabled, .position_box:disabled > * {
+    -fx-opacity: 1.0;
+}
+
 .subscription_box {
     -fx-min-width: 150px;
     -fx-pref-height: 150px;

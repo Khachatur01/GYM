@@ -8,6 +8,7 @@ public class DB {
     private static final String URL = "jdbc:mysql://localhost:3306/Fitness";
     private static final String username = "root";
     private static final String password = "admin8402";
+
     private static Connection connection = null;
 
     public static void connect() throws SQLException {
@@ -22,7 +23,6 @@ public class DB {
     public static void disconnect() throws SQLException {
         if(connection != null)
             connection.close();
-
         System.out.println("disconnected from db");
     }
 

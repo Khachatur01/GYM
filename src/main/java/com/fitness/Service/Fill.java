@@ -19,13 +19,12 @@ public class Fill {
         subscriptionComboBox.getSelectionModel().select(customer.getSubscription());
     }
 
-    public static void employee(Employee employee, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Employment> serviceComboBox, ComboBox<Position> positionComboBox) {
+    public static void employee(Employee employee, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox) {
         nameTextField.setText(employee.getName().getFirstName());
         surnameTextField.setText(employee.getName().getLastName());
         phoneTextField.setText(employee.getPhone());
         phone2TextField.setText(employee.getPhone2());
         addressTextField.setText(employee.getAddress());
-        serviceComboBox.getSelectionModel().select(employee.getEmployment());
         positionComboBox.getSelectionModel().select(employee.getPosition());
     }
 }

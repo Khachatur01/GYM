@@ -32,8 +32,6 @@ public class AddEmployeeController extends GridPane implements Controller {
     @FXML
     private TextField addressTextField;
     @FXML
-    private ComboBox<Employment> employmentComboBox;
-    @FXML
     private ComboBox<Position> positionComboBox;
     @FXML
     private Button previousButton;
@@ -60,7 +58,6 @@ public class AddEmployeeController extends GridPane implements Controller {
                     phoneTextField,
                     phone2TextField,
                     addressTextField,
-                    employmentComboBox,
                     positionComboBox) != null) {
                 this.stop();
                 Window.getFragment(Fragment.CUSTOMER).start();
@@ -75,7 +72,6 @@ public class AddEmployeeController extends GridPane implements Controller {
     }
 
     public void initComboBoxes() throws SQLException {
-        employmentComboBox.setItems(FXCollections.observableArrayList(employmentService.getEmployments()));
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getPositions()));
     }
 
@@ -99,6 +95,6 @@ public class AddEmployeeController extends GridPane implements Controller {
                 phone2TextField,
                 addressTextField
         );
-        Clear.comboBox(employmentComboBox, positionComboBox);
+        Clear.comboBox(positionComboBox);
     }
 }

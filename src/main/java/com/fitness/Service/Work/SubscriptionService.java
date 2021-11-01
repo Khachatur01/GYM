@@ -96,7 +96,7 @@ public class SubscriptionService {
         return subscriptionDAO.getActual();
     }
 
-    public List<Subscription> getSubscriptions() throws SQLException {
+    public List<Subscription> getAll() throws SQLException {
         return subscriptionDAO.getAll();
     }
 

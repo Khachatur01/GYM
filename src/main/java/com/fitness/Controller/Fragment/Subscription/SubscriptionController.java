@@ -53,7 +53,7 @@ public class SubscriptionController extends GridPane implements Controller {
         subscriptionsGridPane.setPadding(new Insets(20, 20, 20, 20));
         subscriptionsScrollPane.setContent(subscriptionsGridPane);
 
-        List<Subscription> subscriptions = subscriptionService.getSubscriptions();
+        List<Subscription> subscriptions = subscriptionService.getAll();
         Grid.addColumns(subscriptionsGridPane, SUBSCRIPTION_PER_ROW);
         Grid.addRows(subscriptionsGridPane, (int)Math.ceil(subscriptions.size() / SUBSCRIPTION_PER_ROW));
 

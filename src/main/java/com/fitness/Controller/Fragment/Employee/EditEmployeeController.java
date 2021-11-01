@@ -4,7 +4,6 @@ import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.EmployeeService;
@@ -34,8 +33,6 @@ public class EditEmployeeController extends GridPane implements Controller {
     @FXML
     private TextField addressTextField;
     @FXML
-    private ComboBox<Employment> employmentComboBox;
-    @FXML
     private ComboBox<Position> positionComboBox;
     @FXML
     private Button previousButton;
@@ -53,11 +50,10 @@ public class EditEmployeeController extends GridPane implements Controller {
         loader.load();
     }
     public void loadOldData() throws SQLException {
-        employmentComboBox.setItems(FXCollections.observableArrayList(employmentService.getEmployments()));
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getPositions()));
         Employee employee = employeeService.getCache();
         if(employee != null)
-            Fill.employee(employee, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, employmentComboBox, positionComboBox);
+            Fill.employee(employee, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
     }
     public void initListeners(){
         editButton.setOnAction(event -> {
@@ -68,7 +64,6 @@ public class EditEmployeeController extends GridPane implements Controller {
                     phoneTextField,
                     phone2TextField,
                     addressTextField,
-                    employmentComboBox,
                     positionComboBox) != null) {
                 this.stop();
                 Window.getFragment(Fragment.CUSTOMER).start();
@@ -102,6 +97,6 @@ public class EditEmployeeController extends GridPane implements Controller {
                 phone2TextField,
                 addressTextField
         );
-        Clear.comboBox(employmentComboBox, positionComboBox);
+        Clear.comboBox(positionComboBox);
     }
 }

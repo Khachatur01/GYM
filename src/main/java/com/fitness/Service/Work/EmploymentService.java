@@ -3,6 +3,7 @@ package com.fitness.Service.Work;
 import com.fitness.DAO.Work.EmploymentDAO;
 import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Employment;
+import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Verify;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -46,34 +47,33 @@ public class EmploymentService {
         employmentDAO.edit(newEmployment);
         return newEmployment;
     }
-    public void remove(Employment employment){
+    public void remove(Employment employment) throws SQLException {
         if(employment == null) return;
 
-        ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
-        ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType archive = new ButtonType("Արխիվացնել", ButtonBar.ButtonData.OK_DONE);
+        ButtonType back = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Հաստատում");
         alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել ծառայությունը");
         alert.setContentText("Ցանկանու՞մ եք ջնջել ծառայությունը");
-        alert.getButtonTypes().setAll(yes, removeHistory, no);
+        alert.getButtonTypes().setAll(archive, removeHistory, back);
 
         Optional<ButtonType> result =  alert.showAndWait();
 
         if(result.isPresent()){
-            if(result.get() == yes)
-                remove(employment, true);
+            if(result.get() == archive)
+                employmentDAO.remove(employment, false);
             else if (result.get() == removeHistory)
-                remove(employment, false);
+                employmentDAO.remove(employment, true);
         }
     }
-    private void remove(Employment employment, boolean removeHistory){
-        //TODO
-        System.out.println("removed");
-    }
 
-    public List<Employment> getEmployments() throws SQLException {
-        return employmentDAO.getNonArchived();
+    public List<Employment> getActual() throws SQLException {
+        return employmentDAO.getActual();
+    }
+    public List<Employment> getAll() throws SQLException {
+        return employmentDAO.getAll();
     }
 }

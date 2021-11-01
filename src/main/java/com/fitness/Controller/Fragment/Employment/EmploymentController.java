@@ -59,7 +59,7 @@ public class EmploymentController extends GridPane implements Controller {
         employmentsGridPane.setPadding(new Insets(20, 20, 20, 20));
         employmentsScrollPane.setContent(employmentsGridPane);
 
-        List<Employment> employments = employmentService.getEmployments();
+        List<Employment> employments = employmentService.getAll();
         Grid.addColumns(employmentsGridPane, EMPLOYMENT_PER_ROW);
         Grid.addRows(employmentsGridPane, (int)Math.ceil(employments.size() / EMPLOYMENT_PER_ROW));
 
@@ -82,7 +82,11 @@ public class EmploymentController extends GridPane implements Controller {
         deleteButton.setOnAction(event -> {
             EmploymentButton employmentButton = EmploymentButton.getSelected();
             if(employmentButton == null) return;
-            employmentService.remove(employmentButton.getEmployment());
+            try {
+                employmentService.remove(employmentButton.getEmployment());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             EmploymentButton.removeSelected();
             try {
                 initGridPane();

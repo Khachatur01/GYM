@@ -54,7 +54,7 @@ public class PositionController extends GridPane implements Controller {
     }
 
     private void initComboBox() throws SQLException {
-        employmentComboBox.setItems(FXCollections.observableArrayList(employmentService.getEmployments()));
+        employmentComboBox.setItems(FXCollections.observableArrayList(employmentService.getActual()));
     }
 
     private void initGridPane() throws SQLException {

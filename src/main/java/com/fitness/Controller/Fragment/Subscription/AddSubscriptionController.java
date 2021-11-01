@@ -63,7 +63,7 @@ public class AddSubscriptionController extends GridPane implements Controller {
 
     private void initComboBox() throws SQLException {
         employmentComboBox.setItems(FXCollections.observableArrayList(
-                employmentService.getEmployments()
+                employmentService.getActual()
         ));
     }
 
