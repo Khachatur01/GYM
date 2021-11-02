@@ -71,6 +71,7 @@ public class SubscriptionDAO implements DAO<Subscription> {
 
     @Override
     public void add(Subscription subscription) throws SQLException {
+        if(subscription == null) return;
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "INSERT INTO `subscription`(`name`, `price`) VALUES (?, ?)",
                 Statement.RETURN_GENERATED_KEYS

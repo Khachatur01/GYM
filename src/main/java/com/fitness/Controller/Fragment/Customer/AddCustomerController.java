@@ -55,7 +55,12 @@ public class AddCustomerController extends GridPane implements Controller {
     }
     private void initListeners(){
         oldCardTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            Customer customer = customerService.getCustomer(newValue);
+            Customer customer = null;
+            try {
+                customer = customerService.getByCard(newValue);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             if(!fieldsAreClean) {
                 Clear.textField(
                         cardTextField,
@@ -76,21 +81,25 @@ public class AddCustomerController extends GridPane implements Controller {
 
         addButton.setOnAction(event -> {
             //return null when something went wrong
-            if(customerService.add(
-                    cardTextField,
-                    nameTextField,
-                    surnameTextField,
-                    phoneTextField,
-                    phone2TextField,
-                    addressTextField,
-                    subscriptionComboBox) != null) {
-                this.stop();
-                Window.getFragment(Fragment.CUSTOMER).start();
+            try {
+                if(customerService.add(
+                        cardTextField,
+                        nameTextField,
+                        surnameTextField,
+                        phoneTextField,
+                        phone2TextField,
+                        addressTextField,
+                        subscriptionComboBox) != null) {
+                    this.stop();
+                    Window.getFragment(Fragment.CUSTOMER).start();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
         previousButton.setOnAction(event -> {
-            customerService.setCache(null);
+            customerService.removeSelected();
             this.stop();
             Window.getFragment(Fragment.CUSTOMER).start();
         });

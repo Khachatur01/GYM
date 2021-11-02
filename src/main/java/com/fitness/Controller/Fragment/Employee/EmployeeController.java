@@ -18,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class EmployeeController extends GridPane implements Controller {
     @FXML
@@ -51,7 +52,7 @@ public class EmployeeController extends GridPane implements Controller {
     private void initListeners(){
         editButton.setOnAction(event -> {
             Employee employee = employeesTable.getSelectionModel().getSelectedItem();
-            employeeService.setCache(employee);
+            employeeService.select(employee);
             if(employee != null)
                 Window.getFragment(Fragment.EDIT_EMPLOYEE).start();
         });
@@ -62,12 +63,27 @@ public class EmployeeController extends GridPane implements Controller {
 
         deleteButton.setOnAction(event -> {
             Employee employee = employeesTable.getSelectionModel().getSelectedItem();
-            employeeService.remove(employee);
+            try {
+                employeeService.remove(employee);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             employees.remove(employee);
         });
     }
 
-    private void initTable(){
+    @Override
+    public void start() {
+        makeActive();
+        try {
+            initTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        initListeners();
+    }
+
+    private void initTable() throws SQLException {
         positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
         fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
@@ -76,16 +92,9 @@ public class EmployeeController extends GridPane implements Controller {
 
         employeesTable.getItems().clear();
 
-        employees.setAll(employeeService.getEmployees());
+        employees.setAll(employeeService.getAll());
 
         employeesTable.setItems(employees);
-    }
-
-    @Override
-    public void start() {
-        makeActive();
-        initTable();
-        initListeners();
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.fitness.Controller.Fragment.Employment;
 
 import com.fitness.Controller.Controller;
 import com.fitness.Element.EmploymentButton;
-import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Grid;
@@ -11,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;

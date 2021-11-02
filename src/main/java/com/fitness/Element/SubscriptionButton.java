@@ -1,7 +1,7 @@
 package com.fitness.Element;
 
-import com.fitness.Model.Work.Subscription;
 import com.fitness.Model.Work.EmploymentQuantity;
+import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Work.EmploymentService;
 import com.fitness.Service.Work.SubscriptionService;
 import javafx.geometry.Pos;

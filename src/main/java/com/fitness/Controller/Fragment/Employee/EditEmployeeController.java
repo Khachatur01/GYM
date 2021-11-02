@@ -7,8 +7,8 @@ import com.fitness.Model.Work.Position;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.EmployeeService;
-import com.fitness.Service.Work.PositionService;
 import com.fitness.Service.Work.EmploymentService;
+import com.fitness.Service.Work.PositionService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -40,7 +40,6 @@ public class EditEmployeeController extends GridPane implements Controller {
     private Button editButton;
 
     private EmployeeService employeeService = new EmployeeService();
-    private EmploymentService employmentService = new EmploymentService();
     private PositionService positionService = new PositionService();
 
     public EditEmployeeController() throws IOException {
@@ -51,27 +50,32 @@ public class EditEmployeeController extends GridPane implements Controller {
     }
     public void loadOldData() throws SQLException {
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
-        Employee employee = employeeService.getCache();
+        Employee employee = employeeService.getSelected();
         if(employee != null)
             Fill.employee(employee, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
     }
     public void initListeners(){
         editButton.setOnAction(event -> {
-            //return null when something went wrong
-            if(employeeService.edit(
-                    nameTextField,
-                    surnameTextField,
-                    phoneTextField,
-                    phone2TextField,
-                    addressTextField,
-                    positionComboBox) != null) {
-                this.stop();
-                Window.getFragment(Fragment.CUSTOMER).start();
+            /* return null when something went wrong */
+            try {
+                if(employeeService.edit(
+                        employeeService.getSelected(),
+                        nameTextField,
+                        surnameTextField,
+                        phoneTextField,
+                        phone2TextField,
+                        addressTextField,
+                        positionComboBox) != null) {
+                    this.stop();
+                    Window.getFragment(Fragment.EMPLOYEE).start();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
         previousButton.setOnAction(event -> {
-            employeeService.setCache(null);
+            employeeService.removeSelected();
             this.stop();
             Window.getFragment(Fragment.EMPLOYEE).start();
         });

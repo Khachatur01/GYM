@@ -4,9 +4,7 @@ import com.fitness.DAO.Work.PositionDAO;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Verify;
-import javafx.collections.FXCollections;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -53,29 +53,33 @@ public class EditCustomerController extends GridPane implements Controller {
 
     public void loadOldData() throws SQLException {
         subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
-        customer = customerService.getCache();
+        customer = customerService.getSelected();
         if(customer != null)
             Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
     }
     public void initListeners(){
         editButton.setOnAction(event -> {
             //return null when something went wrong
-            if(customerService.edit(
-                    customer,
-                    cardTextField,
-                    nameTextField,
-                    surnameTextField,
-                    phoneTextField,
-                    phone2TextField,
-                    addressTextField,
-                    subscriptionComboBox) != null) {
-                this.stop();
-                Window.getFragment(Fragment.CUSTOMER).start();
+            try {
+                if(customerService.edit(
+                        customer,
+                        cardTextField,
+                        nameTextField,
+                        surnameTextField,
+                        phoneTextField,
+                        phone2TextField,
+                        addressTextField,
+                        subscriptionComboBox) != null) {
+                    this.stop();
+                    Window.getFragment(Fragment.CUSTOMER).start();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
         previousButton.setOnAction(event -> {
-            customerService.setCache(null);
+            customerService.removeSelected();
             this.stop();
             Window.getFragment(Fragment.CUSTOMER).start();
         });

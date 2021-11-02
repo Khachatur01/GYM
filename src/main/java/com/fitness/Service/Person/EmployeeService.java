@@ -1,19 +1,19 @@
 package com.fitness.Service.Person;
 
+import com.fitness.DAO.Person.EmployeeDAO;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Verify;
 import javafx.scene.control.*;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class EmployeeService {
-    private static Employee cache = null;
-
+    private static Employee selected = null;
+    private EmployeeDAO employeeDAO = new EmployeeDAO();
 
     private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox){
         Employee employee = null;
@@ -40,60 +40,59 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee add(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox){
-        Employee employee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
-        //@TODO add customer to database;
-        return employee;
+    public Employee add(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox) throws SQLException {
+        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
+        employeeDAO.add(newEmployee);
+        return newEmployee;
     }
 
-    public Employee edit(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox){
-        Employee employee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
-        //@TODO update customer in database;
-        return employee;
+    public Employee edit(Employee employee, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox) throws SQLException {
+        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
+        newEmployee.setId(employee.getId());
+        employeeDAO.edit(newEmployee);
+        return newEmployee;
     }
 
-    public void remove(Employee employee){
+    public void remove(Employee employee) throws SQLException {
         if(employee == null) return;
 
-        ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
-        ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType archive = new ButtonType("Արխիվացնել", ButtonBar.ButtonData.OK_DONE);
+        ButtonType back = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Հաստատում");
         alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել աշխատողին");
         alert.setContentText("Ցանկանու՞մ եք ջնջել աշխատողին");
-        alert.getButtonTypes().setAll(yes, removeHistory, no);
+        alert.getButtonTypes().setAll(archive, removeHistory, back);
 
         Optional<ButtonType> result =  alert.showAndWait();
 
         if(result.isPresent()){
-            if(result.get() == yes)
-                remove(employee, true);
+            if(result.get() == archive)
+                employeeDAO.remove(employee, false);
             else if (result.get() == removeHistory)
-                remove(employee, false);
+                employeeDAO.remove(employee, true);
         }
     }
-    private void remove(Employee employee, boolean removeHistory) {
-        //@TODO
-        System.out.println("removed");
+
+    public List<Employee> getActual() throws SQLException{
+        return employeeDAO.getActual();
+    }
+    public List<Employee> getAll() throws SQLException{
+        return employeeDAO.getAll();
     }
 
-    public List<Employee> getEmployees() {
-        List<Employee> employee = new ArrayList<>();
-        employee.add(new Employee(-1, new Person.Name("name", "surname"), "123", "098", "addr", null, false));
-        employee.add(new Employee(-1, new Person.Name("name1", "surname"), "456", "098", "addr", null, false));
-        employee.add(new Employee(-1, new Person.Name("name2", "surname"), "789", "098", "addr", null, false));
-        employee.add(new Employee(-1, new Person.Name("name3", "surname"), "147", "098", "addr", null, false));
-        //@TODO get from database
-        return employee;
+
+    public Employee getSelected() {
+        return selected;
     }
 
-    public static Employee getCache() {
-        return cache;
+    public void select(Employee selected) {
+        EmployeeService.selected = selected;
     }
-
-    public static void setCache(Employee cache) {
-        EmployeeService.cache = cache;
+    
+    public void removeSelected(){
+        EmployeeService.selected = null;
     }
 }

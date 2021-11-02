@@ -3,11 +3,10 @@ package com.fitness.Controller.Fragment.Employee;
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Person.EmployeeService;
-import com.fitness.Service.Work.PositionService;
 import com.fitness.Service.Work.EmploymentService;
+import com.fitness.Service.Work.PositionService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -51,21 +50,24 @@ public class AddEmployeeController extends GridPane implements Controller {
 
     private void initListeners(){
         addButton.setOnAction(event -> {
-            //return null when something went wrong
-            if(employeeService.add(
-                    nameTextField,
-                    surnameTextField,
-                    phoneTextField,
-                    phone2TextField,
-                    addressTextField,
-                    positionComboBox) != null) {
-                this.stop();
-                Window.getFragment(Fragment.CUSTOMER).start();
+            /* return null when something went wrong */
+            try {
+                if(employeeService.add(
+                        nameTextField,
+                        surnameTextField,
+                        phoneTextField,
+                        phone2TextField,
+                        addressTextField,
+                        positionComboBox) != null) {
+                    this.stop();
+                    Window.getFragment(Fragment.EMPLOYEE).start();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
         previousButton.setOnAction(event -> {
-            employeeService.setCache(null);
             this.stop();
             Window.getFragment(Fragment.EMPLOYEE).start();
         });

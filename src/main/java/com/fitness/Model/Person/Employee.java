@@ -1,7 +1,6 @@
 package com.fitness.Model.Person;
 
 import com.fitness.Model.Work.Position;
-import com.fitness.Model.Work.Employment;
 
 public class Employee extends Person{
     private Position position;

@@ -1,16 +1,16 @@
 package com.fitness.Service.Work;
 
 import com.fitness.DAO.Work.EmploymentDAO;
-import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Employment;
-import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Verify;
-import javafx.collections.FXCollections;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 public class EmploymentService {
     private EmploymentDAO employmentDAO = new EmploymentDAO();

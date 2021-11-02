@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +41,6 @@ public class SubscriptionService {
     public Subscription edit(Subscription subscription, TextField nameTextField, TextField priceTextField, ObservableList<EmploymentQuantity> employmentsQuantity) throws SQLException {
         Subscription newSubscription = this.makeSubscription(nameTextField, priceTextField, employmentsQuantity);
         newSubscription.setId(subscription.getId());
-
         subscriptionDAO.edit(newSubscription);
         return newSubscription;
     }

@@ -3,7 +3,6 @@ package com.fitness.Controller.Fragment.Subscription;
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Work.Employment;
-import com.fitness.Model.Work.Subscription;
 import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Work.EmploymentService;

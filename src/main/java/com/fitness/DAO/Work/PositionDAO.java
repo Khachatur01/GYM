@@ -2,7 +2,6 @@ package com.fitness.DAO.Work;
 
 import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
-import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 

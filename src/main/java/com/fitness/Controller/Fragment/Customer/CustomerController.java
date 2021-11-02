@@ -17,6 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class CustomerController extends GridPane implements Controller {
     @FXML
@@ -53,7 +54,7 @@ public class CustomerController extends GridPane implements Controller {
     private void initListeners(){
         editButton.setOnAction(event -> {
             Customer customer = customersTable.getSelectionModel().getSelectedItem();
-            customerService.setCache(customer);
+            customerService.select(customer);
             if(customer != null)
                 Window.getFragment(Fragment.EDIT_CUSTOMER).start();
         });
@@ -64,12 +65,16 @@ public class CustomerController extends GridPane implements Controller {
 
         deleteButton.setOnAction(event -> {
             Customer customer = customersTable.getSelectionModel().getSelectedItem();
-            customerService.remove(customer);
+            try {
+                customerService.remove(customer);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             customers.remove(customer);
         });
     }
 
-    private void initTable(){
+    private void initTable() throws SQLException {
         cardColumn.setCellValueFactory(new PropertyValueFactory<>("card"));
         fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         subscriptionColumn.setCellValueFactory(new PropertyValueFactory<>("subscription"));
@@ -79,7 +84,7 @@ public class CustomerController extends GridPane implements Controller {
 
         customersTable.getItems().clear();
 
-        customers.setAll(customerService.getCustomers());
+        customers.setAll(customerService.getActual());
 
         customersTable.setItems(customers);
     }
@@ -87,7 +92,11 @@ public class CustomerController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        initTable();
+        try {
+            initTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         initListeners();
     }
 
