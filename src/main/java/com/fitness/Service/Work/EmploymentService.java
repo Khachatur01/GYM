@@ -30,15 +30,9 @@ public class EmploymentService {
         return employment;
     }
 
-    public Employment add(TextField employmentNameTextField, TextField priceTextField){
+    public Employment add(TextField employmentNameTextField, TextField priceTextField) throws SQLException {
         Employment employment = this.makeEmployment(employmentNameTextField, priceTextField);
-        try {
-            employmentDAO.add(employment);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            employment = null;
-        }
-
+        employmentDAO.add(employment);
         return employment;
     }
     public Employment edit(Employment employment, TextField nameTextField, TextField priceTextField) throws SQLException {

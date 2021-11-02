@@ -48,39 +48,33 @@ public class PositionService {
         positionDAO.edit(newPosition);
         return newPosition;
     }
-    public void remove(Position position){
+    public void remove(Position position) throws SQLException {
         if(position == null) return;
 
-        ButtonType yes = new ButtonType("Ջնջել", ButtonBar.ButtonData.OK_DONE);
-        ButtonType no = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType archive = new ButtonType("Արխիվացնել", ButtonBar.ButtonData.OK_DONE);
+        ButtonType back = new ButtonType("Հետ", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType removeHistory = new ButtonType("Ջնջել պատմությունը", ButtonBar.ButtonData.OK_DONE);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Հաստատում");
         alert.setHeaderText("Հաստատեք, որ ցանկանում եք ջնջել հաստիքը");
         alert.setContentText("Ցանկանու՞մ եք ջնջել հաստիքը");
-        alert.getButtonTypes().setAll(yes, removeHistory, no);
+        alert.getButtonTypes().setAll(archive, removeHistory, back);
 
         Optional<ButtonType> result =  alert.showAndWait();
 
         if(result.isPresent()){
-            if(result.get() == yes)
-                remove(position, true);
+            if(result.get() == archive)
+                positionDAO.remove(position, false);
             else if (result.get() == removeHistory)
-                remove(position, false);
+                positionDAO.remove(position, true);
         }
     }
-    private void remove(Position position, boolean removeHistory){
-        //TODO
-        System.out.println("removed");
-    }
 
-    public Position getEmployment(Position position){
-        return null;
+    public List<Position> getActual() throws SQLException{
+        return positionDAO.getActual();
     }
-
-    public List<Position> getPositions() throws SQLException {
+    public List<Position> getAll() throws SQLException {
         return positionDAO.getAll();
     }
-    //@TODO
 }

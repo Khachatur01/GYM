@@ -95,7 +95,12 @@ public class EmploymentController extends GridPane implements Controller {
             }
         });
         addButton.setOnAction(event -> {
-            Employment employment = employmentService.add(employmentNameTextField, priceTextField);
+            Employment employment = null;
+            try {
+                employment = employmentService.add(employmentNameTextField, priceTextField);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             if(employment != null)
                 addEmploymentToGrid(employment);
         });

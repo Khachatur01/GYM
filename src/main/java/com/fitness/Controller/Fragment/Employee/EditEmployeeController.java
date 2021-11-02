@@ -50,7 +50,7 @@ public class EditEmployeeController extends GridPane implements Controller {
         loader.load();
     }
     public void loadOldData() throws SQLException {
-        positionComboBox.setItems(FXCollections.observableArrayList(positionService.getPositions()));
+        positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
         Employee employee = employeeService.getCache();
         if(employee != null)
             Fill.employee(employee, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);

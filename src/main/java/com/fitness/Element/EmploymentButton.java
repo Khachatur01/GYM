@@ -1,9 +1,7 @@
 package com.fitness.Element;
 
-import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Employment;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class EmploymentButton {

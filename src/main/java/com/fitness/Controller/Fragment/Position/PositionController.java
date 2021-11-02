@@ -67,7 +67,7 @@ public class PositionController extends GridPane implements Controller {
         positionsGridPane.setPadding(new Insets(20, 20, 20, 20));
         positionScrollPane.setContent(positionsGridPane);
 
-        List<Position> positions = positionService.getPositions();
+        List<Position> positions = positionService.getActual();
         Grid.addColumns(positionsGridPane, POSITIONS_PER_ROW);
         Grid.addRows(positionsGridPane, (int)Math.ceil(positions.size() / POSITIONS_PER_ROW));
 
@@ -88,9 +88,9 @@ public class PositionController extends GridPane implements Controller {
             PositionButton.editSelected(position);
         });
         deleteButton.setOnAction(event -> {
-            positionService.remove(PositionButton.getSelected().getPosition());
-            PositionButton.removeSelected();
             try {
+                positionService.remove(PositionButton.getSelected().getPosition());
+                PositionButton.removeSelected();
                 initGridPane();
             } catch (SQLException e) {
                 e.printStackTrace();

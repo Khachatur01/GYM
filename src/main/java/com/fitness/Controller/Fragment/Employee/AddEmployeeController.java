@@ -72,7 +72,7 @@ public class AddEmployeeController extends GridPane implements Controller {
     }
 
     public void initComboBoxes() throws SQLException {
-        positionComboBox.setItems(FXCollections.observableArrayList(positionService.getPositions()));
+        positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
     }
 
     @Override

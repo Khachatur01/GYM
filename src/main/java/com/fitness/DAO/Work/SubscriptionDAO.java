@@ -1,5 +1,6 @@
 package com.fitness.DAO.Work;
 
+import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
@@ -12,7 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDAO {
+public class SubscriptionDAO implements DAO<Subscription> {
     private List<EmploymentQuantity> getEmploymentsQuantities(Subscription subscription) throws SQLException {
         List<EmploymentQuantity> employmentQuantities = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
@@ -68,7 +69,7 @@ public class SubscriptionDAO {
         this.addEmploymentsQuantities(subscription);
     }
 
-
+    @Override
     public void add(Subscription subscription) throws SQLException {
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "INSERT INTO `subscription`(`name`, `price`) VALUES (?, ?)",
@@ -87,7 +88,7 @@ public class SubscriptionDAO {
         }
         addEmploymentsQuantities(subscription);
     }
-
+    @Override
     public void edit(Subscription subscription) throws SQLException {
         this.editEmploymentsQuantities(subscription);
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
@@ -98,7 +99,7 @@ public class SubscriptionDAO {
         preparedStatement.setLong(3, subscription.getId());
         preparedStatement.executeUpdate();
     }
-
+    @Override
     public void remove(Subscription subscription, boolean removeHistory) throws  SQLException {
         PreparedStatement preparedStatement;
         if(removeHistory) {
@@ -115,10 +116,11 @@ public class SubscriptionDAO {
         preparedStatement.executeUpdate();
     }
 
-    private List<Subscription> get(boolean actual) throws SQLException {
+    @Override
+    public List<Subscription> get(boolean actual) throws SQLException {
         List<Subscription> subscriptions = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT * FROM `subscription`" + (actual ? " `archived` = 0" : "")
+                "SELECT * FROM `subscription`" + (actual ? " WHERE `archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
         while(result.next()){
@@ -137,10 +139,11 @@ public class SubscriptionDAO {
         }
         return subscriptions;
     }
+    @Override
     public List<Subscription> getAll() throws SQLException {
         return this.get(false);
     }
-
+    @Override
     public List<Subscription> getActual() throws SQLException {
         return this.get(true);
     }
