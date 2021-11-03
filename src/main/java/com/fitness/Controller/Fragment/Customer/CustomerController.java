@@ -4,6 +4,7 @@ import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Person;
+import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Person.CustomerService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
@@ -27,7 +28,7 @@ public class CustomerController extends GridPane implements Controller {
     @FXML
     private TableColumn<Customer, Person.Name> fullNameColumn;
     @FXML
-    private TableColumn<Customer, String> subscriptionColumn;
+    private TableColumn<Customer, Subscription> subscriptionColumn;
     @FXML
     private TableColumn<Customer, String> phoneColumn;
     @FXML

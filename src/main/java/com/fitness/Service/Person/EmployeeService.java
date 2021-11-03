@@ -83,7 +83,6 @@ public class EmployeeService {
         return employeeDAO.getAll();
     }
 
-
     public Employee getSelected() {
         return selected;
     }

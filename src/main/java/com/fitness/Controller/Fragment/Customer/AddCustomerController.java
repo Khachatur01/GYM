@@ -2,8 +2,10 @@ package com.fitness.Controller.Fragment.Customer;
 
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.Model.Archive.Archive;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Work.Subscription;
+import com.fitness.Service.Archive.ArchiveService;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
@@ -13,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -38,12 +41,15 @@ public class AddCustomerController extends GridPane implements Controller {
     @FXML
     private ComboBox<Subscription> subscriptionComboBox;
     @FXML
+    private CheckBox bonusCheckBox;
+    @FXML
     private Button previousButton;
     @FXML
     private Button addButton;
 
     private CustomerService customerService = new CustomerService();
     private SubscriptionService subscriptionService = new SubscriptionService();
+    private ArchiveService archiveService = new ArchiveService();
 
     private static boolean fieldsAreClean = true;
 
@@ -80,22 +86,28 @@ public class AddCustomerController extends GridPane implements Controller {
         });
 
         addButton.setOnAction(event -> {
-            //return null when something went wrong
+            Customer customer = null;
             try {
-                if(customerService.add(
+                 customer = customerService.add(
                         cardTextField,
                         nameTextField,
                         surnameTextField,
                         phoneTextField,
                         phone2TextField,
                         addressTextField,
-                        subscriptionComboBox) != null) {
+                        subscriptionComboBox
+                );
+
+                if(customer != null) {
+                    archiveService.add(this.makeArchive(customer));
+
                     this.stop();
                     Window.getFragment(Fragment.CUSTOMER).start();
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         });
 
         previousButton.setOnAction(event -> {
@@ -107,6 +119,14 @@ public class AddCustomerController extends GridPane implements Controller {
     }
     public void initComboBox() throws SQLException {
         subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
+    }
+
+    private Archive makeArchive(Customer customer){
+        Archive archive = new Archive();
+        archive.setCustomer(customer);
+        archive.setRegistration(true);
+        archive.setBonus(bonusCheckBox.isSelected());
+        return archive;
     }
 
     @Override

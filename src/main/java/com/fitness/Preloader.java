@@ -19,9 +19,8 @@ public class Preloader extends Thread{
     @Override
     public void run(){
         try {
-            //heavy task
+            //heavy tasks
             DB.connect();
-            // very heavy task
             window.initMenuPanes();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
@@ -31,8 +30,8 @@ public class Preloader extends Thread{
                 window.close(this.stage);
 
                 Stage stage = new Stage();
-                stage.setMinWidth(1090);
-                stage.setMinHeight(640);
+                stage.setMinWidth(1300);
+                stage.setMinHeight(690);
 
                 window.open(Page.MENU.getValue(), stage);
             } catch (IOException e) {
