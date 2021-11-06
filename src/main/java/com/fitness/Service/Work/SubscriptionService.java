@@ -98,4 +98,7 @@ public class SubscriptionService {
         return subscriptionDAO.getAll();
     }
 
+    public Subscription getById(long id) throws SQLException {
+        return subscriptionDAO.getById(id);
+    }
 }

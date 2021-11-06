@@ -15,6 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO implements DAO<Employee> {
+    private Employee make(ResultSet result) throws SQLException {
+        return new Employee(
+                result.getLong("employee.id"),
+                new Person.Name(
+                        result.getString("employee.name"),
+                        result.getString("employee.surname")
+                ),
+                result.getString("employee.phone"),
+                result.getString("employee.phone2"),
+                result.getString("employee.address"),
+                new Position(
+                        result.getLong("position.id"),
+                        result.getString("position.name"),
+                        new Employment(
+                                result.getLong("employment.id"),
+                                result.getString("employment.name"),
+                                result.getInt("employment.price"),
+                                result.getBoolean("employment.archived")
+                        ),
+                        result.getBoolean("position.archived")
+                ),
+                result.getBoolean("archived")
+        );
+    }
     @Override
     public void add(Employee employee) throws SQLException {
         if(employee == null) return;
@@ -85,32 +109,9 @@ public class EmployeeDAO implements DAO<Employee> {
                         (actual ? "  `archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
-        while(result.next()){
-            Employee employee = new Employee(
-                    result.getLong("employee.id"),
-                    new Person.Name(
-                            result.getString("employee.name"),
-                            result.getString("employee.surname")
-                    ),
-                    result.getString("employee.phone"),
-                    result.getString("employee.phone2"),
-                    result.getString("employee.address"),
-                    new Position(
-                            result.getLong("position.id"),
-                            result.getString("position.name"),
-                            new Employment(
-                                    result.getLong("employment.id"),
-                                    result.getString("employment.name"),
-                                    result.getInt("employment.price"),
-                                    result.getBoolean("employment.archived")
-                            ),
-                            result.getBoolean("position.archived")
-                    ),
-                    result.getBoolean("archived")
-            );
+        while(result.next())
+            employees.add(this.make(result));
 
-            employees.add(employee);
-        }
         return employees;
     }
 
@@ -122,5 +123,23 @@ public class EmployeeDAO implements DAO<Employee> {
     @Override
     public List<Employee> getActual() throws SQLException {
         return this.get(true);
+    }
+
+    public List<Employee> getBy(Employment employment, boolean actual) throws SQLException {
+        if(employment == null) return null;
+        List<Employee> employees = new ArrayList<>();
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT * FROM `employee`, `position`, `employment` WHERE " +
+                        "`employee`.`position_id` = `position`.`id` AND " +
+                        "`position`.`employment_id` = `employment`.`id` AND " +
+                        "`employment`.`id` = ?" +
+                        (actual ? " AND `employee`.`archived` = 0" : "")
+        );
+        preparedStatement.setLong(1, employment.getId());
+        ResultSet result = preparedStatement.executeQuery();
+        while(result.next())
+            employees.add(this.make(result));
+
+        return employees;
     }
 }

@@ -1,11 +1,14 @@
 package com.fitness.Service;
 
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 
 public class Clear {
+    public static void label(Label...labels){
+        for(Label label: labels) {
+            label.setText("");
+        }
+    }
     public static void textField(TextField ...textFields){
         for(TextField textField: textFields) {
             textField.setText("");
@@ -23,6 +26,12 @@ public class Clear {
     public static void table(TableView ...tableViews) {
         for(TableView tableView: tableViews){
             tableView.getItems().clear();
+        }
+    }
+
+    public static void checkBox(CheckBox ...checkBoxes) {
+        for(CheckBox checkBox: checkBoxes){
+            checkBox.setSelected(false);
         }
     }
 }

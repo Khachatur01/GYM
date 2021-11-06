@@ -4,16 +4,21 @@ import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Person;
+import com.fitness.Model.Work.Employment;
+import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
+import com.fitness.Service.Work.SubscriptionService;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CustomerDAO implements DAO<Customer>{
+    private SubscriptionService subscriptionService = new SubscriptionService();
     private Customer make(ResultSet result) throws SQLException {
         return new Customer(
                 result.getLong("customer.id"),
@@ -44,10 +49,23 @@ public class CustomerDAO implements DAO<Customer>{
         );
         preparedStatement.setString(1, card);
         ResultSet result = preparedStatement.executeQuery();
-        while(result.next()){
+        if(result.next()){
             customer = this.make(result);
         }
         return customer;
+    }
+
+    public Date getLastVisit(Customer customer) throws SQLException {
+        Date date = null;
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT `date` FROM `archive`, `customer` WHERE `customer`.`id` = `archive`.`customer_id` AND `customer`.`id` = ? ORDER BY `archive`.`date` DESC LIMIT 1"
+        );
+        preparedStatement.setLong(1, customer.getId());
+        ResultSet result = preparedStatement.executeQuery();
+        if(result.next()){
+            date = result.getDate("archive.date");
+        }
+        return date;
     }
 
     @Override
@@ -68,10 +86,9 @@ public class CustomerDAO implements DAO<Customer>{
         preparedStatement.executeUpdate();
 
         /* set generated id to new created customer */
-        try (ResultSet generatedId = preparedStatement.getGeneratedKeys()) {
-            if (generatedId.next()) {
-                customer.setId(generatedId.getLong(1));
-            }
+        ResultSet generatedId = preparedStatement.getGeneratedKeys();
+        if (generatedId.next()) {
+            customer.setId(generatedId.getLong(1));
         }
     }
 
@@ -134,5 +151,41 @@ public class CustomerDAO implements DAO<Customer>{
     @Override
     public List<Customer> getActual() throws SQLException {
         return this.get(true);
+    }
+
+    /* get non bonus visits count by employment */
+    private int getEmploymentQuantity(Customer customer, Employment employment) throws SQLException {
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT count(`archive`.`id`) AS 'quantity' FROM `archive`, `employee`, `position`, `employment` WHERE " +
+                        "`archive`.`customer_id` = ? AND " +
+                        "`archive`.`employee_id` = `employee`.`id` AND " +
+                        "`employee`.`position_id` = `position`.`id` AND " +
+                        "`position`.`employment_id` = `employment`.`id` AND " +
+                        "`archive`.`registration` = 0 AND " +
+                        "`archive`.`bonus` = 0 AND " +
+                        "`employment`.`id` = ?"
+        );
+        preparedStatement.setLong(1, customer.getId());
+        preparedStatement.setLong(2, employment.getId());
+
+        ResultSet result = preparedStatement.executeQuery();
+        if(result.next()){
+            return result.getInt("quantity");
+        }
+        return 0;
+    }
+
+    public List<EmploymentQuantity> getAvailableEmploymentQuantities(Customer customer) throws SQLException{
+        List<EmploymentQuantity> employmentQuantities = subscriptionService.getById(customer.getSubscription().getId()).getEmploymentsQuantities();
+
+        for(EmploymentQuantity employmentQuantity: employmentQuantities){
+            int maxQuantity = employmentQuantity.getQuantity();
+            int employmentVisitsQuantity = this.getEmploymentQuantity(customer, employmentQuantity.getEmployment());
+            int availableEmployment = maxQuantity - employmentVisitsQuantity;
+
+            employmentQuantity.setQuantity(availableEmployment);
+        }
+
+        return employmentQuantities;
     }
 }

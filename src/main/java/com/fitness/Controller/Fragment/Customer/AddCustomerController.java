@@ -86,9 +86,8 @@ public class AddCustomerController extends GridPane implements Controller {
         });
 
         addButton.setOnAction(event -> {
-            Customer customer = null;
             try {
-                 customer = customerService.add(
+                Customer customer = customerService.add(
                         cardTextField,
                         nameTextField,
                         surnameTextField,
@@ -99,7 +98,7 @@ public class AddCustomerController extends GridPane implements Controller {
                 );
 
                 if(customer != null) {
-                    archiveService.add(this.makeArchive(customer));
+                    archiveService.add(customer, null, true, bonusCheckBox.isSelected());
 
                     this.stop();
                     Window.getFragment(Fragment.CUSTOMER).start();
@@ -119,14 +118,6 @@ public class AddCustomerController extends GridPane implements Controller {
     }
     public void initComboBox() throws SQLException {
         subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
-    }
-
-    private Archive makeArchive(Customer customer){
-        Archive archive = new Archive();
-        archive.setCustomer(customer);
-        archive.setRegistration(true);
-        archive.setBonus(bonusCheckBox.isSelected());
-        return archive;
     }
 
     @Override

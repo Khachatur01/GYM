@@ -148,4 +148,27 @@ public class SubscriptionDAO implements DAO<Subscription> {
     public List<Subscription> getActual() throws SQLException {
         return this.get(true);
     }
+
+    public Subscription getById(long id) throws SQLException {
+        Subscription subscription = null;
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT * FROM `subscription` WHERE `id` = ?"
+        );
+        preparedStatement.setLong(1, id);
+        ResultSet result = preparedStatement.executeQuery();
+        if(result.next()) {
+            subscription = new Subscription(
+                    result.getLong("id"),
+                    result.getString("name"),
+                    result.getInt("price"),
+                    null,
+                    result.getBoolean("archived")
+            );
+            subscription.setEmploymentsQuantities(
+                    this.getEmploymentsQuantities(subscription)
+            );
+
+        }
+        return subscription;
+    }
 }

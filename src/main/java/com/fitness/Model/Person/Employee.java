@@ -29,4 +29,9 @@ public class Employee extends Person{
     public void setArchived(boolean archived) {
         this.archived = archived;
     }
+
+    @Override
+    public String toString(){
+        return this.getFullName();
+    }
 }

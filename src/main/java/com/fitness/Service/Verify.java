@@ -1,6 +1,7 @@
 package com.fitness.Service;
 
 
+import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Subscription;
@@ -130,6 +131,16 @@ public class Verify {
         }
 
         quantityTextField.getStyleClass().remove("textField_error");
+        return true;
+    }
+
+    public static boolean employee(Employee employee, ComboBox<Employee> employeeComboBox) {
+        if(employee == null){
+            employeeComboBox.getStyleClass().add("combo-box_error");
+            return false;
+        }
+
+        employeeComboBox.getStyleClass().remove("combo-box_error");
         return true;
     }
 }

@@ -3,11 +3,13 @@ package com.fitness.Service.Person;
 import com.fitness.DAO.Person.CustomerDAO;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Person;
+import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Verify;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +89,13 @@ public class CustomerService {
     }
     public Customer getByCard(String card) throws SQLException {
         return customerDAO.getByCard(card);
+    }
+    public Date getLastVisit(Customer customer) throws SQLException {
+        return customerDAO.getLastVisit(customer);
+    }
+    /* get non bonus visits count by employment */
+    public List<EmploymentQuantity> getAvailableEmploymentQuantities(Customer customer) throws SQLException {
+        return customerDAO.getAvailableEmploymentQuantities(customer);
     }
 
     public Customer getSelected(){

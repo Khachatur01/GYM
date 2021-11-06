@@ -3,8 +3,10 @@ package com.fitness.Service.Person;
 import com.fitness.DAO.Person.EmployeeDAO;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
+import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Verify;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
@@ -82,6 +84,9 @@ public class EmployeeService {
     public List<Employee> getAll() throws SQLException{
         return employeeDAO.getAll();
     }
+    public List<Employee> getBy(Employment selectedEmployment, boolean actual) throws SQLException {
+        return employeeDAO.getBy(selectedEmployment, actual);
+    }
 
     public Employee getSelected() {
         return selected;
@@ -94,4 +99,5 @@ public class EmployeeService {
     public void removeSelected(){
         EmployeeService.selected = null;
     }
+
 }
