@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Customer;
 
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Clear;
@@ -12,10 +13,13 @@ import com.fitness.Window;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -29,10 +33,8 @@ public class EditCustomerController extends GridPane implements Controller {
     private TextField surnameTextField;
     @FXML
     private TextField addressTextField;
-    @FXML
-    private TextField phoneTextField;
-    @FXML
-    private TextField phone2TextField;
+    private MaskField phoneMaskField;
+    private MaskField phone2MaskField;
     @FXML
     private ComboBox<Subscription> subscriptionComboBox;
     @FXML
@@ -49,13 +51,32 @@ public class EditCustomerController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        phoneMaskField = new MaskField();
+        phoneMaskField.setMask("+374(DD) DD-DD-DD");
+        phoneMaskField.getStyleClass().add("textField");
+        GridPane.setValignment(phoneMaskField, VPos.CENTER);
+        GridPane.setHalignment(phoneMaskField, HPos.RIGHT);
+        GridPane.setVgrow(phoneMaskField, Priority.ALWAYS);
+        GridPane.setHgrow(phoneMaskField, Priority.ALWAYS);
+
+        phone2MaskField = new MaskField();
+        phone2MaskField.setMask("+374(DD) DD-DD-DD");
+        phone2MaskField.getStyleClass().add("textField");
+        GridPane.setValignment(phone2MaskField, VPos.CENTER);
+        GridPane.setHalignment(phone2MaskField, HPos.RIGHT);
+        GridPane.setVgrow(phone2MaskField, Priority.ALWAYS);
+        GridPane.setHgrow(phone2MaskField, Priority.ALWAYS);
+
+        this.add(phoneMaskField, 1, 6);
+        this.add(phone2MaskField, 1, 7);
     }
 
     public void loadOldData() throws SQLException {
         subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
         customer = customerService.getSelected();
         if(customer != null)
-            Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, subscriptionComboBox);
+            Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, subscriptionComboBox);
     }
     public void initListeners(){
         editButton.setOnAction(event -> {
@@ -66,8 +87,8 @@ public class EditCustomerController extends GridPane implements Controller {
                         cardTextField,
                         nameTextField,
                         surnameTextField,
-                        phoneTextField,
-                        phone2TextField,
+                        phoneMaskField,
+                        phone2MaskField,
                         addressTextField,
                         subscriptionComboBox) != null) {
                     this.stop();
@@ -102,9 +123,11 @@ public class EditCustomerController extends GridPane implements Controller {
                 cardTextField,
                 nameTextField,
                 surnameTextField,
-                phoneTextField,
-                phone2TextField,
                 addressTextField
+        );
+        Clear.maskField(
+                phoneMaskField,
+                phone2MaskField
         );
         Clear.comboBox(subscriptionComboBox);
     }

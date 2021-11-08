@@ -175,5 +175,7 @@ public class WithCardController extends GridPane implements Controller {
         );
         Clear.table(employmentQuantityTable);
         Clear.checkBox(bonusCheckBox);
+        fieldsAreClean = true;
+        selectedCustomer = null;
     }
 }

@@ -105,8 +105,8 @@ public class EmployeeDAO implements DAO<Employee> {
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT * FROM `employee`, `position`, `employment` WHERE " +
                         "`employee`.`position_id` = `position`.`id` AND" +
-                        "`position`.`employment_id` = `employment`.`id`" +
-                        (actual ? "  `archived` = 0" : "")
+                        "`position`.`employment_id` = `employment`.`id` AND " +
+                        (actual ? "  `employee`.`archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
         while(result.next())
@@ -126,13 +126,13 @@ public class EmployeeDAO implements DAO<Employee> {
     }
 
     public List<Employee> getBy(Employment employment, boolean actual) throws SQLException {
-        if(employment == null) return null;
+        if(employment == null) return new ArrayList<>();
         List<Employee> employees = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT * FROM `employee`, `position`, `employment` WHERE " +
                         "`employee`.`position_id` = `position`.`id` AND " +
                         "`position`.`employment_id` = `employment`.`id` AND " +
-                        "`employment`.`id` = ?" +
+                        "`employment`.`id` = ? " +
                         (actual ? " AND `employee`.`archived` = 0" : "")
         );
         preparedStatement.setLong(1, employment.getId());

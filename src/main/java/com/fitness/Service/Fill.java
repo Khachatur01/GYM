@@ -1,5 +1,6 @@
 package com.fitness.Service;
 
+import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.EmploymentQuantity;
@@ -13,7 +14,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 public class Fill {
     private static SubscriptionService subscriptionService = new SubscriptionService();
     private static CustomerService customerService = new CustomerService();
-    public static void customer(Customer customer, TextField cardTextField, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
+    public static void customer(Customer customer, TextField cardTextField, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
         cardTextField.setText(customer.getCard());
         nameTextField.setText(customer.getName().getFirstName());
         surnameTextField.setText(customer.getName().getLastName());
@@ -53,8 +53,15 @@ public class Fill {
 
         }
     }
+    public static void guestCustomer(Customer customer, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField){
+        nameTextField.setText(customer.getName().getFirstName());
+        surnameTextField.setText(customer.getName().getLastName());
+        phoneTextField.setText(customer.getPhone());
+        phone2TextField.setText(customer.getPhone2());
+        addressTextField.setText(customer.getAddress());
+    }
 
-    public static void employee(Employee employee, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox) {
+    public static void employee(Employee employee, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox) {
         nameTextField.setText(employee.getName().getFirstName());
         surnameTextField.setText(employee.getName().getLastName());
         phoneTextField.setText(employee.getPhone());

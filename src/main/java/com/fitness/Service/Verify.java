@@ -1,6 +1,7 @@
 package com.fitness.Service;
 
 
+import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
@@ -49,14 +50,25 @@ public class Verify {
         addressTextField.getStyleClass().remove("textField_error");
         return true;
     }
-    public static boolean phone(String phone, TextField phoneTextField){
-        if(phone.trim().equals("")){
-            phoneTextField.getStyleClass().add("textField_error");
-            phoneTextField.requestFocus();
+    public static boolean phone(String phone, MaskField phoneMaskField){
+        if(!MaskField.isFill(phone)){
+            phoneMaskField.getStyleClass().add("textField_error");
+            phoneMaskField.requestFocus();
             return false;
         }
 
-        phoneTextField.getStyleClass().remove("textField_error");
+        phoneMaskField.getStyleClass().remove("textField_error");
+        return true;
+    }
+
+    public static boolean phone2(String phone2, MaskField phone2MaskField){
+        if(!MaskField.isFill(phone2) && phone2MaskField.getPlainText().length() != 0){
+            phone2MaskField.getStyleClass().add("textField_error");
+            phone2MaskField.requestFocus();
+            return false;
+        }
+
+        phone2MaskField.getStyleClass().remove("textField_error");
         return true;
     }
 

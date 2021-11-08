@@ -40,33 +40,6 @@ public class CustomerDAO implements DAO<Customer>{
                 result.getBoolean("customer.archived")
         );
     }
-    public Customer getByCard(String card) throws SQLException {
-        Customer customer = null;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT * FROM `customer`, `subscription` WHERE " +
-                        "`customer`.`subscription_id` = `subscription`.`id` AND " +
-                        "`card` = ?"
-        );
-        preparedStatement.setString(1, card);
-        ResultSet result = preparedStatement.executeQuery();
-        if(result.next()){
-            customer = this.make(result);
-        }
-        return customer;
-    }
-
-    public Date getLastVisit(Customer customer) throws SQLException {
-        Date date = null;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT `date` FROM `archive`, `customer` WHERE `customer`.`id` = `archive`.`customer_id` AND `customer`.`id` = ? ORDER BY `archive`.`date` DESC LIMIT 1"
-        );
-        preparedStatement.setLong(1, customer.getId());
-        ResultSet result = preparedStatement.executeQuery();
-        if(result.next()){
-            date = result.getDate("archive.date");
-        }
-        return date;
-    }
 
     @Override
     public void add(Customer customer) throws SQLException {
@@ -83,6 +56,25 @@ public class CustomerDAO implements DAO<Customer>{
         preparedStatement.setString(6, customer.getPhone2());
         preparedStatement.setString(7, customer.getAddress());
         preparedStatement.setBoolean(8, customer.isArchived());
+        preparedStatement.executeUpdate();
+
+        /* set generated id to new created customer */
+        ResultSet generatedId = preparedStatement.getGeneratedKeys();
+        if (generatedId.next()) {
+            customer.setId(generatedId.getLong(1));
+        }
+    }
+    public void addGuest(Customer customer) throws SQLException {
+        if(customer == null) return;
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "INSERT INTO `customer`(`name`, `surname`, `phone`, `phone2`, `address`) VALUES(?, ?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS
+        );
+        preparedStatement.setString(1, customer.getName().getFirstName());
+        preparedStatement.setString(2, customer.getName().getLastName());
+        preparedStatement.setString(3, customer.getPhone());
+        preparedStatement.setString(4, customer.getPhone2());
+        preparedStatement.setString(5, customer.getAddress());
         preparedStatement.executeUpdate();
 
         /* set generated id to new created customer */
@@ -187,5 +179,50 @@ public class CustomerDAO implements DAO<Customer>{
         }
 
         return employmentQuantities;
+    }
+
+    public Customer getByCard(String card) throws SQLException {
+        Customer customer = null;
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT * FROM `customer`, `subscription` WHERE " +
+                        "`customer`.`subscription_id` = `subscription`.`id` AND " +
+                        "`card` = ?"
+        );
+        preparedStatement.setString(1, card);
+        ResultSet result = preparedStatement.executeQuery();
+        if(result.next()){
+            customer = this.make(result);
+        }
+        return customer;
+    }
+
+    public Customer getByPhone(String phone) throws SQLException {
+        Customer customer = null;
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT * FROM `customer`, `subscription` WHERE " +
+                        "`subscription_id` IS NULL AND " +
+                        "`phone` = ? OR `phone2` = ?"
+        );
+        preparedStatement.setString(1, phone);
+        preparedStatement.setString(2, phone);
+
+        ResultSet result = preparedStatement.executeQuery();
+        if(result.next()){
+            customer = this.make(result);
+        }
+        return customer;
+    }
+
+    public Date getLastVisit(Customer customer) throws SQLException {
+        Date date = null;
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT `date` FROM `archive`, `customer` WHERE `customer`.`id` = `archive`.`customer_id` AND `customer`.`id` = ? ORDER BY `archive`.`date` DESC LIMIT 1"
+        );
+        preparedStatement.setLong(1, customer.getId());
+        ResultSet result = preparedStatement.executeQuery();
+        if(result.next()){
+            date = result.getDate("archive.date");
+        }
+        return date;
     }
 }

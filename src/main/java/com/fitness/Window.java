@@ -17,7 +17,6 @@ import com.fitness.Controller.Fragment.SettingsController;
 import com.fitness.Controller.Fragment.Subscription.AddSubscriptionController;
 import com.fitness.Controller.Fragment.Subscription.EditSubscriptionController;
 import com.fitness.Controller.Fragment.Subscription.SubscriptionController;
-import com.fitness.Style.ButtonStyle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -47,8 +46,9 @@ public class Window {
     }
 
     private static void changeActiveButton(Button selected){
-        ButtonStyle.unselect(Window.activeButton);
-        ButtonStyle.select(selected);
+        if(Window.activeButton != null)
+            Window.activeButton.getStyleClass().remove("selected");
+        selected.getStyleClass().add("selected");
         Window.activeButton = selected;
     }
 

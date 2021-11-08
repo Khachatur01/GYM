@@ -1,5 +1,6 @@
 package com.fitness.Service;
 
+import com.fitness.Element.MaskField;
 import javafx.scene.control.*;
 
 
@@ -13,6 +14,13 @@ public class Clear {
         for(TextField textField: textFields) {
             textField.setText("");
             textField.getStyleClass()
+                    .remove("textField_error");
+        }
+    }
+    public static void maskField(MaskField...maskFields){
+        for(MaskField maskField: maskFields) {
+            maskField.setPlainText("");
+            maskField.getStyleClass()
                     .remove("textField_error");
         }
     }

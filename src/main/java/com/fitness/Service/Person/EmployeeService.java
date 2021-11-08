@@ -1,6 +1,7 @@
 package com.fitness.Service.Person;
 
 import com.fitness.DAO.Person.EmployeeDAO;
+import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Employment;
@@ -17,18 +18,19 @@ public class EmployeeService {
     private static Employee selected = null;
     private EmployeeDAO employeeDAO = new EmployeeDAO();
 
-    private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox){
+    private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ComboBox<Position> positionComboBox){
         Employee employee = null;
         String name = nameTextField.getText();
         String surname = surnameTextField.getText();
-        String phone = phoneTextField.getText();
-        String phone2 = phone2TextField.getText();
+        String phone = phoneMaskField.getText();
+        String phone2 = phone2MaskField.getText();
         String address = addressTextField.getText();
         Position position = positionComboBox.getValue();
 
         if(     Verify.name(name, nameTextField) &&
                 Verify.surname(surname, surnameTextField) &&
-                Verify.phone(phone, phoneTextField) &&
+                Verify.phone(phone, phoneMaskField) &&
+                Verify.phone2(phone2, phone2MaskField) &&
                 Verify.address(address, addressTextField) &&
                 Verify.position(position, positionComboBox)
         ){
@@ -42,14 +44,14 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee add(TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox) throws SQLException {
-        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
+    public Employee add(TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ComboBox<Position> positionComboBox) throws SQLException {
+        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, positionComboBox);
         employeeDAO.add(newEmployee);
         return newEmployee;
     }
 
-    public Employee edit(Employee employee, TextField nameTextField, TextField surnameTextField, TextField phoneTextField, TextField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox) throws SQLException {
-        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField, positionComboBox);
+    public Employee edit(Employee employee, TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ComboBox<Position> positionComboBox) throws SQLException {
+        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, positionComboBox);
         newEmployee.setId(employee.getId());
         employeeDAO.edit(newEmployee);
         return newEmployee;
