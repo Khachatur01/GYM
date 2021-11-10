@@ -104,9 +104,9 @@ public class EmployeeDAO implements DAO<Employee> {
         List<Employee> employees = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT * FROM `employee`, `position`, `employment` WHERE " +
-                        "`employee`.`position_id` = `position`.`id` AND" +
-                        "`position`.`employment_id` = `employment`.`id` AND " +
-                        (actual ? "  `employee`.`archived` = 0" : "")
+                        "`employee`.`position_id` = `position`.`id` AND " +
+                        "`position`.`employment_id` = `employment`.`id`" +
+                        (actual ? " AND `employee`.`archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
         while(result.next())
