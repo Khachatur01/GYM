@@ -6,6 +6,7 @@ import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
+import com.fitness.Service.Create;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,30 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO implements DAO<Employee> {
-    private Employee make(ResultSet result) throws SQLException {
-        return new Employee(
-                result.getLong("employee.id"),
-                new Person.Name(
-                        result.getString("employee.name"),
-                        result.getString("employee.surname")
-                ),
-                result.getString("employee.phone"),
-                result.getString("employee.phone2"),
-                result.getString("employee.address"),
-                new Position(
-                        result.getLong("position.id"),
-                        result.getString("position.name"),
-                        new Employment(
-                                result.getLong("employment.id"),
-                                result.getString("employment.name"),
-                                result.getInt("employment.price"),
-                                result.getBoolean("employment.archived")
-                        ),
-                        result.getBoolean("position.archived")
-                ),
-                result.getBoolean("archived")
-        );
-    }
     @Override
     public void add(Employee employee) throws SQLException {
         if(employee == null) return;
@@ -109,9 +86,17 @@ public class EmployeeDAO implements DAO<Employee> {
                         (actual ? " AND `employee`.`archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
-        while(result.next())
-            employees.add(this.make(result));
+        while(result.next()){
+            Employment employment = Create.employment(result);
 
+            Position position = Create.position(result);
+            position.setEmployment(employment);
+
+            Employee employee = Create.employee(result);
+            employee.setPosition(position);
+
+            employees.add(employee);
+        }
         return employees;
     }
 
@@ -137,8 +122,15 @@ public class EmployeeDAO implements DAO<Employee> {
         );
         preparedStatement.setLong(1, employment.getId());
         ResultSet result = preparedStatement.executeQuery();
-        while(result.next())
-            employees.add(this.make(result));
+        while(result.next()){
+            Position position = Create.position(result);
+            position.setEmployment(employment);
+
+            Employee employee = Create.employee(result);
+            employee.setPosition(position);
+
+            employees.add(employee);
+        }
 
         return employees;
     }

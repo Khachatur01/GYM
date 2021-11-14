@@ -3,6 +3,7 @@ package com.fitness.DAO.Work;
 import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
 import com.fitness.Model.Work.Employment;
+import com.fitness.Service.Create;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,16 +64,9 @@ public class EmploymentDAO implements DAO<Employment> {
                 "SELECT * FROM `employment`" + (actual ? " WHERE `archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
-        while(result.next()){
-            Employment employment = new Employment(
-                    result.getLong("id"),
-                    result.getString("name"),
-                    result.getInt("price"),
-                    result.getBoolean("archived")
-            );
+        while(result.next())
+            employments.add(Create.employment(result));
 
-            employments.add(employment);
-        }
         return employments;
     }
     @Override

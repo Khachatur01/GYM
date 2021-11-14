@@ -7,6 +7,7 @@ import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
+import com.fitness.Service.Create;
 import com.fitness.Service.Work.SubscriptionService;
 
 import java.sql.PreparedStatement;
@@ -19,27 +20,6 @@ import java.util.List;
 
 public class CustomerDAO implements DAO<Customer>{
     private SubscriptionService subscriptionService = new SubscriptionService();
-    private Customer make(ResultSet result) throws SQLException {
-        return new Customer(
-                result.getLong("customer.id"),
-                new Person.Name(
-                        result.getString("customer.name"),
-                        result.getString("customer.surname")
-                ),
-                result.getString("customer.card"),
-                result.getString("customer.phone"),
-                result.getString("customer.phone2"),
-                result.getString("customer.address"),
-                new Subscription(
-                        result.getLong("subscription.id"),
-                        result.getString("subscription.name"),
-                        result.getInt("subscription.price"),
-                        null,
-                        result.getBoolean("subscription.archived")
-                ),
-                result.getBoolean("customer.archived")
-        );
-    }
 
     @Override
     public void add(Customer customer) throws SQLException {
@@ -129,8 +109,12 @@ public class CustomerDAO implements DAO<Customer>{
                         (actual ? " AND `customer`.`archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
-        while(result.next()){
-            customers.add(this.make(result));
+        if(result.next()){
+            Subscription subscription = Create.subscription(result);
+            Customer customer = Create.customer(result);
+            customer.setSubscription(subscription);
+
+            customers.add(customer);
         }
         return customers;
     }
@@ -191,7 +175,9 @@ public class CustomerDAO implements DAO<Customer>{
         preparedStatement.setString(1, card);
         ResultSet result = preparedStatement.executeQuery();
         if(result.next()){
-            customer = this.make(result);
+            Subscription subscription = Create.subscription(result);
+            customer = Create.customer(result);
+            customer.setSubscription(subscription);
         }
         return customer;
     }
@@ -208,7 +194,9 @@ public class CustomerDAO implements DAO<Customer>{
 
         ResultSet result = preparedStatement.executeQuery();
         if(result.next()){
-            customer = this.make(result);
+            Subscription subscription = Create.subscription(result);
+            customer = Create.customer(result);
+            customer.setSubscription(subscription);
         }
         return customer;
     }

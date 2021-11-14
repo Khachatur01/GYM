@@ -5,6 +5,7 @@ import com.fitness.DataSource.DB;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
+import com.fitness.Service.Create;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,15 +26,7 @@ public class SubscriptionDAO implements DAO<Subscription> {
         ResultSet result = preparedStatement.executeQuery();
         while(result.next()){
             employmentQuantities.add(
-                    new EmploymentQuantity(
-                            new Employment(
-                                    result.getLong("id"),
-                                    result.getString("name"),
-                                    result.getInt("price"),
-                                    result.getBoolean("archived")
-                            ),
-                            result.getInt("quantity")
-                    )
+                    Create.employmentQuantity(result)
             );
         }
         return employmentQuantities;
@@ -125,13 +118,8 @@ public class SubscriptionDAO implements DAO<Subscription> {
         );
         ResultSet result = preparedStatement.executeQuery();
         while(result.next()){
-            Subscription subscription = new Subscription(
-                    result.getLong("id"),
-                    result.getString("name"),
-                    result.getInt("price"),
-                    null,
-                    result.getBoolean("archived")
-            );
+            Subscription subscription = Create.subscription(result);
+
             subscription.setEmploymentsQuantities(
                     this.getEmploymentsQuantities(subscription)
             );
@@ -157,17 +145,10 @@ public class SubscriptionDAO implements DAO<Subscription> {
         preparedStatement.setLong(1, id);
         ResultSet result = preparedStatement.executeQuery();
         if(result.next()) {
-            subscription = new Subscription(
-                    result.getLong("id"),
-                    result.getString("name"),
-                    result.getInt("price"),
-                    null,
-                    result.getBoolean("archived")
-            );
+            subscription = Create.subscription(result);
             subscription.setEmploymentsQuantities(
                     this.getEmploymentsQuantities(subscription)
             );
-
         }
         return subscription;
     }

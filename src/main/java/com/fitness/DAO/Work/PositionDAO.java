@@ -4,6 +4,7 @@ import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
+import com.fitness.Service.Create;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,27 +53,19 @@ public class PositionDAO implements DAO<Position> {
 
     @Override
     public List<Position> get(boolean actual) throws SQLException {
+        List<Position> positions = new ArrayList<>();
         Statement statement = DB.getConnection().createStatement();
-        ResultSet resultSet = statement.executeQuery(
+        ResultSet result = statement.executeQuery(
                 "SELECT * FROM `position`, `employment` WHERE `position`.`employment_id` = `employment`.`id`"
                     + (actual ? " AND `position`.`archived` = 0 AND `employment`.`archived` = 0" : "")
         );
-        List<Position> positions = new ArrayList<>();
-        while(resultSet.next())
-            positions.add(
-                    new Position(
-                            resultSet.getInt("position.id"),
-                            resultSet.getString("position.name"),
-                            new Employment(
-                                    resultSet.getInt("employment.id"),
-                                    resultSet.getString("employment.name"),
-                                    resultSet.getInt("employment.price"),
-                                    resultSet.getBoolean("employment.archived")
-                            ),
-                            resultSet.getBoolean("position.archived")
-                    )
-            );
+        while(result.next()){
+            Employment employment = Create.employment(result);
+            Position position = Create.position(result);
+            position.setEmployment(employment);
 
+            positions.add(position);
+        }
         return positions;
     }
 
@@ -85,6 +78,4 @@ public class PositionDAO implements DAO<Position> {
     public List<Position> getActual() throws SQLException {
         return this.get(true);
     }
-
-
 }
