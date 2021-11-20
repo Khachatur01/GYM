@@ -87,6 +87,7 @@ public class WithCardController extends GridPane implements Controller {
                 Clear.table(employmentQuantityTable);
                 fieldsAreClean = true;
                 selectedCustomer = null;
+                enterButton.setDisable(false);
             } else if (customer != null){
                 Fill.customerStatic(
                         customer,
@@ -102,6 +103,11 @@ public class WithCardController extends GridPane implements Controller {
                 selectedCustomer = customer;
 
                 try {
+                    if(customerService.hasAvailableEmployment(customer))
+                        enterButton.setDisable(false);
+                    else
+                        enterButton.setDisable(true);
+
                     initEmploymentComboBox(customer);
                 } catch (SQLException e) {
                     e.printStackTrace();

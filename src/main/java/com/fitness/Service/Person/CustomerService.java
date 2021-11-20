@@ -111,6 +111,10 @@ public class CustomerService {
         }
     }
 
+    public void remove(Customer customer, boolean removeHistory) throws SQLException {
+        customerDAO.remove(customer, removeHistory);
+    }
+
     public List<Customer> getActual() throws SQLException{
         return customerDAO.getActual();
     }
@@ -125,6 +129,18 @@ public class CustomerService {
     }
     public Date getLastVisit(Customer customer) throws SQLException {
         return customerDAO.getLastVisit(customer);
+    }
+
+    public boolean hasAvailableEmployment(Customer customer) throws SQLException {
+        boolean hasAvailableEmployment = false;
+        List<EmploymentQuantity> employmentQuantities = this.getAvailableEmploymentQuantities(customer);
+        for(EmploymentQuantity employmentQuantity: employmentQuantities) {
+            if(employmentQuantity.getQuantity() != 0) {
+                hasAvailableEmployment = true;
+                break;
+            }
+        }
+        return hasAvailableEmployment;
     }
     /* get non bonus visits count by employment */
     public List<EmploymentQuantity> getAvailableEmploymentQuantities(Customer customer) throws SQLException {

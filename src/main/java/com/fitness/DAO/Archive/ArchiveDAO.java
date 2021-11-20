@@ -6,7 +6,9 @@ import com.fitness.Model.Archive.Archive;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
+import com.fitness.Model.Report.Report;
 import com.fitness.Model.Work.Employment;
+import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Create;
@@ -70,7 +72,7 @@ public class ArchiveDAO implements DAO<Archive> {
         return null;
     }
 
-    public List<Archive> getByDate(Date startDate, Date endDate) throws SQLException {
+    public List<Archive> getByDateRange(Date startDate, Date endDate) throws SQLException {
         List<Archive> archives = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT * FROM `archive`, `customer`, `subscription`, `employee`, `position`, `employment` WHERE " +
