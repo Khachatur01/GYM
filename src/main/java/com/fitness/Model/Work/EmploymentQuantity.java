@@ -3,12 +3,14 @@ package com.fitness.Model.Work;
 public class EmploymentQuantity {
     private Employment employment;
     private int quantity;
+    private int price;
 
     public EmploymentQuantity(){}
 
-    public EmploymentQuantity(Employment employment, int quantity) {
+    public EmploymentQuantity(Employment employment, int quantity, int price) {
         this.employment = employment;
         this.quantity = quantity;
+        this.price = price;
     }
 
     public Employment getEmployment() {
@@ -25,6 +27,14 @@ public class EmploymentQuantity {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     @Override

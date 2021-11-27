@@ -23,7 +23,7 @@ public class AddSubscriptionController extends GridPane implements Controller {
     @FXML
     private TextField nameTextField;
     @FXML
-    private TextField priceTextField;
+    private Label totalPriceLabel;
     @FXML
     private TableView<EmploymentQuantity> subscriptionEmploymentTable;
     @FXML
@@ -31,13 +31,17 @@ public class AddSubscriptionController extends GridPane implements Controller {
     @FXML
     private TableColumn<EmploymentQuantity, Integer> quantityColumn;
     @FXML
-    private Button addEmploymentButton;
+    private TableColumn<EmploymentQuantity, Integer> priceColumn;
     @FXML
-    private TextField quantityTextField;
+    private Button deleteEmploymentButton;
+    @FXML
+    private Button addEmploymentButton;
     @FXML
     private ComboBox<Employment> employmentComboBox;
     @FXML
-    private Button deleteEmploymentButton;
+    private TextField quantityTextField;
+    @FXML
+    private TextField priceTextField;
     @FXML
     private Button addSubscriptionButton;
     @FXML
@@ -46,6 +50,8 @@ public class AddSubscriptionController extends GridPane implements Controller {
     private EmploymentService employmentService = new EmploymentService();
     private SubscriptionService subscriptionService = new SubscriptionService();
     private ObservableList<EmploymentQuantity> employmentQuantities = FXCollections.observableArrayList();
+
+    private int totalPrice = 0;
 
     public AddSubscriptionController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/subscription/add_subscription.fxml"));
@@ -57,6 +63,7 @@ public class AddSubscriptionController extends GridPane implements Controller {
     private void initTable(){
         employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         subscriptionEmploymentTable.setItems(employmentQuantities);
     }
 
@@ -68,16 +75,19 @@ public class AddSubscriptionController extends GridPane implements Controller {
 
     private void initListeners(){
         addEmploymentButton.setOnAction(event -> {
-            EmploymentQuantity employmentQuantity = subscriptionService.addEmploymentQuantity(employmentComboBox, quantityTextField);
-
+            EmploymentQuantity employmentQuantity = subscriptionService.addEmploymentQuantity(employmentComboBox, quantityTextField, priceTextField);
             if(employmentQuantity != null && !employmentQuantities.contains(employmentQuantity)) {
                 employmentQuantities.add(employmentQuantity);
+                this.totalPrice += employmentQuantity.getPrice();
+                totalPriceLabel.setText(this.totalPrice + " դրամ");
             }
         });
         deleteEmploymentButton.setOnAction(event -> {
             EmploymentQuantity employmentQuantity = subscriptionEmploymentTable.getSelectionModel().getSelectedItem();
             if(employmentQuantity != null){
                 employmentQuantities.remove(employmentQuantity);
+                this.totalPrice -= employmentQuantity.getPrice();
+                totalPriceLabel.setText(this.totalPrice + " դրամ");
             }
         });
 
@@ -85,7 +95,6 @@ public class AddSubscriptionController extends GridPane implements Controller {
             try {
                 if(subscriptionService.add(
                         nameTextField,
-                        priceTextField,
                         employmentQuantities) != null) {
                     this.stop();
                     Window.getFragment(Fragment.SUBSCRIPTION).start();
@@ -116,10 +125,10 @@ public class AddSubscriptionController extends GridPane implements Controller {
     public void stop() {
         Clear.textField(
                 nameTextField,
-                priceTextField,
                 quantityTextField
         );
         Clear.table(subscriptionEmploymentTable);
         Clear.comboBox(employmentComboBox);
+        totalPriceLabel.setText("0 դրամ");
     }
 }

@@ -35,7 +35,7 @@ public class SubscriptionDAO implements DAO<Subscription> {
         long subscriptionId = subscription.getId();
         List<EmploymentQuantity> employmentQuantities = subscription.getEmploymentsQuantities();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "INSERT INTO `subscription_employment`(`subscription_id`, `employment_id`, `quantity`) VALUES (?, ?, ?)"
+                "INSERT INTO `subscription_employment`(`subscription_id`, `employment_id`, `quantity`, `price`) VALUES (?, ?, ?, ?)"
         );
 
         DB.getConnection().setAutoCommit(false);
@@ -43,6 +43,7 @@ public class SubscriptionDAO implements DAO<Subscription> {
             preparedStatement.setLong(1, subscriptionId);
             preparedStatement.setLong(2, employmentQuantity.getEmployment().getId());
             preparedStatement.setInt(3, employmentQuantity.getQuantity());
+            preparedStatement.setInt(4, employmentQuantity.getPrice());
             preparedStatement.addBatch();
         }
         preparedStatement.executeBatch();
@@ -66,11 +67,10 @@ public class SubscriptionDAO implements DAO<Subscription> {
     public void add(Subscription subscription) throws SQLException {
         if(subscription == null) return;
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "INSERT INTO `subscription`(`name`, `price`) VALUES (?, ?)",
+                "INSERT INTO `subscription`(`name`) VALUES (?)",
                 Statement.RETURN_GENERATED_KEYS
         );
         preparedStatement.setString(1, subscription.getName());
-        preparedStatement.setInt(2, subscription.getPrice());
 
         preparedStatement.executeUpdate();
 
@@ -86,11 +86,10 @@ public class SubscriptionDAO implements DAO<Subscription> {
     public void edit(Subscription subscription) throws SQLException {
         this.editEmploymentsQuantities(subscription);
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "UPDATE `subscription` SET `name` = ?, `price` = ? WHERE `id` = ?"
+                "UPDATE `subscription` SET `name` = ? WHERE `id` = ?"
         );
         preparedStatement.setString(1, subscription.getName());
-        preparedStatement.setInt(2, subscription.getPrice());
-        preparedStatement.setLong(3, subscription.getId());
+        preparedStatement.setLong(2, subscription.getId());
         preparedStatement.executeUpdate();
     }
     @Override

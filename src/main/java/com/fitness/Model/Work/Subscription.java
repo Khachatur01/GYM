@@ -7,22 +7,20 @@ import java.util.List;
 public class Subscription {
     private long id = Default.ID.getValue();
     private String name;
-    private int price;
     private List<EmploymentQuantity> employmentsQuantities;
     private boolean archived;
 
     public Subscription(){}
 
-    public Subscription(long id, String name, int price, List<EmploymentQuantity> employmentsQuantities, boolean archived) {
+    public Subscription(long id, String name, List<EmploymentQuantity> employmentsQuantities, boolean archived) {
         this.id = id;
         this.name = name;
-        this.price = price;
         this.employmentsQuantities = employmentsQuantities;
         this.archived = archived;
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(long id) {
@@ -30,27 +28,27 @@ public class Subscription {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public List<EmploymentQuantity> getEmploymentsQuantities() {
-        return employmentsQuantities;
+        return this.employmentsQuantities;
     }
 
     public void setEmploymentsQuantities(List<EmploymentQuantity> employmentsQuantities) {
         this.employmentsQuantities = employmentsQuantities;
+    }
+
+    public int getPrice() {
+        int price = 0;
+        for(EmploymentQuantity employmentQuantity: this.employmentsQuantities)
+            price += employmentQuantity.getPrice();
+
+        return price;
     }
 
     public boolean isArchived() {

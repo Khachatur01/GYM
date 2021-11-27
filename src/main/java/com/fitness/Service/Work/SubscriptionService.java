@@ -14,32 +14,28 @@ import java.util.Optional;
 
 public class SubscriptionService {
     private SubscriptionDAO subscriptionDAO = new SubscriptionDAO();
-    private EmploymentService employmentService = new EmploymentService();
 
-    private Subscription makeSubscription(TextField nameTextField, TextField priceTextField, ObservableList<EmploymentQuantity> employmentsQuantity){
+    private Subscription makeSubscription(TextField nameTextField, ObservableList<EmploymentQuantity> employmentsQuantity){
         Subscription subscription = null;
         String name = nameTextField.getText();
-        String price = priceTextField.getText();
 
         if(     Verify.name(name, nameTextField) &&
-                Verify.price(price, priceTextField) &&
                 !employmentsQuantity.isEmpty()
         ){
             subscription = new Subscription();
             subscription.setName(name);
-            subscription.setPrice(Integer.parseInt(price));
             subscription.setEmploymentsQuantities(employmentsQuantity);
         }
         return subscription;
     }
 
-    public Subscription add(TextField nameTextField, TextField priceTextField, ObservableList<EmploymentQuantity> employmentsQuantity) throws SQLException {
-        Subscription newSubscription = this.makeSubscription(nameTextField, priceTextField, employmentsQuantity);
+    public Subscription add(TextField nameTextField, ObservableList<EmploymentQuantity> employmentsQuantity) throws SQLException {
+        Subscription newSubscription = this.makeSubscription(nameTextField, employmentsQuantity);
         subscriptionDAO.add(newSubscription);
         return newSubscription;
     }
-    public Subscription edit(Subscription subscription, TextField nameTextField, TextField priceTextField, ObservableList<EmploymentQuantity> employmentsQuantity) throws SQLException {
-        Subscription newSubscription = this.makeSubscription(nameTextField, priceTextField, employmentsQuantity);
+    public Subscription edit(Subscription subscription, TextField nameTextField, ObservableList<EmploymentQuantity> employmentsQuantity) throws SQLException {
+        Subscription newSubscription = this.makeSubscription(nameTextField, employmentsQuantity);
         newSubscription.setId(subscription.getId());
         subscriptionDAO.edit(newSubscription);
         return newSubscription;
@@ -69,25 +65,28 @@ public class SubscriptionService {
     }
 
 
-    private EmploymentQuantity makeEmploymentQuantity(ComboBox<Employment> employmentComboBox, TextField quantityTextField){
+    private EmploymentQuantity makeEmploymentQuantity(ComboBox<Employment> employmentComboBox, TextField quantityTextField, TextField priceTextField) {
         EmploymentQuantity subscriptionEmployment = null;
         Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
         String quantity = quantityTextField.getText();
+        String price = priceTextField.getText();
 
         if(     Verify.employment(employment, employmentComboBox) &&
-                Verify.quantity(quantity, quantityTextField)
+                Verify.quantity(quantity, quantityTextField) &&
+                Verify.price(price, priceTextField)
         ){
             subscriptionEmployment = new EmploymentQuantity();
             subscriptionEmployment.setEmployment(employment);
             subscriptionEmployment.setQuantity(Integer.parseInt(quantity));
+            subscriptionEmployment.setPrice(Integer.parseInt(price));
         }
 
         return subscriptionEmployment;
     }
 
-    public EmploymentQuantity addEmploymentQuantity(ComboBox<Employment> employmentComboBox, TextField quantityTextField){
+    public EmploymentQuantity addEmploymentQuantity(ComboBox<Employment> employmentComboBox, TextField quantityTextField, TextField priceTextField) {
         // don't add to database
-        return makeEmploymentQuantity(employmentComboBox, quantityTextField);
+        return makeEmploymentQuantity(employmentComboBox, quantityTextField, priceTextField);
     }
 
     public List<Subscription> getActual() throws SQLException {

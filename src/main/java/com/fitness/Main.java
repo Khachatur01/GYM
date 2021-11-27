@@ -16,7 +16,7 @@ public class Main extends Application {
         stage.initStyle(StageStyle.UNDECORATED);
         window.open(Page.PRELOADER.getValue(), stage);
 
-        // closes preloader(heavy task) page and opens main menu
+        /* closes preloader(heavy task) page and opens main menu */
         new Preloader(stage).start();
     }
 

@@ -21,14 +21,14 @@ public class Create {
                         result.getInt("employment.price"),
                         result.getBoolean("employment.archived")
                 ),
-                result.getInt("subscription_employment.quantity")
+                result.getInt("subscription_employment.quantity"),
+                result.getInt("subscription_employment.price")
         );
     }
     public static Subscription subscription(ResultSet result) throws SQLException {
         return new Subscription(
                 result.getLong("subscription.id"),
                 result.getString("subscription.name"),
-                result.getInt("subscription.price"),
                 null,
                 result.getBoolean("subscription.archived")
         );
