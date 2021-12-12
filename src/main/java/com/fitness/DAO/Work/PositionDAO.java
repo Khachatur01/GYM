@@ -14,24 +14,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PositionDAO implements DAO<Position> {
+    private List<Employment> getEmployments(Position position) throws SQLException {
+        List<Employment> employments = new ArrayList<>();
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT * FROM `position`, `employment` WHERE " +
+                        "`employment`.`position_id` = `position`.`id` AND " +
+                        "`employment`.`position_id` = ?"
+        );
+        preparedStatement.setLong(1, position.getId());
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            Employment employment = Create.employment(result);
+            employment.setPosition(position);
+            employments.add(employment);
+        }
+        return employments;
+    }
+    private void addEmployments(Position position) throws SQLException {
+        for(Employment employment: position.getEmployments()){
+            PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                    "UPDATE `employment` SET `position_id` = ? WHERE `id` = ?"
+            );
+            preparedStatement.setLong(1, position.getId());
+            preparedStatement.setLong(2, employment.getId());
+            preparedStatement.executeUpdate();
+        }
+    }
+    private void removeEmployments(Position position) throws SQLException {
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "UPDATE `employment` SET `position_id` = null WHERE `position_id` = ?"
+        );
+        preparedStatement.setLong(1, position.getId());
+        preparedStatement.executeUpdate();
+    }
+    private void editEmployments(Position position) throws SQLException {
+        this.removeEmployments(position);
+        this.addEmployments(position);
+    }
     @Override
     public void add(Position position) throws SQLException {
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "INSERT INTO `position`(`name`, `employment_id`) VALUES(?, ?)"
+                "INSERT INTO `position`(`name`) VALUES(?)",
+                Statement.RETURN_GENERATED_KEYS
         );
         preparedStatement.setString(1, position.getName());
-        preparedStatement.setLong(2, position.getEmployment().getId());
         preparedStatement.executeUpdate();
+        /* set generated id to new created employment */
+        try (ResultSet generatedId = preparedStatement.getGeneratedKeys()) {
+            if (generatedId.next())
+                position.setId(generatedId.getLong(1));
+        }
+        this.addEmployments(position);
     }
 
     @Override
     public void edit(Position position) throws SQLException {
+        this.editEmployments(position);
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "UPDATE `position` SET `name` = ?, `employment_id` = ? WHERE `id` = ?"
+                "UPDATE `position` SET `name` = ? WHERE `id` = ?"
         );
         preparedStatement.setString(1, position.getName());
-        preparedStatement.setLong(2, position.getEmployment().getId());
-        preparedStatement.setLong(3, position.getId());
+        preparedStatement.setLong(2, position.getId());
         preparedStatement.executeUpdate();
     }
     @Override
@@ -56,14 +99,12 @@ public class PositionDAO implements DAO<Position> {
         List<Position> positions = new ArrayList<>();
         Statement statement = DB.getConnection().createStatement();
         ResultSet result = statement.executeQuery(
-                "SELECT * FROM `position`, `employment` WHERE `position`.`employment_id` = `employment`.`id`"
-                    + (actual ? " AND `position`.`archived` = 0 AND `employment`.`archived` = 0" : "")
+                "SELECT * FROM `position` "
+                    + (actual ? " WHERE `position`.`archived` = 0" : "")
         );
         while(result.next()){
-            Employment employment = Create.employment(result);
             Position position = Create.position(result);
-            position.setEmployment(employment);
-
+            position.setEmployments(this.getEmployments(position));
             positions.add(position);
         }
         return positions;

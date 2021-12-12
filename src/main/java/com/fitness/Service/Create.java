@@ -15,12 +15,7 @@ import java.sql.SQLException;
 public class Create {
     public static EmploymentQuantity employmentQuantity(ResultSet result) throws SQLException {
         return new EmploymentQuantity(
-                new Employment(
-                        result.getLong("employment.id"),
-                        result.getString("employment.name"),
-                        result.getInt("employment.price"),
-                        result.getBoolean("employment.archived")
-                ),
+                employment(result),
                 result.getInt("subscription_employment.quantity"),
                 result.getInt("subscription_employment.price")
         );
@@ -53,6 +48,7 @@ public class Create {
                 result.getLong("employment.id"),
                 result.getString("employment.name"),
                 result.getInt("employment.price"),
+                null,
                 result.getBoolean("employment.archived")
         );
     }

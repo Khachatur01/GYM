@@ -18,40 +18,39 @@ public class EmployeeService {
     private static Employee selected = null;
     private EmployeeDAO employeeDAO = new EmployeeDAO();
 
-    private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ComboBox<Position> positionComboBox){
+    private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ObservableList<Position> positions){
         Employee employee = null;
         String name = nameTextField.getText();
         String surname = surnameTextField.getText();
         String phone = phoneMaskField.getText();
         String phone2 = phone2MaskField.getText();
         String address = addressTextField.getText();
-        Position position = positionComboBox.getValue();
 
         if(     Verify.name(name, nameTextField) &&
                 Verify.surname(surname, surnameTextField) &&
                 Verify.phone(phone, phoneMaskField) &&
                 Verify.phone2(phone2, phone2MaskField) &&
                 Verify.address(address, addressTextField) &&
-                Verify.position(position, positionComboBox)
+                !positions.isEmpty()
         ){
             employee = new Employee();
             employee.setName(new Person.Name(name, surname));
             employee.setPhone(phone);
             employee.setPhone2(phone2);
             employee.setAddress(address);
-            employee.setPosition(position);
+            employee.setPositions(positions);
         }
         return employee;
     }
 
-    public Employee add(TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ComboBox<Position> positionComboBox) throws SQLException {
-        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, positionComboBox);
+    public Employee add(TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ObservableList<Position> positions) throws SQLException {
+        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, positions);
         employeeDAO.add(newEmployee);
         return newEmployee;
     }
 
-    public Employee edit(Employee employee, TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ComboBox<Position> positionComboBox) throws SQLException {
-        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, positionComboBox);
+    public Employee edit(Employee employee, TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ObservableList<Position> positions) throws SQLException {
+        Employee newEmployee = this.makeEmployee(nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, positions);
         newEmployee.setId(employee.getId());
         employeeDAO.edit(newEmployee);
         return newEmployee;
@@ -102,4 +101,7 @@ public class EmployeeService {
         EmployeeService.selected = null;
     }
 
+    public List<Position> getPositions(Employee employee, boolean actual) throws SQLException {
+        return employeeDAO.getPositions(employee, actual);
+    }
 }

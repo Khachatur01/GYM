@@ -2,9 +2,13 @@ package com.fitness.Element;
 
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+
+import java.util.List;
 
 public class PositionButton {
     private static PositionButton selected = null;
@@ -20,7 +24,7 @@ public class PositionButton {
     public static void editSelected(Position position) {
         if(position == null) return;
         selected.getPosition().setName(position.getName());
-        selected.getPosition().setEmployment(position.getEmployment());
+        selected.getPosition().setEmployments(position.getEmployments());
         selected.getButton().setText(position.getName());
     }
 
@@ -40,15 +44,9 @@ public class PositionButton {
         this.position = position;
     }
 
-    public void setOnAction(TextField positionNameTextField, ComboBox<Employment> employmentComboBox) {
+    public void setOnAction(TextField positionNameTextField, ObservableList<Employment> employments) {
         this.button.setOnAction(event -> {
-            if(selected != null)
-                selected.getButton().getStyleClass().remove("selected");
-
-            selected = this;
-            selected.getButton().getStyleClass().add("selected");
-            positionNameTextField.setText(selected.getPosition().getName());
-            employmentComboBox.getSelectionModel().select(selected.getPosition().getEmployment());
+            select(positionNameTextField, employments);
         });
     }
 
@@ -58,5 +56,15 @@ public class PositionButton {
 
     public static void removeSelected() {
         PositionButton.selected = null;
+    }
+
+    public void select(TextField positionNameTextField, ObservableList<Employment> employments) {
+        if(selected != null)
+            selected.getButton().getStyleClass().remove("selected");
+
+        selected = this;
+        this.button.getStyleClass().add("selected");
+        positionNameTextField.setText(this.position.getName());
+        employments.setAll(this.position.getEmployments());
     }
 }

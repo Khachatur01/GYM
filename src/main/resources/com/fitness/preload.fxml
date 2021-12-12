@@ -8,7 +8,7 @@
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@assets/preload.jpg" />
+            <Image url="@assets/preload.png" />
          </image>
       </ImageView>
       <ProgressIndicator layoutX="449.0" layoutY="274.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="117.0" prefWidth="149.0" />

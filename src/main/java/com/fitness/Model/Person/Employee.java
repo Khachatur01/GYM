@@ -2,24 +2,26 @@ package com.fitness.Model.Person;
 
 import com.fitness.Model.Work.Position;
 
+import java.util.List;
+
 public class Employee extends Person{
-    private Position position;
+    private List<Position> positions;
     private boolean archived;
 
     public Employee() {}
 
-    public Employee(long id, Name name, String phone, String phone2, String address, Position position, boolean archived) {
+    public Employee(long id, Name name, String phone, String phone2, String address, List<Position> positions, boolean archived) {
         super(id, name, phone, phone2, address);
-        this.position = position;
+        this.positions = positions;
         this.archived = archived;
     }
 
-    public Position getPosition() {
-        return position;
+    public List<Position> getPositions() {
+        return this.positions;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setPositions(List<Position> positions) {
+        this.positions = positions;
     }
 
     public boolean isArchived() {

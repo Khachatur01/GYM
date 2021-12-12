@@ -74,6 +74,7 @@ public class ArchiveDAO implements DAO<Archive> {
 
     public List<Archive> getByDateRange(Date startDate, Date endDate) throws SQLException {
         List<Archive> archives = new ArrayList<>();
+        // TODO add employment position logic
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT * FROM `archive`, `customer`, `subscription`, `employee`, `position`, `employment` WHERE " +
                         "`archive.customer_id` = `customer`.`id` AND " +
@@ -95,10 +96,10 @@ public class ArchiveDAO implements DAO<Archive> {
             Employment employment = Create.employment(result);
 
             Position position = Create.position(result);
-            position.setEmployment(employment);
+//            position.setEmployment(employment);
 
             Employee employee = Create.employee(result);
-            employee.setPosition(position);
+//            employee.setPositions(position);
 
             Archive archive = Create.archive(result);
             archive.setCustomer(customer);

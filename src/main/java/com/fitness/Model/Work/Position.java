@@ -2,18 +2,20 @@ package com.fitness.Model.Work;
 
 import com.fitness.Controller.Constant.Default;
 
+import java.util.List;
+
 public class Position {
     private long id = Default.ID.getValue();
     private String name;
-    private Employment employment;
+    private List<Employment> employments;
     private boolean archived;
 
     public Position(){}
 
-    public Position(long id, String name, Employment employment, boolean archived) {
+    public Position(long id, String name, List<Employment> employments, boolean archived) {
         this.id = id;
         this.name = name;
-        this.employment = employment;
+        this.employments = employments;
         this.archived = archived;
     }
 
@@ -33,12 +35,12 @@ public class Position {
         this.name = name;
     }
 
-    public Employment getEmployment() {
-        return employment;
+    public List<Employment> getEmployments() {
+        return this.employments;
     }
 
-    public void setEmployment(Employment employment) {
-        this.employment = employment;
+    public void setEmployments(List<Employment> employments) {
+        this.employments = employments;
     }
 
     public boolean isArchived() {
@@ -53,4 +55,5 @@ public class Position {
     public String toString() {
         return this.name;
     }
+
 }

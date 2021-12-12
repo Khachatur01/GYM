@@ -67,6 +67,6 @@ public class Fill {
         phoneTextField.setText(employee.getPhone());
         phone2TextField.setText(employee.getPhone2());
         addressTextField.setText(employee.getAddress());
-        positionComboBox.getSelectionModel().select(employee.getPosition());
+//        positionComboBox.getSelectionModel().select(employee.getPositions());
     }
 }

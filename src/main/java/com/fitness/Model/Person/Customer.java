@@ -2,7 +2,7 @@ package com.fitness.Model.Person;
 
 import com.fitness.Model.Work.Subscription;
 
-public class Customer extends Person{
+public class Customer extends Person {
     private String card;
     private Subscription subscription;
     private boolean archived;

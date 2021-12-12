@@ -75,6 +75,7 @@ public class AddSubscriptionController extends GridPane implements Controller {
 
     private void initListeners(){
         addEmploymentButton.setOnAction(event -> {
+            /* don't adds to database */
             EmploymentQuantity employmentQuantity = subscriptionService.addEmploymentQuantity(employmentComboBox, quantityTextField, priceTextField);
             if(employmentQuantity != null && !employmentQuantities.contains(employmentQuantity)) {
                 employmentQuantities.add(employmentQuantity);

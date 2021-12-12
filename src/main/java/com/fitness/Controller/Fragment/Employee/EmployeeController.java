@@ -24,8 +24,6 @@ public class EmployeeController extends GridPane implements Controller {
     @FXML
     private TableView<Employee> employeesTable;
     @FXML
-    private TableColumn<Employee, Position> positionColumn;
-    @FXML
     private TableColumn<Employee, Person.Name> fullNameColumn;
     @FXML
     private TableColumn<Employee, String> phoneColumn;
@@ -84,7 +82,6 @@ public class EmployeeController extends GridPane implements Controller {
     }
 
     private void initTable() throws SQLException {
-        positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
         fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         phone2Column.setCellValueFactory(new PropertyValueFactory<>("phone2"));

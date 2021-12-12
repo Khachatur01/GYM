@@ -12,13 +12,13 @@ import com.fitness.Service.Work.EmploymentService;
 import com.fitness.Service.Work.PositionService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -36,8 +36,18 @@ public class EditEmployeeController extends GridPane implements Controller {
 
     @FXML
     private TextField addressTextField;
+
+    @FXML
+    private TableView<Position> employeePositionTable;
+    @FXML
+    private TableColumn<Position, String> positionColumn;
+    @FXML
+    private Button deletePositionButton;
+    @FXML
+    private Button addPositionButton;
     @FXML
     private ComboBox<Position> positionComboBox;
+
     @FXML
     private Button previousButton;
     @FXML
@@ -45,6 +55,8 @@ public class EditEmployeeController extends GridPane implements Controller {
 
     private EmployeeService employeeService = new EmployeeService();
     private PositionService positionService = new PositionService();
+
+    private ObservableList<Position> positions = FXCollections.observableArrayList();
 
     public EditEmployeeController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/employee/edit_employee.fxml"));
@@ -67,6 +79,9 @@ public class EditEmployeeController extends GridPane implements Controller {
         GridPane.setHalignment(phone2MaskField, HPos.RIGHT);
         GridPane.setVgrow(phone2MaskField, Priority.ALWAYS);
         GridPane.setHgrow(phone2MaskField, Priority.ALWAYS);
+
+        this.add(phoneMaskField, 1, 4);
+        this.add(phone2MaskField, 1, 5);
     }
     public void loadOldData() throws SQLException {
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
@@ -75,6 +90,15 @@ public class EditEmployeeController extends GridPane implements Controller {
             Fill.employee(employee, nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, positionComboBox);
     }
     public void initListeners(){
+        addPositionButton.setOnAction(event -> {
+            Position position = positionComboBox.getSelectionModel().getSelectedItem();
+            if(!positions.contains(position))
+                positions.add(position);
+        });
+        deletePositionButton.setOnAction(event -> {
+            positions.remove(employeePositionTable.getSelectionModel().getSelectedItem());
+        });
+
         editButton.setOnAction(event -> {
             /* return null when something went wrong */
             try {
@@ -85,7 +109,7 @@ public class EditEmployeeController extends GridPane implements Controller {
                         phoneMaskField,
                         phone2MaskField,
                         addressTextField,
-                        positionComboBox) != null) {
+                        positions) != null) {
                     this.stop();
                     Window.getFragment(Fragment.EMPLOYEE).start();
                 }
@@ -101,11 +125,24 @@ public class EditEmployeeController extends GridPane implements Controller {
         });
     }
 
+    public void initComboBox() throws SQLException {
+        positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
+    }
+
+
+    private void initTable() throws SQLException {
+        positions.addAll(employeeService.getPositions(employeeService.getSelected(), true));
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        employeePositionTable.setItems(positions);
+    }
+
     @Override
     public void start() {
         makeActive();
         initListeners();
         try {
+            initTable();
+            initComboBox();
             loadOldData();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -124,5 +161,6 @@ public class EditEmployeeController extends GridPane implements Controller {
                 phone2MaskField
         );
         Clear.comboBox(positionComboBox);
+        Clear.table(employeePositionTable);
     }
 }

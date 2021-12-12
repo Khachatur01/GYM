@@ -4,6 +4,7 @@ import com.fitness.DAO.Work.PositionDAO;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Verify;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 
 import java.sql.SQLException;
@@ -11,27 +12,25 @@ import java.util.List;
 import java.util.Optional;
 
 public class PositionService {
-    private EmploymentService employmentService = new EmploymentService();
     private PositionDAO positionDAO = new PositionDAO();
 
-    private Position makePosition(TextField nameTextField, ComboBox<Employment> employmentComboBox){
+    private Position makePosition(TextField nameTextField, ObservableList<Employment> employments) {
         Position position = null;
         String name = nameTextField.getText();
-        Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
 
         if(     Verify.positionName(name, nameTextField) &&
-                Verify.employment(employment, employmentComboBox)
-        ){
+                !employments.isEmpty()
+        ) {
             position = new Position();
             position.setName(name);
-            position.setEmployment(employment);
+            position.setEmployments(employments);
         }
 
         return position;
     }
 
-    public Position add(TextField positionNameTextField, ComboBox<Employment> employmentComboBox){
-        Position position = this.makePosition(positionNameTextField, employmentComboBox);
+    public Position add(TextField positionNameTextField, ObservableList<Employment> employments) {
+        Position position = this.makePosition(positionNameTextField, employments);
         try {
             positionDAO.add(position);
         } catch (SQLException e) {
@@ -40,8 +39,8 @@ public class PositionService {
 
         return position;
     }
-    public Position edit(Position position, TextField nameTextField, ComboBox<Employment> employmentComboBox) throws SQLException {
-        Position newPosition = this.makePosition(nameTextField, employmentComboBox);
+    public Position edit(Position position, TextField nameTextField, ObservableList<Employment> employments) throws SQLException {
+        Position newPosition = this.makePosition(nameTextField, employments);
         newPosition.setId(position.getId());
         positionDAO.edit(newPosition);
         return newPosition;
@@ -69,7 +68,7 @@ public class PositionService {
         }
     }
 
-    public List<Position> getActual() throws SQLException{
+    public List<Position> getActual() throws SQLException {
         return positionDAO.getActual();
     }
     public List<Position> getAll() throws SQLException {

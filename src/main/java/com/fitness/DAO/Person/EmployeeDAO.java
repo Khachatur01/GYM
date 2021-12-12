@@ -5,6 +5,7 @@ import com.fitness.DataSource.DB;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Employment;
+import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Create;
 
@@ -16,12 +17,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAO implements DAO<Employee> {
+    public List<Position> getPositions(Employee employee, boolean actual) throws SQLException {
+        List<Position> positions = new ArrayList<>();
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT * FROM `position`, `employee_position` WHERE " +
+                        "`position`.`id` = `employee_position`.`position_id` AND " +
+                        "`employee_position`.`employee_id` = ?" +
+                        (actual ? " AND `position`.`archived` = 0" : "")
+        );
+        preparedStatement.setLong(1, employee.getId());
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            positions.add(Create.position(result));
+        }
+        return positions;
+    }
+
+    private void removePositions(Employee employee) throws SQLException {
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "DELETE FROM `employee_position` WHERE `employee_id` = ?"
+        );
+        preparedStatement.setLong(1, employee.getId());
+        preparedStatement.executeUpdate();
+    }
+    private void addPositions(Employee employee) throws SQLException {
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "INSERT INTO `employee_position`(`employee_id`, `position_id`) " +
+                        "VALUES(?, ?)"
+        );
+        DB.getConnection().setAutoCommit(false);
+        for(Position position: employee.getPositions()){
+            preparedStatement.setLong(1, employee.getId());
+            preparedStatement.setLong(2, position.getId());
+            preparedStatement.addBatch();
+        }
+        preparedStatement.executeBatch();
+        DB.getConnection().setAutoCommit(true);
+    }
+
+    private void editPositions(Employee employee) throws SQLException {
+        this.removePositions(employee);
+        this.addPositions(employee);
+    }
+
     @Override
     public void add(Employee employee) throws SQLException {
         if(employee == null) return;
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "INSERT INTO `employee`(`name`, `surname`, `phone`, `phone2`, `address`, `position_id`, `archived`) " +
-                        "VALUES(?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO `employee`(`name`, `surname`, `phone`, `phone2`, `address`, `archived`) " +
+                        "VALUES(?, ?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
         );
         preparedStatement.setString(1, employee.getName().getFirstName());
@@ -29,8 +73,7 @@ public class EmployeeDAO implements DAO<Employee> {
         preparedStatement.setString(3, employee.getPhone());
         preparedStatement.setString(4, employee.getPhone2());
         preparedStatement.setString(5, employee.getAddress());
-        preparedStatement.setLong(6, employee.getPosition().getId());
-        preparedStatement.setBoolean(7, employee.isArchived());
+        preparedStatement.setBoolean(6, employee.isArchived());
         preparedStatement.executeUpdate();
 
         /* set generated id to new created employment */
@@ -39,14 +82,16 @@ public class EmployeeDAO implements DAO<Employee> {
                 employee.setId(generatedId.getLong(1));
             }
         }
+        this.addPositions(employee);
     }
 
     @Override
     public void edit(Employee employee) throws SQLException {
         if(employee == null) return;
+        this.editPositions(employee);
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "UPDATE `employee` SET " +
-                        "`name` = ?, `surname` = ?, `phone` = ?, `phone2` = ?, `address` = ?, `position_id` = ?, `archived` = ?",
+                        "`name` = ?, `surname` = ?, `phone` = ?, `phone2` = ?, `address` = ?, `archived` = ?",
                 Statement.RETURN_GENERATED_KEYS
         );
         preparedStatement.setString(1, employee.getName().getFirstName());
@@ -54,8 +99,7 @@ public class EmployeeDAO implements DAO<Employee> {
         preparedStatement.setString(3, employee.getPhone());
         preparedStatement.setString(4, employee.getPhone2());
         preparedStatement.setString(5, employee.getAddress());
-        preparedStatement.setLong(6, employee.getPosition().getId());
-        preparedStatement.setBoolean(7, employee.isArchived());
+        preparedStatement.setBoolean(6, employee.isArchived());
         preparedStatement.executeUpdate();
     }
 
@@ -80,20 +124,12 @@ public class EmployeeDAO implements DAO<Employee> {
     public List<Employee> get(boolean actual) throws SQLException {
         List<Employee> employees = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT * FROM `employee`, `position`, `employment` WHERE " +
-                        "`employee`.`position_id` = `position`.`id` AND " +
-                        "`position`.`employment_id` = `employment`.`id`" +
-                        (actual ? " AND `employee`.`archived` = 0" : "")
+                "SELECT * FROM `employee` " +
+                        (actual ? " WHERE `employee`.`archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
         while(result.next()){
-            Employment employment = Create.employment(result);
-
-            Position position = Create.position(result);
-            position.setEmployment(employment);
-
             Employee employee = Create.employee(result);
-            employee.setPosition(position);
 
             employees.add(employee);
         }
@@ -114,21 +150,17 @@ public class EmployeeDAO implements DAO<Employee> {
         if(employment == null) return new ArrayList<>();
         List<Employee> employees = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT * FROM `employee`, `position`, `employment` WHERE " +
-                        "`employee`.`position_id` = `position`.`id` AND " +
-                        "`position`.`employment_id` = `employment`.`id` AND " +
+                "SELECT * FROM `employee`, `employee_position`, `position`, `employment` WHERE " +
+                        "`employment`.`position_id` = `position`.`id` AND " +
+                        "`employee_position`.`position_id` = `position`.`id` AND " +
+                        "`employee_position`.`employee_id` = `employee`.`id` AND " +
                         "`employment`.`id` = ? " +
                         (actual ? " AND `employee`.`archived` = 0" : "")
         );
         preparedStatement.setLong(1, employment.getId());
         ResultSet result = preparedStatement.executeQuery();
         while(result.next()){
-            Position position = Create.position(result);
-            position.setEmployment(employment);
-
             Employee employee = Create.employee(result);
-            employee.setPosition(position);
-
             employees.add(employee);
         }
 

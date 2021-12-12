@@ -9,13 +9,12 @@ import com.fitness.Service.Grid;
 import com.fitness.Service.Work.EmploymentService;
 import com.fitness.Service.Work.PositionService;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -25,17 +24,27 @@ import java.util.List;
 
 public class PositionController extends GridPane implements Controller {
     @FXML
+    private ScrollPane positionScrollPane;
+    @FXML
+    private TextField positionNameTextField;
+
+    @FXML
+    private TableView<Employment> positionEmploymentTable;
+    @FXML
+    private TableColumn<Employment, String> employmentColumn;
+    @FXML
+    private Button deletePositionButton;
+    @FXML
+    private Button addPositionButton;
+    @FXML
+    private ComboBox<Employment> employmentComboBox;
+
+    @FXML
     private Button addButton;
     @FXML
     private Button deleteButton;
     @FXML
     private Button editButton;
-    @FXML
-    private TextField positionNameTextField;
-    @FXML
-    private ComboBox<Employment> employmentComboBox;
-    @FXML
-    private ScrollPane positionScrollPane;
 
     private GridPane positionsGridPane = null;
 
@@ -44,6 +53,8 @@ public class PositionController extends GridPane implements Controller {
     private PositionService positionService = new PositionService();
     private EmploymentService employmentService = new EmploymentService();
     private List<PositionButton> positionButtons = new ArrayList<>();
+
+    private ObservableList<Employment> employments = FXCollections.observableArrayList();
 
     public PositionController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/position/position.fxml"));
@@ -54,6 +65,10 @@ public class PositionController extends GridPane implements Controller {
 
     private void initComboBox() throws SQLException {
         employmentComboBox.setItems(FXCollections.observableArrayList(employmentService.getActual()));
+    }
+    private void initTableView() throws SQLException {
+        employmentColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        positionEmploymentTable.setItems(employments);
     }
 
     private void initGridPane() throws SQLException {
@@ -76,15 +91,32 @@ public class PositionController extends GridPane implements Controller {
     }
 
     private void initListeners(){
+        addPositionButton.setOnAction(event -> {
+            Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
+            if(!employments.contains(employment))
+                employments.add(employment);
+        });
+        deletePositionButton.setOnAction(event -> {
+            employments.remove(positionEmploymentTable.getSelectionModel().getSelectedItem());
+        });
+
         editButton.setOnAction(event -> {
             if(PositionButton.getSelected() == null) return;
             Position position = PositionButton.getSelected().getPosition();
             try {
-                position = positionService.edit(position, positionNameTextField, employmentComboBox);
+                position = positionService.edit(position, positionNameTextField, employments);
+                PositionButton.editSelected(position);
+                this.start();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            PositionButton.editSelected(position);
+        });
+        addButton.setOnAction(event -> {
+            Position position = positionService.add(positionNameTextField, employments);
+            if(position != null) {
+                addPositionToGrid(position);
+                this.start();
+            }
         });
         deleteButton.setOnAction(event -> {
             try {
@@ -95,18 +127,13 @@ public class PositionController extends GridPane implements Controller {
                 e.printStackTrace();
             }
         });
-        addButton.setOnAction(event -> {
-            Position position = positionService.add(positionNameTextField, employmentComboBox);
-            if(position != null) {
-                addPositionToGrid(position);
-            }
-        });
     }
 
     private void addPositionToGrid(Position position) {
         PositionButton positionButton = new PositionButton(position);
-        positionButton.setOnAction(positionNameTextField, employmentComboBox);
+        positionButton.setOnAction(positionNameTextField, employments);
         positionButtons.add(positionButton);
+        positionButton.select(positionNameTextField, employments);
 
         if(col == POSITIONS_PER_ROW){
             col = 0;
@@ -120,6 +147,7 @@ public class PositionController extends GridPane implements Controller {
     public void start() {
         makeActive();
         try {
+            initTableView();
             initGridPane();
             initComboBox();
         } catch (SQLException e) {
@@ -132,6 +160,7 @@ public class PositionController extends GridPane implements Controller {
     public void stop() {
         Clear.textField(positionNameTextField);
         Clear.comboBox(employmentComboBox);
+        Clear.table(positionEmploymentTable);
         PositionButton.removeSelected();
     }
 }
