@@ -66,7 +66,6 @@ public class EditEmployeeController extends GridPane implements Controller {
 
         phoneMaskField = new MaskField();
         phoneMaskField.setMask("+374(DD) DD-DD-DD");
-        phoneMaskField.getStyleClass().add("textField");
         GridPane.setValignment(phoneMaskField, VPos.CENTER);
         GridPane.setHalignment(phoneMaskField, HPos.RIGHT);
         GridPane.setVgrow(phoneMaskField, Priority.ALWAYS);
@@ -74,7 +73,6 @@ public class EditEmployeeController extends GridPane implements Controller {
 
         phone2MaskField = new MaskField();
         phone2MaskField.setMask("+374(DD) DD-DD-DD");
-        phone2MaskField.getStyleClass().add("textField");
         GridPane.setValignment(phone2MaskField, VPos.CENTER);
         GridPane.setHalignment(phone2MaskField, HPos.RIGHT);
         GridPane.setVgrow(phone2MaskField, Priority.ALWAYS);

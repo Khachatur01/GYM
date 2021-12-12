@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -13,10 +12,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../../style/bootstrap3.css" type="javafx.scene.layout.GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
@@ -26,6 +25,8 @@
         <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
         <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
         <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
         <RowConstraints vgrow="SOMETIMES" />
         <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
@@ -38,22 +39,21 @@
             </GridPane.margin>
         </Label>
         <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-        <Label styleClass="paragraph" text="Անուն *" GridPane.rowIndex="2" />
-        <Label styleClass="paragraph" text="Ազգանուն *" GridPane.rowIndex="3" />
-        <Label styleClass="paragraph" text="Հեռախոս *" GridPane.rowIndex="4" />
-        <Label styleClass="paragraph" text="Հեռախոս 2-րդ" GridPane.rowIndex="5" />
-        <Label styleClass="paragraph" text="Հասցե *" GridPane.rowIndex="6" />
-        <TextField fx:id="nameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-        <TextField fx:id="surnameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-        <TextField fx:id="phoneTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-        <TextField fx:id="phone2TextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-        <TextField fx:id="addressTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-        <Button fx:id="previousButton" mnemonicParsing="false" styleClass="secondary" text="Հետ" GridPane.halignment="LEFT" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
-        <Button fx:id="editButton" mnemonicParsing="false" styleClass="primary" text="Փոփոխել" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
-      <GridPane GridPane.columnSpan="2147483647" GridPane.rowIndex="7">
+        <Label text="Անուն *" GridPane.rowIndex="2" />
+        <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+        <Label text="Ազգանուն *" GridPane.rowIndex="3" />
+        <TextField fx:id="surnameTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+        <Label text="Հեռախոս *" GridPane.rowIndex="4" />
+        <Label text="Հեռախոս 2-րդ" GridPane.rowIndex="5" />
+        <Label text="Հասցե *" GridPane.rowIndex="6" />
+        <TextField fx:id="addressTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
+      <GridPane GridPane.columnSpan="2147483647" GridPane.rowIndex="8">
          <columnConstraints>
             <ColumnConstraints maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+            <ColumnConstraints />
+            <ColumnConstraints />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints />
@@ -61,28 +61,34 @@
             <RowConstraints vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
+            <Button fx:id="deletePositionButton" mnemonicParsing="false" text="Ջնջել" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <TableView fx:id="employeePositionTable" maxHeight="300.0" minHeight="100.0" prefHeight="100.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
                <columns>
-                  <TableColumn fx:id="positionColumn" prefWidth="524.0" text="Հաստիք" />
+                  <TableColumn fx:id="positionColumn" prefWidth="524.0" text="Հաստիքներ" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
                <GridPane.margin>
-                  <Insets left="5.0" right="5.0" top="5.0" />
+                  <Insets />
                </GridPane.margin>
             </TableView>
+            <Button fx:id="addPositionButton" mnemonicParsing="false" text="Ավելացնել" wrapText="true" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+              <Label text="Հաստիք" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin></Label>
             <ComboBox fx:id="positionComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Button fx:id="addPositionButton" mnemonicParsing="false" styleClass="secondary" text="Ավելացնել" wrapText="true" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Button fx:id="deletePositionButton" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-              <Label styleClass="paragraph" text="Հաստիք *" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
+      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="9" />
+        <Button fx:id="previousButton" mnemonicParsing="false" text="Հետ" GridPane.halignment="LEFT" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin></Button>
+        <Button fx:id="editButton" mnemonicParsing="false" styleClass="primary" text="Փոփոխել" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin></Button>
     </children>
-    <stylesheets>
-        <URL value="@../../style/button.css" />
-        <URL value="@../../style/combo_box.css" />
-        <URL value="@../../style/labels.css" />
-        <URL value="@../../style/text_field.css" />
-    </stylesheets>
 </fx:root>

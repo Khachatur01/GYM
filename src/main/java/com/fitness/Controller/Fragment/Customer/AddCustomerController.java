@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -66,7 +67,6 @@ public class AddCustomerController extends GridPane implements Controller {
 
         phoneMaskField = new MaskField();
         phoneMaskField.setMask("+374(DD) DD-DD-DD");
-        phoneMaskField.getStyleClass().add("textField");
         GridPane.setValignment(phoneMaskField, VPos.CENTER);
         GridPane.setHalignment(phoneMaskField, HPos.RIGHT);
         GridPane.setVgrow(phoneMaskField, Priority.ALWAYS);
@@ -74,7 +74,6 @@ public class AddCustomerController extends GridPane implements Controller {
 
         phone2MaskField = new MaskField();
         phone2MaskField.setMask("+374(DD) DD-DD-DD");
-        phone2MaskField.getStyleClass().add("textField");
         GridPane.setValignment(phone2MaskField, VPos.CENTER);
         GridPane.setHalignment(phone2MaskField, HPos.RIGHT);
         GridPane.setVgrow(phone2MaskField, Priority.ALWAYS);
@@ -139,6 +138,11 @@ public class AddCustomerController extends GridPane implements Controller {
             customerService.removeSelected();
             this.stop();
             Window.getFragment(Fragment.CUSTOMER).start();
+        });
+
+        surnameTextField.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.TAB)
+                phoneMaskField.requestFocus();
         });
 
     }

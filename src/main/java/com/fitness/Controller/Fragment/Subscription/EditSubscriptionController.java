@@ -152,6 +152,7 @@ public class EditSubscriptionController extends GridPane implements Controller {
         );
         Clear.table(subscriptionEmploymentTable);
         Clear.comboBox(employmentComboBox);
-        totalPriceLabel.setText("0 դրամ");
+        this.totalPriceLabel.setText("0 դրամ");
+        this.totalPrice = 0;
     }
 }

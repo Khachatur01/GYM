@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -10,20 +9,19 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../../style/bootstrap3.css" type="javafx.scene.layout.GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+    <RowConstraints vgrow="SOMETIMES" />
     <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
@@ -40,38 +38,30 @@
             <Insets bottom="5.0" top="5.0" />
          </GridPane.margin>
       </Label>
+      <Label text="Հին քարտի համար" GridPane.rowIndex="1" />
+      <TextField fx:id="oldCardTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
       <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-      <Label styleClass="paragraph" text="Հին քարտի համար" GridPane.rowIndex="1" />
-      <Label styleClass="paragraph" text="Նոր քարտի համար *" GridPane.rowIndex="3" />
-      <Label styleClass="paragraph" text="Անուն *" GridPane.rowIndex="4" />
-      <Label styleClass="paragraph" text="Ազգանուն *" GridPane.rowIndex="5" />
-      <Label styleClass="paragraph" text="Հեռախոս *" GridPane.rowIndex="6" />
-      <Label styleClass="paragraph" text="Հեռախոս 2-րդ" GridPane.rowIndex="7" />
-      <Label styleClass="paragraph" text="Հասցե *" GridPane.rowIndex="8" />
-      <Label styleClass="paragraph" text="Աբոնեմենտ *" GridPane.rowIndex="10" />
-      <TextField fx:id="oldCardTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <TextField fx:id="cardTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <TextField fx:id="nameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <TextField fx:id="surnameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <TextField fx:id="phoneTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <TextField fx:id="phone2TextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <TextField fx:id="addressTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <ComboBox fx:id="subscriptionComboBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <Label text="Նոր քարտի համար *" GridPane.rowIndex="3" />
+      <TextField fx:id="cardTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Label text="Անուն *" GridPane.rowIndex="4" />
+      <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Label text="Ազգանուն *" GridPane.rowIndex="5" />
+      <TextField fx:id="surnameTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Label text="Հեռախոս *" GridPane.rowIndex="6" />
+      <Label text="Հեռախոս 2-րդ" GridPane.rowIndex="7" />
+      <Label text="Հասցե *" GridPane.rowIndex="8" />
+      <TextField fx:id="addressTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Label text="Աբոնեմենտ *" GridPane.rowIndex="10" />
+      <ComboBox fx:id="subscriptionComboBox" maxWidth="1.7976931348623157E308" styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></ComboBox>
-      <Button fx:id="previousButton" mnemonicParsing="false" styleClass="secondary" text="Հետ" GridPane.halignment="LEFT" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
-      <Button fx:id="addButton" mnemonicParsing="false" styleClass="primary" text="Գրանցել" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
       <CheckBox fx:id="bonusCheckBox" mnemonicParsing="false" text="Բոնուս" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="11" GridPane.valignment="CENTER">
          <font>
             <Font size="23.0" />
          </font>
       </CheckBox>
+      <Button fx:id="previousButton" mnemonicParsing="false" text="Հետ" GridPane.halignment="LEFT" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
+      <Button fx:id="addButton" mnemonicParsing="false" styleClass="primary" text="Գրանցել" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
    </children>
-   <stylesheets>
-      <URL value="@../../style/button.css" />
-      <URL value="@../../style/combo_box.css" />
-      <URL value="@../../style/labels.css" />
-      <URL value="@../../style/text_field.css" />
-   </stylesheets>
 </fx:root>

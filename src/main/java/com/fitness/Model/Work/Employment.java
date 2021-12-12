@@ -63,4 +63,9 @@ public class Employment {
     public String toString(){
         return this.name;
     }
+
+    @Override
+    public boolean equals(Object employment) {
+        return employment != null && this.id == ((Employment)employment).id;
+    }
 }

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import java.net.URL?>
-<fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<fx:root hgap="5.0" stylesheets="@../../style/bootstrap3.css" type="javafx.scene.layout.GridPane" vgap="5.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" />
+        <ColumnConstraints hgrow="SOMETIMES" />
+        <ColumnConstraints hgrow="SOMETIMES" />
+        <ColumnConstraints hgrow="SOMETIMES" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
@@ -20,12 +25,8 @@
             <Insets bottom="10.0" />
         </GridPane.margin>
     </Label>
-    <Button fx:id="editButton" mnemonicParsing="false" styleClass="secondary" text="Փոփոխել" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-    <Button fx:id="deleteButton" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-    <Button fx:id="addButton" mnemonicParsing="false" styleClass="primary" text="Գրանցել" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
     <TableView fx:id="employeesTable" editable="true" fixedCellSize="0.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
         <columns>
-            <TableColumn fx:id="positionColumn" minWidth="-Infinity" prefWidth="50.0" text="Հաստիք" />
             <TableColumn fx:id="fullNameColumn" minWidth="136.0" prefWidth="172.0" text="Անուն Ազգանուն" />
             <TableColumn fx:id="phoneColumn" minWidth="-Infinity" prefWidth="116.0" text="Հեռ." />
             <TableColumn fx:id="phone2Column" minWidth="-Infinity" text="Հեռ. 2֊րդ" />
@@ -38,8 +39,7 @@
             <Insets bottom="10.0" top="10.0" />
         </GridPane.margin>
     </TableView>
-    <stylesheets>
-        <URL value="@../../style/labels.css" />
-        <URL value="@../../style/button.css" />
-    </stylesheets>
+    <Button fx:id="editButton" mnemonicParsing="false" styleClass="secondary" text="Փոփոխել" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+    <Button fx:id="addButton" mnemonicParsing="false" styleClass="primary" text="Գրանցել" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+    <Button fx:id="deleteButton" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 </fx:root>

@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import java.lang.*?>
-<?import java.net.*?>
+
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1090.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fitness.Controller.MenuController">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="230.0" prefWidth="230.0" />
+   <stylesheets>
+      <URL value="@style/button.css" />
+      <URL value="@style/menu.css" />
+   </stylesheets>
+   <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFF;">
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFF;">
          <children>
             <ImageView fitHeight="100.0" fitWidth="100.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@assets/icon.png" />
                </image>
             </ImageView>
-            <VBox VBox.vgrow="ALWAYS">
+            <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="enterButton" mnemonicParsing="false" VBox.vgrow="ALWAYS">
+                  <Button fx:id="enterButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <graphic>
                         <HBox alignment="CENTER">
                            <children>
@@ -35,18 +48,18 @@
                                     <Image url="@assets/enter.png" />
                                  </image>
                               </ImageView>
-                              <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefWidth="300.0" styleClass="menu_button" stylesheets="@style/button.css" text="Մուտք" textAlignment="CENTER" textFill="#367bf5" HBox.hgrow="ALWAYS">
+                              <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefWidth="300.0" styleClass="menu_button" text="Մուտք" textAlignment="CENTER" textFill="#367bf5" HBox.hgrow="ALWAYS">
                                  <items>
                                     <MenuItem>
                                        <graphic>
-                                          <HBox styleClass="menu_item" stylesheets="@style/menu.css">
+                                          <HBox styleClass="menu_item">
                                              <children>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@assets/card.png" />
                                                    </image>
                                                 </ImageView>
-                                                <Button fx:id="cardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="submenu_button" stylesheets="@style/button.css" text="Քարտով">
+                                                <Button fx:id="cardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="submenu_button" text="Քարտով">
                                                    <HBox.margin>
                                                       <Insets left="5.0" />
                                                    </HBox.margin>
@@ -57,14 +70,14 @@
                                     </MenuItem>
                                     <MenuItem mnemonicParsing="false">
                                        <graphic>
-                                          <HBox styleClass="menu_item" stylesheets="@style/menu.css">
+                                          <HBox styleClass="menu_item">
                                              <children>
                                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@assets/without-card.png" />
                                                    </image>
                                                 </ImageView>
-                                                <Button fx:id="withoutCardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-pref-width: 150px;" styleClass="submenu_button" stylesheets="@style/button.css" text="Առանց քարտ">
+                                                <Button fx:id="withoutCardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-pref-width: 150px;" styleClass="submenu_button" text="Առանց քարտ">
                                                    <HBox.margin>
                                                       <Insets left="5.0" />
                                                    </HBox.margin>
@@ -84,16 +97,12 @@
                            </children>
                         </HBox>
                      </graphic>
-                     <stylesheets>
-                        <URL value="@style/button.css" />
-                        <URL value="@style/menu.css" />
-                     </stylesheets>
                      <styleClass>
                         <String fx:value="menu_button" />
                         <String fx:value="menu_item" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="customersButton" mnemonicParsing="false">
+                  <Button fx:id="customersButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
                      <graphic>
                         <HBox prefWidth="200.0">
                            <children>
@@ -105,20 +114,16 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ImageView>
-                              <Label styleClass="menu_label" stylesheets="@style/menu.css" text="Հաճախորդներ" />
+                              <Label styleClass="menu_label" text="Հաճախորդներ" />
                            </children>
                         </HBox>
                      </graphic>
-                     <stylesheets>
-                        <URL value="@style/button.css" />
-                        <URL value="@style/menu.css" />
-                     </stylesheets>
                      <styleClass>
                         <String fx:value="menu_button" />
                         <String fx:value="menu_item" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="employeesButton" mnemonicParsing="false">
+                  <Button fx:id="employeesButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
                      <graphic>
                         <HBox prefWidth="200.0">
                            <children>
@@ -130,20 +135,16 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ImageView>
-                              <Label styleClass="menu_label" stylesheets="@style/menu.css" text="Աշխատողներ" />
+                              <Label styleClass="menu_label" text="Աշխատողներ" />
                            </children>
                         </HBox>
                      </graphic>
-                     <stylesheets>
-                        <URL value="@style/button.css" />
-                        <URL value="@style/menu.css" />
-                     </stylesheets>
                      <styleClass>
                         <String fx:value="menu_button" />
                         <String fx:value="menu_item" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="servicesButton" mnemonicParsing="false">
+                  <Button fx:id="servicesButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
                      <graphic>
                         <HBox prefWidth="200.0">
                            <children>
@@ -155,20 +156,16 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ImageView>
-                              <Label styleClass="menu_label" stylesheets="@style/menu.css" text="Ծառայություններ" />
+                              <Label styleClass="menu_label" text="Ծառայություններ" />
                            </children>
                         </HBox>
                      </graphic>
-                     <stylesheets>
-                        <URL value="@style/button.css" />
-                        <URL value="@style/menu.css" />
-                     </stylesheets>
                      <styleClass>
                         <String fx:value="menu_button" />
                         <String fx:value="menu_item" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="positionsButton" mnemonicParsing="false">
+                  <Button fx:id="positionsButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
                      <graphic>
                         <HBox prefWidth="200.0">
                            <children>
@@ -180,20 +177,16 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ImageView>
-                              <Label styleClass="menu_label" stylesheets="@style/menu.css" text="Հաստիքներ" />
+                              <Label styleClass="menu_label" text="Հաստիքներ" />
                            </children>
                         </HBox>
                      </graphic>
-                     <stylesheets>
-                        <URL value="@style/button.css" />
-                        <URL value="@style/menu.css" />
-                     </stylesheets>
                      <styleClass>
                         <String fx:value="menu_button" />
                         <String fx:value="menu_item" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="subscriptionButton" mnemonicParsing="false">
+                  <Button fx:id="subscriptionButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
                      <graphic>
                         <HBox prefWidth="200.0">
                            <children>
@@ -205,20 +198,16 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ImageView>
-                              <Label styleClass="menu_label" stylesheets="@style/menu.css" text="Աբոնեմենտ" />
+                              <Label styleClass="menu_label" text="Աբոնեմենտ" />
                            </children>
                         </HBox>
                      </graphic>
-                     <stylesheets>
-                        <URL value="@style/button.css" />
-                        <URL value="@style/menu.css" />
-                     </stylesheets>
                      <styleClass>
                         <String fx:value="menu_button" />
                         <String fx:value="menu_item" />
                      </styleClass>
                   </Button>
-                  <Button fx:id="reportButton" mnemonicParsing="false">
+                  <Button fx:id="reportButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
                      <graphic>
                         <HBox alignment="CENTER" prefWidth="200.0">
                            <children>
@@ -230,14 +219,10 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </ImageView>
-                              <Label styleClass="menu_label" stylesheets="@style/menu.css" text="Հաշվետվություն" />
+                              <Label styleClass="menu_label" text="Հաշվետվություն" />
                            </children>
                         </HBox>
                      </graphic>
-                     <stylesheets>
-                        <URL value="@style/button.css" />
-                        <URL value="@style/menu.css" />
-                     </stylesheets>
                      <styleClass>
                         <String fx:value="menu_button" />
                         <String fx:value="menu_item" />
@@ -245,7 +230,7 @@
                   </Button>
                </children>
             </VBox>
-            <Button fx:id="settingsButton" mnemonicParsing="false">
+            <Button fx:id="settingsButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
                <graphic>
                   <HBox alignment="CENTER" prefWidth="200.0">
                      <children>
@@ -257,14 +242,10 @@
                               <Cursor fx:constant="DEFAULT" />
                            </cursor>
                         </ImageView>
-                        <Label styleClass="menu_label" stylesheets="@style/menu.css" text="Կարգավորումներ" />
+                        <Label styleClass="menu_label" text="Կարգավորումներ" />
                      </children>
                   </HBox>
                </graphic>
-               <stylesheets>
-                  <URL value="@style/button.css" />
-                  <URL value="@style/menu.css" />
-               </stylesheets>
                <styleClass>
                   <String fx:value="menu_button" />
                   <String fx:value="menu_item" />

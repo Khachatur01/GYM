@@ -30,7 +30,7 @@ public class Preloader extends Thread{
                 window.close(this.stage);
 
                 Stage stage = new Stage();
-                stage.setMinWidth(1300);
+                stage.setMinWidth(1450);
                 stage.setMinHeight(690);
 
                 window.open(Page.MENU.getValue(), stage);
