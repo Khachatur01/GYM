@@ -4,9 +4,7 @@ import com.fitness.Controller.Controller;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
-import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Employment;
-import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Service.Archive.ArchiveService;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
@@ -14,15 +12,15 @@ import com.fitness.Service.Person.CustomerService;
 import com.fitness.Service.Person.EmployeeService;
 import com.fitness.Service.Work.EmploymentService;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -134,7 +132,7 @@ public class WithoutCardController extends GridPane implements Controller {
                 if(archiveService.add(
                         makeCustomer(),
                         employeeComboBox.getSelectionModel().getSelectedItem(),
-                        false,
+                        employmentComboBox.getSelectionModel().getSelectedItem(),
                         bonusCheckBox.isSelected()
                 ) != null)
 

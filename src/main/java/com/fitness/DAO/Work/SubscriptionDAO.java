@@ -2,7 +2,6 @@ package com.fitness.DAO.Work;
 
 import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
-import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Create;

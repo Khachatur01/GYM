@@ -8,7 +8,10 @@ import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Verify;
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.Optional;
 
 public class EmployeeService {
     private static Employee selected = null;
-    private EmployeeDAO employeeDAO = new EmployeeDAO();
+    private final EmployeeDAO employeeDAO = new EmployeeDAO();
 
     private Employee makeEmployee(TextField nameTextField, TextField surnameTextField, MaskField phoneMaskField, MaskField phone2MaskField, TextField addressTextField, ObservableList<Position> positions){
         Employee employee = null;

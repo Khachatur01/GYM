@@ -48,7 +48,6 @@ public class Create {
                 result.getLong("employment.id"),
                 result.getString("employment.name"),
                 result.getInt("employment.price"),
-                null,
                 result.getBoolean("employment.archived")
         );
     }
@@ -79,7 +78,7 @@ public class Create {
                 result.getLong("archive.id"),
                 null,
                 null,
-                result.getBoolean("archive.registration"),
+                null,
                 result.getBoolean("archive.bonus")
         );
     }

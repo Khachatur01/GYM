@@ -4,11 +4,7 @@ import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-
-import java.util.List;
 
 public class PositionButton {
     private static PositionButton selected = null;

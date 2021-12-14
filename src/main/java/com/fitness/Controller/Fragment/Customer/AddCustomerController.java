@@ -3,7 +3,6 @@ package com.fitness.Controller.Fragment.Customer;
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Element.MaskField;
-import com.fitness.Model.Archive.Archive;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Archive.ArchiveService;
@@ -16,7 +15,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -123,7 +121,7 @@ public class AddCustomerController extends GridPane implements Controller {
                 );
 
                 if(customer != null) {
-                    archiveService.add(customer, null, true, bonusCheckBox.isSelected());
+                    archiveService.add(customer, null, null, bonusCheckBox.isSelected());
 
                     this.stop();
                     Window.getFragment(Fragment.CUSTOMER).start();

@@ -3,9 +3,7 @@ package com.fitness.DAO.Person;
 import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
 import com.fitness.Model.Person.Employee;
-import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Employment;
-import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Create;
 
@@ -91,8 +89,8 @@ public class EmployeeDAO implements DAO<Employee> {
         this.editPositions(employee);
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "UPDATE `employee` SET " +
-                        "`name` = ?, `surname` = ?, `phone` = ?, `phone2` = ?, `address` = ?, `archived` = ?",
-                Statement.RETURN_GENERATED_KEYS
+                        "`name` = ?, `surname` = ?, `phone` = ?, `phone2` = ?, `address` = ?, `archived` = ? WHERE" +
+                        "`id` = ?"
         );
         preparedStatement.setString(1, employee.getName().getFirstName());
         preparedStatement.setString(2, employee.getName().getLastName());
@@ -100,6 +98,7 @@ public class EmployeeDAO implements DAO<Employee> {
         preparedStatement.setString(4, employee.getPhone2());
         preparedStatement.setString(5, employee.getAddress());
         preparedStatement.setBoolean(6, employee.isArchived());
+        preparedStatement.setLong(7, employee.getId());
         preparedStatement.executeUpdate();
     }
 

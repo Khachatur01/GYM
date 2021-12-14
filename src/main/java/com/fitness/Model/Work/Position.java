@@ -36,7 +36,7 @@ public class Position {
     }
 
     public List<Employment> getEmployments() {
-        return this.employments;
+        return employments;
     }
 
     public void setEmployments(List<Employment> employments) {

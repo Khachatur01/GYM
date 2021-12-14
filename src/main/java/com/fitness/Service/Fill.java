@@ -4,12 +4,9 @@ import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.EmploymentQuantity;
-import com.fitness.Model.Work.Position;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Person.CustomerService;
-import com.fitness.Service.Work.SubscriptionService;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
@@ -19,8 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Fill {
-    private static SubscriptionService subscriptionService = new SubscriptionService();
-    private static CustomerService customerService = new CustomerService();
+    private static final CustomerService customerService = new CustomerService();
     public static void customer(Customer customer, TextField cardTextField, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
         cardTextField.setText(customer.getCard());
         nameTextField.setText(customer.getName().getFirstName());
@@ -61,12 +57,11 @@ public class Fill {
         addressTextField.setText(customer.getAddress());
     }
 
-    public static void employee(Employee employee, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField, ComboBox<Position> positionComboBox) {
+    public static void employee(Employee employee, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField) {
         nameTextField.setText(employee.getName().getFirstName());
         surnameTextField.setText(employee.getName().getLastName());
         phoneTextField.setText(employee.getPhone());
         phone2TextField.setText(employee.getPhone2());
         addressTextField.setText(employee.getAddress());
-//        positionComboBox.getSelectionModel().select(employee.getPositions());
     }
 }

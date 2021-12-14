@@ -1,7 +1,6 @@
 package com.fitness.Controller.Fragment.Enter;
 
 import com.fitness.Controller.Controller;
-import com.fitness.Model.Archive.Archive;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.Employment;
@@ -18,7 +17,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -132,7 +130,7 @@ public class WithCardController extends GridPane implements Controller {
                 if(archiveService.add(
                         selectedCustomer,
                         employeeComboBox.getSelectionModel().getSelectedItem(),
-                        false,
+                        employmentComboBox.getSelectionModel().getSelectedItem(),
                         bonusCheckBox.isSelected()
                     ) != null)
 

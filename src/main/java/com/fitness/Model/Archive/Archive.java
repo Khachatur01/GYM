@@ -2,21 +2,22 @@ package com.fitness.Model.Archive;
 
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
+import com.fitness.Model.Work.Employment;
 
 public class Archive {
     private long id;
     private Customer customer;
     private Employee employee;
-    private boolean registration;
+    private Employment employment;
     private boolean bonus;
 
     public Archive(){}
 
-    public Archive(long id, Customer customer, Employee employee, boolean registration, boolean bonus) {
+    public Archive(long id, Customer customer, Employee employee, Employment employment, boolean bonus) {
         this.id = id;
         this.customer = customer;
         this.employee = employee;
-        this.registration = registration;
+        this.employment = employment;
         this.bonus = bonus;
     }
 
@@ -44,12 +45,12 @@ public class Archive {
         this.employee = employee;
     }
 
-    public boolean isRegistration() {
-        return registration;
+    public Employment getEmployment() {
+        return employment;
     }
 
-    public void setRegistration(boolean registration) {
-        this.registration = registration;
+    public void setEmployment(Employment employment) {
+        this.employment = employment;
     }
 
     public boolean isBonus() {

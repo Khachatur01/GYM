@@ -5,14 +5,17 @@ import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Verify;
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public class PositionService {
-    private PositionDAO positionDAO = new PositionDAO();
+    private final PositionDAO positionDAO = new PositionDAO();
 
     private Position makePosition(TextField nameTextField, ObservableList<Employment> employments) {
         Position position = null;

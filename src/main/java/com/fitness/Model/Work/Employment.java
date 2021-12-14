@@ -6,16 +6,14 @@ public class Employment {
     private long id = Default.ID.getValue();
     private String name;
     private int price;
-    private Position position;
     private boolean archived;
 
     public Employment(){}
 
-    public Employment(long id, String name, int price, Position position, boolean archived) {
+    public Employment(long id, String name, int price, boolean archived) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.position = position;
         this.archived = archived;
     }
 
@@ -41,14 +39,6 @@ public class Employment {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
     public boolean isArchived() {

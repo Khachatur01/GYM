@@ -8,7 +8,6 @@ import com.fitness.Model.Work.Position;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.EmployeeService;
-import com.fitness.Service.Work.EmploymentService;
 import com.fitness.Service.Work.PositionService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
@@ -85,7 +84,7 @@ public class EditEmployeeController extends GridPane implements Controller {
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
         Employee employee = employeeService.getSelected();
         if(employee != null)
-            Fill.employee(employee, nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, positionComboBox);
+            Fill.employee(employee, nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField);
     }
     public void initListeners(){
         addPositionButton.setOnAction(event -> {

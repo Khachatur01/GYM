@@ -2,6 +2,7 @@ package com.fitness;
 
 import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.Controller.Fragment.Archive.ArchiveController;
 import com.fitness.Controller.Fragment.Customer.AddCustomerController;
 import com.fitness.Controller.Fragment.Customer.CustomerController;
 import com.fitness.Controller.Fragment.Customer.EditCustomerController;
@@ -12,7 +13,6 @@ import com.fitness.Controller.Fragment.Employment.EmploymentController;
 import com.fitness.Controller.Fragment.Enter.WithCardController;
 import com.fitness.Controller.Fragment.Enter.WithoutCardController;
 import com.fitness.Controller.Fragment.Position.PositionController;
-import com.fitness.Controller.Fragment.Archive.ArchiveController;
 import com.fitness.Controller.Fragment.SettingsController;
 import com.fitness.Controller.Fragment.Subscription.AddSubscriptionController;
 import com.fitness.Controller.Fragment.Subscription.EditSubscriptionController;

@@ -3,7 +3,6 @@ package com.fitness.DAO.Person;
 import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
 import com.fitness.Model.Person.Customer;
-import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
@@ -19,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CustomerDAO implements DAO<Customer>{
-    private SubscriptionService subscriptionService = new SubscriptionService();
+    private final SubscriptionService subscriptionService = new SubscriptionService();
 
     @Override
     public void add(Customer customer) throws SQLException {
@@ -132,14 +131,10 @@ public class CustomerDAO implements DAO<Customer>{
     /* get non bonus visits count by employment */
     private int getEmploymentQuantity(Customer customer, Employment employment) throws SQLException {
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT count(`archive`.`id`) AS 'quantity' FROM `archive`, `employee`, `position`, `employment` WHERE " +
+                "SELECT count(`archive`.`id`) AS 'quantity' FROM `archive` WHERE " +
                         "`archive`.`customer_id` = ? AND " +
-                        "`archive`.`employee_id` = `employee`.`id` AND " +
-                        "`employee`.`position_id` = `position`.`id` AND " +
-                        "`position`.`employment_id` = `employment`.`id` AND " +
-                        "`archive`.`registration` = 0 AND " +
-                        "`archive`.`bonus` = 0 AND " +
-                        "`employment`.`id` = ?"
+                        "`archive`.`employment_id` = ? AND " +
+                        "`archive`.`bonus` = 0"
         );
         preparedStatement.setLong(1, customer.getId());
         preparedStatement.setLong(2, employment.getId());
@@ -170,7 +165,7 @@ public class CustomerDAO implements DAO<Customer>{
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT * FROM `customer`, `subscription` WHERE " +
                         "`customer`.`subscription_id` = `subscription`.`id` AND " +
-                        "`card` = ?"
+                        "`customer`.`card` = ?"
         );
         preparedStatement.setString(1, card);
         ResultSet result = preparedStatement.executeQuery();
@@ -186,8 +181,8 @@ public class CustomerDAO implements DAO<Customer>{
         Customer customer = null;
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT * FROM `customer`, `subscription` WHERE " +
-                        "`subscription_id` IS NULL AND " +
-                        "`phone` = ? OR `phone2` = ?"
+                        "`customer`.`subscription_id` IS NULL AND " +
+                        "`customer`.`phone` = ? OR `customer`.`phone2` = ?"
         );
         preparedStatement.setString(1, phone);
         preparedStatement.setString(2, phone);
@@ -204,7 +199,10 @@ public class CustomerDAO implements DAO<Customer>{
     public Date getLastVisit(Customer customer) throws SQLException {
         Date date = null;
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT `date` FROM `archive`, `customer` WHERE `customer`.`id` = `archive`.`customer_id` AND `customer`.`id` = ? ORDER BY `archive`.`date` DESC LIMIT 1"
+                "SELECT `date` FROM `archive`, `customer` WHERE " +
+                        "`customer`.`id` = `archive`.`customer_id` AND " +
+                        "`customer`.`id` = ? " +
+                        "ORDER BY `archive`.`date` DESC LIMIT 1"
         );
         preparedStatement.setLong(1, customer.getId());
         ResultSet result = preparedStatement.executeQuery();

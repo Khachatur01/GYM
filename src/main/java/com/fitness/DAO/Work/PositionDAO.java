@@ -25,7 +25,6 @@ public class PositionDAO implements DAO<Position> {
         ResultSet result = preparedStatement.executeQuery();
         while (result.next()) {
             Employment employment = Create.employment(result);
-            employment.setPosition(position);
             employments.add(employment);
         }
         return employments;
