@@ -3,6 +3,7 @@ package com.fitness.Service;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
+import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Person.CustomerService;
@@ -19,17 +20,23 @@ public class Fill {
     private static final CustomerService customerService = new CustomerService();
     public static void customer(Customer customer, TextField cardTextField, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField, ComboBox<Subscription> subscriptionComboBox){
         cardTextField.setText(customer.getCard());
-        nameTextField.setText(customer.getName().getFirstName());
-        surnameTextField.setText(customer.getName().getLastName());
-        phoneTextField.setText(customer.getPhone());
-        phone2TextField.setText(customer.getPhone2());
-        addressTextField.setText(customer.getAddress());
+
+        Fill.person(customer, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField);
+
         subscriptionComboBox.getSelectionModel().select(customer.getSubscription());
     }
+    public static void guestCustomer(Customer customer, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField){
+        Fill.person(customer, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField);
+    }
+
     public static void customerStatic(Customer customer, Label fullNameLabel, Label phoneLabel, Label phone2Label, Label addressLabel, Label subscriptionLabel, Label lastVisitLabel, TableView<EmploymentQuantity> employmentQuantityTable){
         fullNameLabel.setText(customer.getFullName());
         phoneLabel.setText(customer.getPhone());
-        phone2Label.setText(customer.getPhone2());
+
+        String phone2 = customer.getPhone2();
+        if(phone2 != null)
+            phone2Label.setText(phone2);
+
         addressLabel.setText(customer.getAddress());
         subscriptionLabel.setText(customer.getSubscription().getName());
         try {
@@ -49,19 +56,20 @@ public class Fill {
 
         }
     }
-    public static void guestCustomer(Customer customer, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField){
-        nameTextField.setText(customer.getName().getFirstName());
-        surnameTextField.setText(customer.getName().getLastName());
-        phoneTextField.setText(customer.getPhone());
-        phone2TextField.setText(customer.getPhone2());
-        addressTextField.setText(customer.getAddress());
-    }
 
     public static void employee(Employee employee, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField) {
-        nameTextField.setText(employee.getName().getFirstName());
-        surnameTextField.setText(employee.getName().getLastName());
-        phoneTextField.setText(employee.getPhone());
-        phone2TextField.setText(employee.getPhone2());
-        addressTextField.setText(employee.getAddress());
+        Fill.person(employee, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField);
+    }
+
+    private static void person(Person person, TextField nameTextField, TextField surnameTextField, MaskField phoneTextField, MaskField phone2TextField, TextField addressTextField) {
+        nameTextField.setText(person.getName().getFirstName());
+        surnameTextField.setText(person.getName().getLastName());
+        phoneTextField.setText(person.getPhone());
+
+        String phone2 = person.getPhone2();
+        if(phone2 != null)
+            phone2TextField.setText(phone2);
+
+        addressTextField.setText(person.getAddress());
     }
 }

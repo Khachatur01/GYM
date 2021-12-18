@@ -108,7 +108,7 @@ public class CustomerDAO implements DAO<Customer>{
                         (actual ? " AND `customer`.`archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
-        if(result.next()){
+        while(result.next()){
             Subscription subscription = Create.subscription(result);
             Customer customer = Create.customer(result);
             customer.setSubscription(subscription);

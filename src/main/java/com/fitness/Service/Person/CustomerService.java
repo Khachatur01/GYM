@@ -45,8 +45,8 @@ public class CustomerService {
         String card = cardTextField.getText();
         String name = nameTextField.getText();
         String surname = surnameTextField.getText();
-        String phone = phoneMaskField.getText();
-        String phone2 = phone2MaskField.getText();
+        String phone = phoneMaskField.getText(); /* get with mask */
+        String phone2 = phone2MaskField.getText(); /* get with mask */
         String address = addressTextField.getText();
         Subscription subscription = subscriptionComboBox.getValue();
 
@@ -58,6 +58,9 @@ public class CustomerService {
                 Verify.address(address, addressTextField) &&
                 Verify.subscription(subscription, subscriptionComboBox)
         ){
+            if (phone2MaskField.getPlainText().length() == 0)
+                phone2 = null;
+
             customer = new Customer();
             customer.setCard(card);
             customer.setName(new Person.Name(name, surname));

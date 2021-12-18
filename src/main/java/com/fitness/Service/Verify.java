@@ -50,8 +50,8 @@ public class Verify {
         addressTextField.getStyleClass().remove("textField_error");
         return true;
     }
-    public static boolean phone(String phone, MaskField phoneMaskField){
-        if(!MaskField.isFill(phone)){
+    public static boolean phone(String phone, MaskField phoneMaskField) {
+        if(!MaskField.isFill(phone)) {
             phoneMaskField.getStyleClass().add("textField_error");
             phoneMaskField.requestFocus();
             return false;
@@ -61,8 +61,9 @@ public class Verify {
         return true;
     }
 
-    public static boolean phone2(String phone2, MaskField phone2MaskField){
-        if(!MaskField.isFill(phone2) && phone2MaskField.getPlainText().length() != 0){
+    public static boolean phone2(String phone2, MaskField phone2MaskField) {
+        /* not fully field */
+        if(!MaskField.isFill(phone2) && phone2MaskField.getPlainText().length() != 0) {
             phone2MaskField.getStyleClass().add("textField_error");
             phone2MaskField.requestFocus();
             return false;
@@ -73,7 +74,7 @@ public class Verify {
     }
 
     public static boolean subscription(Subscription subscription, ComboBox<Subscription> subscriptionComboBox) {
-        if(subscription == null){
+        if(subscription == null) {
             subscriptionComboBox.getStyleClass().add("combo-box_error");
             return false;
         }

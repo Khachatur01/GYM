@@ -36,6 +36,9 @@ public class EmployeeService {
                 Verify.address(address, addressTextField) &&
                 !positions.isEmpty()
         ){
+            if (phone2MaskField.getPlainText().length() == 0)
+                phone2 = null;
+
             employee = new Employee();
             employee.setName(new Person.Name(name, surname));
             employee.setPhone(phone);
