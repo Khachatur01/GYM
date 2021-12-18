@@ -33,7 +33,7 @@
             <Insets bottom="10.0" top="10.0" />
         </GridPane.margin>
     </TableView>
-    <Button fx:id="editButton" mnemonicParsing="false" styleClass="secondary" text="Փոփոխել" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+    <Button fx:id="editButton" mnemonicParsing="false" text="Փոփոխել" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
     <Button fx:id="addButton" mnemonicParsing="false" styleClass="primary" text="Գրանցել" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-    <Button fx:id="deleteButton" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+    <Button fx:id="deleteButton" mnemonicParsing="false" text="Ջնջել" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 </fx:root>

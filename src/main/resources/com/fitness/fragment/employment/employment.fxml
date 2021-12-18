@@ -33,7 +33,7 @@
             <Insets />
          </GridPane.margin>
       </Separator>
-      <Label styleClass="paragraph" text="Ծառայություն" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+      <Label text="Ծառայություն" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
          <GridPane.margin>
             <Insets bottom="5.0" />
          </GridPane.margin>
@@ -46,7 +46,7 @@
             <Font size="17.0" />
          </font>
       </TextField>
-      <Label styleClass="paragraph" text="Մեկ ծառայության գին (դրամ)" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <Label text="Մեկ ծառայության գին (դրամ)" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets top="5.0" />
          </GridPane.margin>
@@ -69,7 +69,7 @@
           <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="editButton" contentDisplay="CENTER" mnemonicParsing="false" styleClass="secondary" text="Փոփոխել" textAlignment="CENTER" GridPane.halignment="LEFT">
+            <Button fx:id="editButton" contentDisplay="CENTER" mnemonicParsing="false" text="Փոփոխել" textAlignment="CENTER" GridPane.halignment="LEFT">
                <font>
                   <Font size="22.0" />
                </font>
@@ -79,7 +79,7 @@
                   <Font size="22.0" />
                </font>
             </Button>
-            <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+            <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" text="Ջնջել" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                <font>
                   <Font size="22.0" />
                </font>

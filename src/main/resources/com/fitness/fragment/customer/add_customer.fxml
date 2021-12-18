@@ -44,7 +44,7 @@
       <Label text="Հասցե *" GridPane.rowIndex="8" />
       <TextField fx:id="addressTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
       <Label text="Աբոնեմենտ *" GridPane.rowIndex="10" />
-      <ComboBox fx:id="subscriptionComboBox" maxWidth="1.7976931348623157E308" styleClass="combo-box" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <ComboBox fx:id="subscriptionComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></ComboBox>

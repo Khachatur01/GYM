@@ -94,7 +94,7 @@
           <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="editButton" contentDisplay="CENTER" mnemonicParsing="false" styleClass="secondary" text="Փոփոխել" textAlignment="CENTER" GridPane.halignment="LEFT">
+            <Button fx:id="editButton" contentDisplay="CENTER" mnemonicParsing="false" text="Փոփոխել" textAlignment="CENTER" GridPane.halignment="LEFT">
                <font>
                   <Font size="22.0" />
                </font>
@@ -107,7 +107,7 @@
                   <Insets />
                </GridPane.margin>
             </Button>
-            <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+            <Button fx:id="deleteButton" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" text="Ջնջել" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                <font>
                   <Font size="22.0" />
                </font>

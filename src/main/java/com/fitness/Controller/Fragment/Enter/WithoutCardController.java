@@ -72,8 +72,8 @@ public class WithoutCardController extends GridPane implements Controller {
         GridPane.setValignment(phone2MaskField, VPos.TOP);
         GridPane.setHalignment(phone2MaskField, HPos.CENTER);
 
-        this.add(phoneMaskField, 0, 7);
-        this.add(phone2MaskField, 0, 9);
+        this.add(phoneMaskField, 0, 6);
+        this.add(phone2MaskField, 0, 8);
     }
 
     private void phoneMaskFieldListener(String newValue) {

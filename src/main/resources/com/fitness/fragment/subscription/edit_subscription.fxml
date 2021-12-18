@@ -19,10 +19,10 @@
    </rowConstraints>
    <children>
       <Label styleClass="header1" text="Փոփոխել աբոնեմենտ" GridPane.columnSpan="2147483647" />
-      <Label styleClass="paragraph" text="Անուն" GridPane.rowIndex="1" />
-      <TextField fx:id="nameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-      <Label styleClass="paragraph" text="Ընդհանուր արժեք" GridPane.rowIndex="2" />
-      <Label fx:id="totalPriceLabel" styleClass="paragraph" text="0 դրամ" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+      <Label text="Անուն" GridPane.rowIndex="1" />
+      <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+      <Label text="Ընդհանուր արժեք" GridPane.rowIndex="2" />
+      <Label fx:id="totalPriceLabel" text="0 դրամ" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
       <GridPane hgap="5.0" vgap="5.0" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER">
          <columnConstraints>
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
@@ -38,7 +38,7 @@
             <RowConstraints vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="deleteEmploymentButton" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="deleteEmploymentButton" mnemonicParsing="false" text="Ջնջել" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <TableView fx:id="subscriptionEmploymentTable" maxHeight="300.0" minHeight="100.0" prefHeight="100.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <columns>
                   <TableColumn fx:id="employmentColumn" maxWidth="800.0" minWidth="400.0" prefWidth="500.0" text="Ծառայություն" />
@@ -52,7 +52,7 @@
                   <Insets />
                </GridPane.margin>
             </TableView>
-            <Button fx:id="addEmploymentButton" mnemonicParsing="false" styleClass="secondary" text="Ավելացնել" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button fx:id="addEmploymentButton" mnemonicParsing="false" text="Ավելացնել" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Label text="Ծառայություն" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="5.0" />
@@ -68,7 +68,7 @@
                   <Insets left="5.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="quantityTextField" maxWidth="350.0" minWidth="150.0" prefWidth="250.0" styleClass="textField" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <TextField fx:id="quantityTextField" maxWidth="350.0" minWidth="150.0" prefWidth="250.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <GridPane.margin>
                   <Insets top="5.0" />
                </GridPane.margin>
@@ -78,14 +78,14 @@
                   <Insets left="5.0" />
                </GridPane.margin>
             </Label>
-            <TextField fx:id="priceTextField" maxWidth="500.0" minWidth="150.0" prefWidth="250.0" styleClass="textField" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <TextField fx:id="priceTextField" maxWidth="500.0" minWidth="150.0" prefWidth="250.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <GridPane.margin>
                   <Insets bottom="5.0" top="5.0" />
                </GridPane.margin>
             </TextField>
          </children>
       </GridPane>
-      <Button fx:id="previousButton" mnemonicParsing="false" styleClass="secondary" text="Հետ" GridPane.rowIndex="6" />
+      <Button fx:id="previousButton" mnemonicParsing="false" text="Հետ" GridPane.rowIndex="6" />
       <Button fx:id="editSubscriptionButton" mnemonicParsing="false" styleClass="primary" text="Փոփոխել" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />

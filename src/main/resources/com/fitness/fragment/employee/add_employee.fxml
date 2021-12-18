@@ -28,15 +28,15 @@
          </GridPane.margin>
       </Label>
       <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-      <Label styleClass="paragraph" text="Անուն *" GridPane.rowIndex="2" />
-      <Label styleClass="paragraph" text="Ազգանուն *" GridPane.rowIndex="3" />
-      <Label styleClass="paragraph" text="Հեռախոս *" GridPane.rowIndex="4" />
-      <Label styleClass="paragraph" text="Հեռախոս 2-րդ" GridPane.rowIndex="5" />
-      <Label styleClass="paragraph" text="Հասցե *" GridPane.rowIndex="6" />
-      <TextField fx:id="nameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <TextField fx:id="surnameTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <TextField fx:id="addressTextField" styleClass="textField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-      <Button fx:id="previousButton" mnemonicParsing="false" styleClass="secondary" text="Հետ" GridPane.halignment="LEFT" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+      <Label text="Անուն *" GridPane.rowIndex="2" />
+      <Label text="Ազգանուն *" GridPane.rowIndex="3" />
+      <Label text="Հեռախոս *" GridPane.rowIndex="4" />
+      <Label text="Հեռախոս 2-րդ" GridPane.rowIndex="5" />
+      <Label text="Հասցե *" GridPane.rowIndex="6" />
+      <TextField fx:id="nameTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <TextField fx:id="surnameTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <TextField fx:id="addressTextField" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Button fx:id="previousButton" mnemonicParsing="false" text="Հետ" GridPane.halignment="LEFT" GridPane.rowIndex="10" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets top="5.0" />
          </GridPane.margin></Button>
@@ -73,9 +73,9 @@
                <GridPane.margin>
                   <Insets top="5.0" />
                </GridPane.margin></ComboBox>
-            <Button fx:id="addPositionButton" mnemonicParsing="false" styleClass="secondary" text="Ավելացնել" wrapText="true" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Button fx:id="deletePositionButton" mnemonicParsing="false" styleClass="secondary" text="Ջնջել" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Label styleClass="paragraph" text="Հաստիք" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="addPositionButton" mnemonicParsing="false" text="Ավելացնել" wrapText="true" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Button fx:id="deletePositionButton" mnemonicParsing="false" text="Ջնջել" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Label text="Հաստիք" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="5.0" />
                </GridPane.margin></Label>
