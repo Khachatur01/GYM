@@ -5,6 +5,9 @@
 .label {
     -fx-font-size: 20px;
 }
+.info {
+    -fx-font-size: 11;
+}
 
 .header1 {
     -fx-font-size: 50px;

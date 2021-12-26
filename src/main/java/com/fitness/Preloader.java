@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class Preloader extends Thread{
+public class Preloader extends Thread {
     private Stage stage;
     private Window window = new Window();
 

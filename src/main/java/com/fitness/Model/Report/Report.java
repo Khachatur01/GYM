@@ -1,20 +1,18 @@
 package com.fitness.Model.Report;
 
-import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.Employment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Report {
     private Employment employment;
-    private Employee employee;
-    private int quantity;
-    private int price;
+    private List<Salary> salaries = new ArrayList<>();
 
     public Report(){}
-    public Report(Employment employment, Employee employee, int quantity, int price) {
+    public Report(Employment employment, List<Salary> salaries) {
         this.employment = employment;
-        this.employee = employee;
-        this.quantity = quantity;
-        this.price = price;
+        this.salaries = salaries;
     }
 
     public Employment getEmployment() {
@@ -25,27 +23,30 @@ public class Report {
         this.employment = employment;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public List<Salary> getSalaries() {
+        return salaries;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setSalaries(List<Salary> salaries) {
+        this.salaries = salaries;
     }
 
-    public int getQuantity() {
+    public void addSalary(Salary salary) {
+        if(salaries == null) salaries = new ArrayList<>();
+        this.salaries.add(salary);
+    }
+
+    public int getTotalQuantity() {
+        int quantity = 0;
+        for(Salary salary: salaries)
+            quantity += salary.getQuantity();
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public int getPrice() {
+    public int getTotalPrice() {
+        int price = 0;
+        for(Salary salary: salaries)
+            price += salary.getPrice();
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 }

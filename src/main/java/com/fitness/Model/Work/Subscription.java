@@ -2,12 +2,13 @@ package com.fitness.Model.Work;
 
 import com.fitness.Controller.Constant.Default;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Subscription {
     private long id = Default.ID.getValue();
     private String name;
-    private List<EmploymentQuantity> employmentsQuantities;
+    private List<EmploymentQuantity> employmentsQuantities = new ArrayList<>();
     private boolean archived;
 
     public Subscription(){}
@@ -49,6 +50,14 @@ public class Subscription {
             price += employmentQuantity.getPrice();
 
         return price;
+    }
+
+    public int getEmploymentPrice(Employment employment) {
+        for(EmploymentQuantity employmentQuantity: this.employmentsQuantities)
+            if(employmentQuantity.getEmployment().getId() == employment.getId())
+                return employmentQuantity.getPrice() / employmentQuantity.getQuantity();
+
+        return 0;
     }
 
     public boolean isArchived() {

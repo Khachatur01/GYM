@@ -60,4 +60,5 @@ public class Archive {
     public void setBonus(boolean bonus) {
         this.bonus = bonus;
     }
+
 }
