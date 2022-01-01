@@ -53,6 +53,7 @@ public class Subscription {
     }
 
     public int getEmploymentPrice(Employment employment) {
+        if(employment == null) return 0;
         for(EmploymentQuantity employmentQuantity: this.employmentsQuantities)
             if(employmentQuantity.getEmployment().getId() == employment.getId())
                 return employmentQuantity.getPrice() / employmentQuantity.getQuantity();

@@ -45,7 +45,7 @@ public class AddCustomerController extends GridPane implements Controller {
     @FXML
     private ComboBox<Subscription> subscriptionComboBox;
     @FXML
-    private CheckBox bonusCheckBox;
+    private CheckBox bonusCheckBox; /* TODO */
     @FXML
     private Button previousButton;
     @FXML
@@ -166,9 +166,11 @@ public class AddCustomerController extends GridPane implements Controller {
                 cardTextField,
                 nameTextField,
                 surnameTextField,
-                phoneMaskField,
-                phone2MaskField,
                 addressTextField
+        );
+        Clear.maskField(
+                phoneMaskField,
+                phone2MaskField
         );
         Clear.comboBox(subscriptionComboBox);
     }

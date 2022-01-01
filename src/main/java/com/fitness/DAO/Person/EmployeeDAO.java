@@ -16,6 +16,7 @@ import java.util.List;
 
 public class EmployeeDAO implements DAO<Employee> {
     public List<Position> getPositions(Employee employee, boolean actual) throws SQLException {
+        if(employee == null) return null;
         List<Position> positions = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT * FROM `position`, `employee_position` WHERE " +

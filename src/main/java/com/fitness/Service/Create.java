@@ -76,6 +76,7 @@ public class Create {
     public static Archive archive(ResultSet result) throws SQLException {
         return new Archive(
                 result.getLong("archive.id"),
+                result.getTimestamp("archive.date"),
                 null,
                 null,
                 null,

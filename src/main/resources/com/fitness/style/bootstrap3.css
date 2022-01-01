@@ -19,6 +19,10 @@
     -fx-effect: dropshadow(three-pass-box, #367bf5cc, 10, 0, 0, 0);
 }
 
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
 .button:focused, .toggle-button:focused,
 .split-menu-button:focused, .menu-button:focused,
 .number-button:focused,

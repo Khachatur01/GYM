@@ -126,10 +126,12 @@ public class AddSubscriptionController extends GridPane implements Controller {
     public void stop() {
         Clear.textField(
                 nameTextField,
-                quantityTextField
+                quantityTextField,
+                priceTextField
         );
         Clear.table(subscriptionEmploymentTable);
         Clear.comboBox(employmentComboBox);
         totalPriceLabel.setText("0 դրամ");
+        totalPrice = 0;
     }
 }

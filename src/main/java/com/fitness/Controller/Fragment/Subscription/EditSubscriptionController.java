@@ -147,8 +147,8 @@ public class EditSubscriptionController extends GridPane implements Controller {
     public void stop() {
         Clear.textField(
                 nameTextField,
-                priceTextField,
-                quantityTextField
+                quantityTextField,
+                priceTextField
         );
         Clear.table(subscriptionEmploymentTable);
         Clear.comboBox(employmentComboBox);

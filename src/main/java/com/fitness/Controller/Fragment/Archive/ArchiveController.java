@@ -2,11 +2,16 @@ package com.fitness.Controller.Fragment.Archive;
 
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Archive.Archive;
+import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Report.Report;
 import com.fitness.Model.Report.Salary;
+import com.fitness.Model.Work.DateTime;
+import com.fitness.Model.Work.Employment;
+import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Archive.ArchiveService;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +20,15 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 public class ArchiveController extends GridPane implements Controller {
@@ -36,11 +43,25 @@ public class ArchiveController extends GridPane implements Controller {
     @FXML
     private GridPane salaryGridPane;
     @FXML
+    private TableView<Archive> historyTableView;
+    @FXML
+    private TableColumn<Archive, DateTime> dateColumn;
+    @FXML
+    private TableColumn<Archive, String> cardColumn;
+    @FXML
+    private TableColumn<Archive, String> nameColumn;
+    @FXML
+    private TableColumn<Archive, Employment> employmentColumn;
+    @FXML
+    private TableColumn<Archive, Employee> employeeColumn;
+    @FXML
+    private TableColumn<Archive, String> subscriptionColumn;
+    @FXML
+    private TableColumn<Archive, String> priceColumn;
+    @FXML
     private Label visitsQuantityLabel;
     @FXML
     private Label totalPriceLabel;
-    @FXML
-    private Button detailButton;
 
     private final ArchiveService archiveService = new ArchiveService();
 
@@ -73,13 +94,15 @@ public class ArchiveController extends GridPane implements Controller {
                     archives = archiveService.getByDateRange(startDate, endDate);
                 } catch (SQLException e) {
                     System.err.println("Archives fetching error");
+                    progressIndicator.setVisible(false);
                     return;
                 }
                 Platform.runLater(() -> {
-
                     List<Report> reports = archiveService.getReports(archives);
                     clearSalary();
                     fillSalary(reports);
+                    clearHistory();
+                    fillHistory(archives);
                     progressIndicator.setVisible(false);
                 });
             }).start();
@@ -90,7 +113,7 @@ public class ArchiveController extends GridPane implements Controller {
 
     private void initDatePickers() {
         StringConverter<LocalDate> converter = new StringConverter<>() {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
             @Override
             public String toString(LocalDate localDate) {
@@ -154,7 +177,8 @@ public class ArchiveController extends GridPane implements Controller {
             salaryTableView.getColumns().addAll(employeeTableColumn, quantityTableColumn, priceTableColumn);
             salaryTableView.setItems(FXCollections.observableArrayList(reports.get(row).getSalaries()));
 
-            Label employmentLabel = new Label(reports.get(row).getEmployment().toString());
+            Employment employment = reports.get(row).getEmployment();
+            Label employmentLabel = new Label(employment == null ? "" : employment.getName());
             Separator separator = new Separator();
             separator.setOrientation(Orientation.HORIZONTAL);
             GridPane.setColumnSpan(separator, REMAINING);
@@ -177,11 +201,33 @@ public class ArchiveController extends GridPane implements Controller {
         totalPriceLabel.setText(totalPrice + " դրամ");
     }
 
+    private void clearHistory() {
+        historyTableView.getItems().clear();
+    }
+
+    private void fillHistory(List<Archive> archives) {
+        historyTableView.setItems(FXCollections.observableArrayList(archives));
+    }
+
+    private void initHistoryTable() {
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        cardColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCustomer().getCard()));
+        nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCustomer().getFullName()));
+        employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));
+        employeeColumn.setCellValueFactory(new PropertyValueFactory<>("employee"));
+        subscriptionColumn.setCellValueFactory(cellData -> {
+            Subscription subscription = cellData.getValue().getCustomer().getSubscription();
+            return new SimpleStringProperty(subscription == null ? "" : subscription.getName());
+        });
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
+
     @Override
     public void start() {
         makeActive();
         initListeners();
         initDatePickers();
+        initHistoryTable();
     }
 
     @Override

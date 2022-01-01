@@ -27,9 +27,20 @@ public class ArchiveDAO implements DAO<Archive> {
                         "VALUES (?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
         );
+        Employee employee = archive.getEmployee();
+        Employment employment = archive.getEmployment();
+
         preparedStatement.setLong(1, archive.getCustomer().getId());
-        preparedStatement.setLong(2, archive.getEmployee().getId());
-        preparedStatement.setLong(3, archive.getEmployment().getId());
+
+        if(employee == null)
+            preparedStatement.setNull(2, Types.BIGINT);
+        else
+            preparedStatement.setLong(2, employee.getId());
+        if(employment == null)
+            preparedStatement.setNull(3, Types.BIGINT);
+        else
+            preparedStatement.setLong(3, employment.getId());
+
         preparedStatement.setBoolean(4, archive.isBonus());
 
         preparedStatement.executeUpdate();
@@ -73,12 +84,20 @@ public class ArchiveDAO implements DAO<Archive> {
     public List<Archive> getByDateRange(LocalDate startDate, LocalDate endDate) throws SQLException {
         List<Archive> archives = new ArrayList<>();
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT * FROM `archive`, `customer`, `subscription`, `employee`, `employment` WHERE " +
-                        "`archive`.`customer_id` = `customer`.`id` AND " +
-                        "`customer`.`subscription_id` = `subscription`.`id` AND " +
-                        "`archive`.`employee_id` = `employee`.`id` AND " +
-                        "`archive`.`employment_id` = `employment`.`id` AND " +
-                        "`archive`.`date` BETWEEN ? AND ?"
+                "SELECT " +
+                        "(`employment_id` IS NULL AND `employee_id` IS NULL) AS registration, " +
+                        "(`customer`.`subscription_id` IS NULL) AS without_card, " +
+                        "archive.*, customer.*, subscription.*, employee.*, employment.* " +
+                        "FROM `archive` " +
+                        "LEFT OUTER JOIN " +
+                            "`customer` ON `customer`.`id` = `customer_id` " +
+                        "LEFT OUTER JOIN " +
+                            "`subscription` ON `subscription`.`id` = `customer`.`subscription_id` " +
+                        "LEFT OUTER JOIN " +
+                            "`employee` ON `employee`.`id` = `employee_id` " +
+                        "LEFT OUTER JOIN " +
+                            "`employment` ON `employment`.`id` = `employment_id` " +
+                        "WHERE `archive`.`date` BETWEEN ? AND ?"
         );
 
         preparedStatement.setString(1, startDate.toString() + " 00:00:00");
@@ -86,16 +105,21 @@ public class ArchiveDAO implements DAO<Archive> {
 
         ResultSet result = preparedStatement.executeQuery();
         while(result.next()) {
-            Subscription subscription = Create.subscription(result);
-            subscription.setEmploymentsQuantities(subscriptionDAO.getById(subscription.getId()).getEmploymentsQuantities());
+            Employee employee = null;
+            Employment employment = null;
 
             Customer customer = Create.customer(result);
-            customer.setSubscription(subscription);
 
-            Employee employee = Create.employee(result);
-            employee.setPositions(employeeDAO.getPositions(employee, false));
-
-            Employment employment = Create.employment(result);
+            if(!result.getBoolean("registration")) {
+                employee = Create.employee(result);
+                employee.setPositions(employeeDAO.getPositions(employee, false));
+                employment = Create.employment(result);
+            }
+            if(!result.getBoolean("without_card")) {
+                Subscription subscription = Create.subscription(result);
+                subscription.setEmploymentsQuantities(subscriptionDAO.getById(subscription.getId()).getEmploymentsQuantities());
+                customer.setSubscription(subscription);
+            }
 
             Archive archive = Create.archive(result);
             archive.setCustomer(customer);

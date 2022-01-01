@@ -7,14 +7,12 @@ import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Report.Report;
 import com.fitness.Model.Report.Salary;
 import com.fitness.Model.Work.Employment;
-import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Person.CustomerService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ArchiveService {
@@ -22,7 +20,7 @@ public class ArchiveService {
     private final CustomerService customerService = new CustomerService();
 
     public Archive add(Customer customer, Employee employee, Employment employment, boolean isBonus) throws SQLException {
-        if(customer == null || employee == null) return  null;
+        if(customer == null) return  null;
 
         Archive archive = new Archive();
         archive.setCustomer(customer);
@@ -32,7 +30,7 @@ public class ArchiveService {
 
         archiveDAO.add(archive);
 
-        if(!customerService.hasAvailableEmployment(customer)) {
+        if(customer.getSubscription() != null && !customerService.hasAvailableEmployment(customer)) {
             customerService.remove(customer, false);
             customer.setArchived(true);
         }
@@ -65,13 +63,18 @@ public class ArchiveService {
         /* if user has subscription, get that subscriptions that employment price */
         if(subscription != null)
             return subscription.getEmploymentPrice(employment);
-        else
+        else if(employment != null)
             return employment.getPrice();
+        else
+            return 0;
     }
 
     public List<Report> getReports(List<Archive> archives) {
         List<Report> reports = new ArrayList<>();
         for(Archive archive: archives) {
+            /* pass bonus visits and registrations */
+            if(archive.isBonus() || archive.getEmployment() == null && archive.getEmployee() == null) continue;
+
             Report report = getReportByEmployment(reports, archive.getEmployment());
             if(report != null) {
                 Salary salary = getSalaryByEmployee(report.getSalaries(), archive.getEmployee());
@@ -80,7 +83,6 @@ public class ArchiveService {
 
                     Subscription subscription = archive.getCustomer().getSubscription();
                     salary.incrementPrice(getPrice(subscription, archive.getEmployment()));
-
                 } else { /* employee is not in salary */
                     Salary newSalary = new Salary();
 

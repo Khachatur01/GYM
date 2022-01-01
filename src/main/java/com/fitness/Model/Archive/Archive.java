@@ -2,10 +2,15 @@ package com.fitness.Model.Archive;
 
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
+import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Employment;
+import javafx.beans.property.SimpleStringProperty;
+
+import java.sql.Timestamp;
 
 public class Archive {
     private long id;
+    private DateTime date;
     private Customer customer;
     private Employee employee;
     private Employment employment;
@@ -13,8 +18,9 @@ public class Archive {
 
     public Archive(){}
 
-    public Archive(long id, Customer customer, Employee employee, Employment employment, boolean bonus) {
+    public Archive(long id, Timestamp date, Customer customer, Employee employee, Employment employment, boolean bonus) {
         this.id = id;
+        this.date = new DateTime(date.getTime());
         this.customer = customer;
         this.employee = employee;
         this.employment = employment;
@@ -27,6 +33,14 @@ public class Archive {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public DateTime getDate() {
+        return date;
+    }
+
+    public void setDate(DateTime date) {
+        this.date = date;
     }
 
     public Customer getCustomer() {
@@ -59,6 +73,18 @@ public class Archive {
 
     public void setBonus(boolean bonus) {
         this.bonus = bonus;
+    }
+
+    public String getPrice() {
+        if(this.isBonus())
+            return "";
+        /* registration */
+        if(this.employment == null && this.employee == null && this.customer.getSubscription() != null)
+            return this.customer.getSubscription().getPrice() + "";
+        /* enter without card */
+        if(this.customer.getSubscription() == null && this.employment != null)
+            return this.employment.getPrice() + "";
+        return "";
     }
 
 }
