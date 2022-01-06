@@ -128,6 +128,7 @@ public class WithCardController extends GridPane implements Controller {
         enterButton.setOnAction(event -> {
             try {
                 if(archiveService.add(
+                        null,
                         selectedCustomer,
                         employeeComboBox.getSelectionModel().getSelectedItem(),
                         employmentComboBox.getSelectionModel().getSelectedItem(),

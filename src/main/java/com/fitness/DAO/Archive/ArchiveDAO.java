@@ -13,6 +13,7 @@ import com.fitness.Service.Create;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,25 +24,30 @@ public class ArchiveDAO implements DAO<Archive> {
     @Override
     public void add(Archive archive) throws SQLException {
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "INSERT INTO `archive`(`customer_id`, `employee_id`, `employment_id`, `bonus`) " +
-                        "VALUES (?, ?, ?, ?)",
+                "INSERT INTO `archive`(`date`, `customer_id`, `employee_id`, `employment_id`, `bonus`) " +
+                        "VALUES (?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
         );
         Employee employee = archive.getEmployee();
         Employment employment = archive.getEmployment();
 
-        preparedStatement.setLong(1, archive.getCustomer().getId());
+        if(archive.getDate() == null)
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+        else
+            preparedStatement.setDate(1, archive.getDate());
+
+        preparedStatement.setLong(2, archive.getCustomer().getId());
 
         if(employee == null)
-            preparedStatement.setNull(2, Types.BIGINT);
-        else
-            preparedStatement.setLong(2, employee.getId());
-        if(employment == null)
             preparedStatement.setNull(3, Types.BIGINT);
         else
-            preparedStatement.setLong(3, employment.getId());
+            preparedStatement.setLong(3, employee.getId());
+        if(employment == null)
+            preparedStatement.setNull(4, Types.BIGINT);
+        else
+            preparedStatement.setLong(4, employment.getId());
 
-        preparedStatement.setBoolean(4, archive.isBonus());
+        preparedStatement.setBoolean(5, archive.isBonus());
 
         preparedStatement.executeUpdate();
 

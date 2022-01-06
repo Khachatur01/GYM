@@ -4,11 +4,13 @@ import com.fitness.Controller.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
+import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Archive.ArchiveService;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
+import com.fitness.Service.Verify;
 import com.fitness.Service.Work.SubscriptionService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;
@@ -16,16 +18,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class AddCustomerController extends GridPane implements Controller {
     @FXML
@@ -46,6 +47,14 @@ public class AddCustomerController extends GridPane implements Controller {
     private ComboBox<Subscription> subscriptionComboBox;
     @FXML
     private CheckBox bonusCheckBox; /* TODO */
+    @FXML
+    private CheckBox backYearCheckBox;
+    @FXML
+    private GridPane backYearGridPane;
+    @FXML
+    private DatePicker datePicker;
+    private MaskField timeMaskField;
+
     @FXML
     private Button previousButton;
     @FXML
@@ -79,6 +88,12 @@ public class AddCustomerController extends GridPane implements Controller {
 
         this.add(phoneMaskField, 1, 6);
         this.add(phone2MaskField, 1, 7);
+
+        timeMaskField = new MaskField();
+        timeMaskField.setMask("DD:DD");
+        timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
+        this.backYearGridPane.add(timeMaskField, 2, 1);
+
     }
     private void initListeners(){
         oldCardTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -88,6 +103,7 @@ public class AddCustomerController extends GridPane implements Controller {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            System.out.println(customer);
             if(!fieldsAreClean) {
                 Clear.textField(
                         cardTextField,
@@ -109,6 +125,25 @@ public class AddCustomerController extends GridPane implements Controller {
         });
 
         addButton.setOnAction(event -> {
+            DateTime dateTime = null;
+            if(backYearCheckBox.isSelected()) {
+                String[] timeArray = this.timeMaskField.getText().split(":");
+                byte hour, minute;
+                try {
+                    hour = Byte.parseByte(timeArray[0]);
+                    minute = Byte.parseByte(timeArray[1]);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace(); // TODO print error message
+                    timeMaskField.requestFocus();
+                    return;
+                }
+                if(!Verify.time(hour, minute, timeMaskField)) return;
+
+                dateTime = new DateTime(
+                    datePicker.getValue().atTime(hour, minute)
+                );
+            }
+
             try {
                 Customer customer = customerService.add(
                         cardTextField,
@@ -121,7 +156,7 @@ public class AddCustomerController extends GridPane implements Controller {
                 );
 
                 if(customer != null) {
-                    archiveService.add(customer, null, null, bonusCheckBox.isSelected());
+                    archiveService.add(dateTime, customer, null, null, bonusCheckBox.isSelected());
 
                     this.stop();
                     Window.getFragment(Fragment.CUSTOMER).start();
@@ -143,14 +178,26 @@ public class AddCustomerController extends GridPane implements Controller {
                 phoneMaskField.requestFocus();
         });
 
+        backYearCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> backYearGridPane.setDisable(!newValue));
+
+
     }
     public void initComboBox() throws SQLException {
         subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
     }
 
+    private void initDatePicker() {
+        StringConverter<LocalDate> converter = DateTime.getConverter();
+
+        LocalDate localDate = LocalDate.now();
+        datePicker.setConverter(converter);
+        datePicker.setValue(localDate);
+    }
+
     @Override
     public void start() {
         makeActive();
+        initDatePicker();
         try {
             initComboBox();
         } catch (SQLException e) {

@@ -125,25 +125,7 @@ public class ArchiveController extends GridPane implements Controller {
     }
 
     private void initDatePickers() {
-        StringConverter<LocalDate> converter = new StringConverter<>() {
-            final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-            @Override
-            public String toString(LocalDate localDate) {
-                if (localDate != null)
-                    return dateTimeFormatter.format(localDate);
-                else
-                    return "";
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                if (string != null && !string.isEmpty())
-                    return LocalDate.parse(string, dateTimeFormatter);
-                else
-                    return null;
-            }
-        };
+        StringConverter<LocalDate> converter = DateTime.getConverter();
 
         LocalDate localDate = LocalDate.now();
         startDatePicker.setConverter(converter);

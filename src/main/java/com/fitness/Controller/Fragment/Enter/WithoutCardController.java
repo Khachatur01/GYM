@@ -130,6 +130,7 @@ public class WithoutCardController extends GridPane implements Controller {
         enterButton.setOnAction(event -> {
             try {
                 if(archiveService.add(
+                        null,
                         makeCustomer(),
                         employeeComboBox.getSelectionModel().getSelectedItem(),
                         employmentComboBox.getSelectionModel().getSelectedItem(),

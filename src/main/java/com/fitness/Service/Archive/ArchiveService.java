@@ -6,6 +6,7 @@ import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Report.Report;
 import com.fitness.Model.Report.Salary;
+import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Person.CustomerService;
@@ -23,10 +24,11 @@ public class ArchiveService {
     private final ArchiveDAO archiveDAO = new ArchiveDAO();
     private final CustomerService customerService = new CustomerService();
 
-    public Archive add(Customer customer, Employee employee, Employment employment, boolean isBonus) throws SQLException {
+    public Archive add(DateTime dateTime, Customer customer, Employee employee, Employment employment, boolean isBonus) throws SQLException {
         if(customer == null) return  null;
 
         Archive archive = new Archive();
+        archive.setDate(dateTime);
         archive.setCustomer(customer);
         archive.setEmployee(employee);
         archive.setEmployment(employment);

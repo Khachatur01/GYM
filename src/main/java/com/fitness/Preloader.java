@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class Preloader extends Thread {
-    private Stage stage;
-    private Window window = new Window();
+    private final Stage stage;
+    private final Window window = new Window();
 
     public Preloader(Stage stage){
         this.stage = stage;
@@ -31,7 +31,7 @@ public class Preloader extends Thread {
 
                 Stage stage = new Stage();
                 stage.setMinWidth(1450);
-                stage.setMinHeight(710);
+                stage.setMinHeight(730);
 
                 window.open(Page.MENU.getValue(), stage);
             } catch (IOException e) {

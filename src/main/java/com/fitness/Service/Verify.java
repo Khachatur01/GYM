@@ -112,4 +112,12 @@ public class Verify {
     public static boolean employee(Employee employee, ComboBox<Employee> employeeComboBox) {
         return employee != null;
     }
+
+    public static boolean time(byte hour, byte minute, MaskField timeMaskField) {
+        if(hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+            timeMaskField.requestFocus();
+            return false;
+        }
+        return true;
+    }
 }
