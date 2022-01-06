@@ -57,6 +57,9 @@ public class MaskField extends TextField {
     public static boolean isFill(String text){
         return !text.contains(PLACEHOLDER_CHAR_DEFAULT + "");
     }
+    public boolean isEmpty(){
+        return getPlainText().equals("");
+    }
 
     /**
      * это сама маска видимая в поле ввода

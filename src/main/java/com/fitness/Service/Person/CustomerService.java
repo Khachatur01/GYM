@@ -30,7 +30,7 @@ public class CustomerService {
                 Verify.surname(surname, surnameTextField) &&
                 Verify.phone(phone, phoneMaskField) &&
                 Verify.phone2(phone2, phone2MaskField) &&
-                Verify.address(address, addressTextField)
+                (address.equals("") || Verify.address(address, addressTextField))
         ){
             customer = new Customer();
             customer.setName(new Person.Name(name, surname));

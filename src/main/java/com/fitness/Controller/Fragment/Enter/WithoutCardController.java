@@ -4,8 +4,10 @@ import com.fitness.Controller.Controller;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
+import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Archive.ArchiveService;
+import com.fitness.Service.BackYear.BackYearService;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
@@ -16,14 +18,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class WithoutCardController extends GridPane implements Controller {
     @FXML
@@ -45,9 +46,18 @@ public class WithoutCardController extends GridPane implements Controller {
     @FXML
     private CheckBox bonusCheckBox;
     @FXML
+    private CheckBox backYearCheckBox;
+    @FXML
+    private GridPane backYearGridPane;
+    @FXML
+    private DatePicker datePicker;
+    private MaskField timeMaskField;
+
+    @FXML
     private Button enterButton;
 
     private boolean fieldsAreClean = true;
+    private Customer customer;
 
     private CustomerService customerService = new CustomerService();
     private EmployeeService employeeService = new EmployeeService();
@@ -64,22 +74,27 @@ public class WithoutCardController extends GridPane implements Controller {
         phoneMaskField.setMask("+374(DD) DD-DD-DD");
         phoneMaskField.getStyleClass().add("textField");
         GridPane.setValignment(phoneMaskField, VPos.TOP);
-        GridPane.setHalignment(phoneMaskField, HPos.CENTER);
+        GridPane.setHalignment(phoneMaskField, HPos.LEFT);
 
         phone2MaskField = new MaskField();
         phone2MaskField.setMask("+374(DD) DD-DD-DD");
         phone2MaskField.getStyleClass().add("textField");
         GridPane.setValignment(phone2MaskField, VPos.TOP);
-        GridPane.setHalignment(phone2MaskField, HPos.CENTER);
+        GridPane.setHalignment(phone2MaskField, HPos.LEFT);
 
-        this.add(phoneMaskField, 0, 6);
-        this.add(phone2MaskField, 0, 8);
+        this.add(phoneMaskField, 0, 7);
+        this.add(phone2MaskField, 0, 9);
+
+        timeMaskField = new MaskField();
+        timeMaskField.setMask("DD:DD");
+        timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
+        this.backYearGridPane.add(timeMaskField, 2, 1);
     }
 
     private void phoneMaskFieldListener(String newValue) {
-        Customer customer = null;
+        this.customer = null;
         try {
-            customer = customerService.getByPhone(newValue);
+            this.customer = customerService.getByPhone(newValue);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -94,9 +109,9 @@ public class WithoutCardController extends GridPane implements Controller {
                     phone2MaskField
             );
             fieldsAreClean = true;
-        } else if (customer != null){
+        } else if (this.customer != null){
             Fill.guestCustomer(
-                    customer,
+                    this.customer,
                     nameTextField,
                     surnameTextField,
                     phoneMaskField,
@@ -109,13 +124,16 @@ public class WithoutCardController extends GridPane implements Controller {
 
     private void initListeners() {
         phoneMaskField.textProperty().addListener((observable, oldValue, newValue) -> {
-            phoneMaskFieldListener(newValue);
+            if(!phoneMaskField.isEmpty())
+                phoneMaskFieldListener(newValue);
         });
         phone2MaskField.textProperty().addListener((observable, oldValue, newValue) -> {
-            phoneMaskFieldListener(newValue);
+            if(!phone2MaskField.isEmpty())
+                phoneMaskFieldListener(newValue);
         });
 
         employmentComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, selectedEmployment) -> {
+            if(selectedEmployment == null) return;
             try {
                 employeeComboBox.setItems(
                         FXCollections.observableArrayList(
@@ -128,12 +146,22 @@ public class WithoutCardController extends GridPane implements Controller {
             }
         });
         enterButton.setOnAction(event -> {
+            DateTime dateTime = null;
+            if(backYearCheckBox.isSelected()) {
+                dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
+                if(dateTime == null) return;
+            }
+
             try {
+                Employee employee = employeeComboBox.getSelectionModel().getSelectedItem();
+                Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
+                if(employee == null || employment == null) return;
+
                 if(archiveService.add(
-                        null,
-                        makeCustomer(),
-                        employeeComboBox.getSelectionModel().getSelectedItem(),
-                        employmentComboBox.getSelectionModel().getSelectedItem(),
+                        dateTime,
+                        getCustomer(),
+                        employee,
+                        employment,
                         bonusCheckBox.isSelected()
                 ) != null)
 
@@ -142,13 +170,19 @@ public class WithoutCardController extends GridPane implements Controller {
                 e.printStackTrace();
             }
         });
+
+        backYearCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> backYearGridPane.setDisable(!newValue));
     }
 
-    private Customer makeCustomer() {
-        Customer customer = null;
-        try {
-            customer = customerService.getByPhone(phoneMaskField.getText());
-            if(customer == null)
+    private Customer getCustomer() {
+        if(this.customer == null || (
+                /* or if existing user data changed, create new user */
+                this.customer.getName().getFirstName().equals(nameTextField.getText()) ||
+                this.customer.getName().getLastName().equals(surnameTextField.getText()) ||
+                this.customer.getAddress().equals(addressTextField.getText())
+            )
+        ) {
+            try {
                 customer = customerService.addGuest(
                         nameTextField,
                         surnameTextField,
@@ -156,12 +190,11 @@ public class WithoutCardController extends GridPane implements Controller {
                         phone2MaskField,
                         addressTextField
                 );
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
-        return customer;
+        return this.customer;
     }
 
 
@@ -173,9 +206,18 @@ public class WithoutCardController extends GridPane implements Controller {
         );
     }
 
+    private void initDatePicker() {
+        StringConverter<LocalDate> converter = DateTime.getConverter();
+
+        LocalDate localDate = LocalDate.now();
+        datePicker.setConverter(converter);
+        datePicker.setValue(localDate);
+    }
+
     @Override
     public void start() {
         makeActive();
+        initDatePicker();
         try {
             initComboBoxes();
         } catch (SQLException e) {
@@ -190,12 +232,14 @@ public class WithoutCardController extends GridPane implements Controller {
         Clear.textField(
                 nameTextField,
                 surnameTextField,
-                addressTextField
+                addressTextField,
+                priceTextField
         );
         Clear.maskField(
                 phoneMaskField,
                 phone2MaskField
         );
+        Clear.comboBox(employeeComboBox, employmentComboBox);
         fieldsAreClean = true;
     }
 }

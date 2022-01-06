@@ -7,6 +7,7 @@ import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Archive.ArchiveService;
+import com.fitness.Service.BackYear.BackYearService;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
@@ -127,21 +128,8 @@ public class AddCustomerController extends GridPane implements Controller {
         addButton.setOnAction(event -> {
             DateTime dateTime = null;
             if(backYearCheckBox.isSelected()) {
-                String[] timeArray = this.timeMaskField.getText().split(":");
-                byte hour, minute;
-                try {
-                    hour = Byte.parseByte(timeArray[0]);
-                    minute = Byte.parseByte(timeArray[1]);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace(); // TODO print error message
-                    timeMaskField.requestFocus();
-                    return;
-                }
-                if(!Verify.time(hour, minute, timeMaskField)) return;
-
-                dateTime = new DateTime(
-                    datePicker.getValue().atTime(hour, minute)
-                );
+                dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
+                if(dateTime == null) return;
             }
 
             try {
