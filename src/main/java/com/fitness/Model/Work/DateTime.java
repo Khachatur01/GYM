@@ -2,19 +2,19 @@ package com.fitness.Model.Work;
 
 import javafx.util.StringConverter;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class DateTime extends Date {
+public class DateTime extends Timestamp {
     public DateTime(long date) {
         super(date);
     }
 
-    public DateTime(LocalDateTime date) {
-        super(Date.valueOf(date.toLocalDate()).getTime() + date.getMinute() * 60 + date.getHour() * 3600);
+    public DateTime(LocalDateTime dateTime) {
+        super(Timestamp.valueOf(dateTime).getTime());
     }
 
     public static StringConverter<LocalDate> getConverter() {

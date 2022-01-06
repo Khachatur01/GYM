@@ -34,7 +34,7 @@ public class ArchiveDAO implements DAO<Archive> {
         if(archive.getDate() == null)
             preparedStatement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
         else
-            preparedStatement.setDate(1, archive.getDate());
+            preparedStatement.setTimestamp(1, archive.getDate());
 
         preparedStatement.setLong(2, archive.getCustomer().getId());
 

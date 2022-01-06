@@ -1,11 +1,14 @@
 package com.fitness.Controller.Fragment.Enter;
 
 import com.fitness.Controller.Controller;
+import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
+import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Service.Archive.ArchiveService;
+import com.fitness.Service.BackYear.BackYearService;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
@@ -17,9 +20,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class WithCardController extends GridPane implements Controller {
     @FXML
@@ -47,6 +52,14 @@ public class WithCardController extends GridPane implements Controller {
     @FXML
     private TableColumn<EmploymentQuantity, Integer> quantityColumn;
     @FXML
+    private CheckBox backYearCheckBox;
+    @FXML
+    private GridPane backYearGridPane;
+    @FXML
+    private DatePicker datePicker;
+    private MaskField timeMaskField;
+
+    @FXML
     private CheckBox bonusCheckBox;
     @FXML
     private Button enterButton;
@@ -63,6 +76,12 @@ public class WithCardController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+
+        timeMaskField = new MaskField();
+        timeMaskField.setMask("DD:DD");
+        timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
+        this.backYearGridPane.add(timeMaskField, 2, 1);
     }
 
     private void initListeners(){
@@ -101,10 +120,7 @@ public class WithCardController extends GridPane implements Controller {
                 selectedCustomer = customer;
 
                 try {
-                    if(customerService.hasAvailableEmployment(customer))
-                        enterButton.setDisable(false);
-                    else
-                        enterButton.setDisable(true);
+                    enterButton.setDisable(!customerService.hasAvailableEmployment(customer));
 
                     initEmploymentComboBox(customer);
                 } catch (SQLException e) {
@@ -126,9 +142,19 @@ public class WithCardController extends GridPane implements Controller {
         });
 
         enterButton.setOnAction(event -> {
+            DateTime dateTime = null;
+            if(backYearCheckBox.isSelected()) {
+                dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
+                if(dateTime == null) return;
+            }
+
             try {
+                if(dateTime != null && dateTime.before(customerService.getRegistrationDate(selectedCustomer))) {
+                    datePicker.requestFocus();
+                    return;
+                }
                 if(archiveService.add(
-                        null,
+                        dateTime,
                         selectedCustomer,
                         employeeComboBox.getSelectionModel().getSelectedItem(),
                         employmentComboBox.getSelectionModel().getSelectedItem(),
@@ -141,6 +167,8 @@ public class WithCardController extends GridPane implements Controller {
             }
 
         });
+
+        backYearCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> backYearGridPane.setDisable(!newValue));
     }
 
     private void initEmploymentComboBox(Customer customer) throws SQLException {
@@ -159,11 +187,20 @@ public class WithCardController extends GridPane implements Controller {
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
     }
 
+    private void initDatePicker() {
+        StringConverter<LocalDate> converter = DateTime.getConverter();
+
+        LocalDate localDate = LocalDate.now();
+        datePicker.setConverter(converter);
+        datePicker.setValue(localDate);
+    }
+
     @Override
     public void start() {
         makeActive();
         initTable();
         initListeners();
+        initDatePicker();
     }
 
     @Override

@@ -70,7 +70,7 @@
           <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <DatePicker fx:id="datePicker" GridPane.rowIndex="1" />
+            <DatePicker fx:id="datePicker" editable="false" GridPane.rowIndex="1" />
             <Label text="Ժամ" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
          <GridPane.margin>

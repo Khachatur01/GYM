@@ -30,9 +30,9 @@
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="200.0" prefHeight="500.0" vgrow="ALWAYS" />
         <RowConstraints vgrow="NEVER" />
     </rowConstraints>
-    <DatePicker fx:id="startDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <DatePicker fx:id="startDatePicker" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     <Label text="Մինչև" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-    <DatePicker fx:id="endDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+    <DatePicker fx:id="endDatePicker" editable="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
     <Label styleClass="info" text="(ներառյալ)" GridPane.columnIndex="3" GridPane.rowIndex="2">
         <GridPane.margin>
           <Insets top="-5.0" />

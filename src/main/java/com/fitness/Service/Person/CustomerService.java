@@ -133,6 +133,9 @@ public class CustomerService {
     public Date getLastVisit(Customer customer) throws SQLException {
         return customerDAO.getLastVisit(customer);
     }
+    public Date getRegistrationDate(Customer customer) throws SQLException {
+        return customerDAO.getRegistrationDate(customer);
+    }
 
     public boolean hasAvailableEmployment(Customer customer) throws SQLException {
         boolean hasAvailableEmployment = false;

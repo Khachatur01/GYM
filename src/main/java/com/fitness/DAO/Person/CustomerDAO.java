@@ -219,4 +219,19 @@ public class CustomerDAO implements DAO<Customer>{
         }
         return date;
     }
+
+    public Date getRegistrationDate(Customer customer) throws SQLException {
+        Date date = null;
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT `date` FROM `archive` WHERE " +
+                        "`archive`.`customer_id` = ? AND " +
+                        "(`archive`.`employee_id` IS NULL AND `archive`.`employment_id` IS NULL)" /* registration */
+        );
+        preparedStatement.setLong(1, customer.getId());
+        ResultSet result = preparedStatement.executeQuery();
+        if(result.next()){
+            date = result.getDate("archive.date");
+        }
+        return date;
+    }
 }
