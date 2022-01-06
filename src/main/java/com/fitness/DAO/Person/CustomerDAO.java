@@ -90,6 +90,14 @@ public class CustomerDAO implements DAO<Customer>{
             preparedStatement = DB.getConnection().prepareStatement(
                     "DELETE FROM `customer` WHERE `id` = ?"
             );
+            preparedStatement.setLong(1, customer.getId());
+            preparedStatement.executeUpdate();
+
+
+            preparedStatement = DB.getConnection().prepareStatement(
+                    "DELETE FROM `archive` WHERE `customer_id` = ?"
+            );
+
         } else {
             preparedStatement = DB.getConnection().prepareStatement(
                     "UPDATE `customer` SET `archived` = 1 WHERE `id` = ?"

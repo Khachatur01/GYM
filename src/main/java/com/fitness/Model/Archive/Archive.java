@@ -4,7 +4,6 @@ import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Employment;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.sql.Timestamp;
 
@@ -76,8 +75,8 @@ public class Archive {
     }
 
     public String getPrice() {
-        if(this.isBonus())
-            return "";
+        if(this.bonus)
+            return "Բոնուս";
         /* registration */
         if(this.employment == null && this.employee == null && this.customer.getSubscription() != null)
             return this.customer.getSubscription().getPrice() + "";
@@ -85,6 +84,10 @@ public class Archive {
         if(this.customer.getSubscription() == null && this.employment != null)
             return this.employment.getPrice() + "";
         return "";
+    }
+
+    public boolean isRegistration() {
+        return this.employment == null && this.employee == null;
     }
 
 }

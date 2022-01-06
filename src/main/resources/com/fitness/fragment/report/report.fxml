@@ -93,10 +93,10 @@
                      <columns>
                          <TableColumn fx:id="dateColumn" minWidth="130.0" prefWidth="130.0" text="Ամսաթիվ" />
                          <TableColumn fx:id="cardColumn" minWidth="100.0" prefWidth="100.0" text="Քարտ" />
-                         <TableColumn fx:id="nameColumn" minWidth="220.0" prefWidth="220.0" text="Անուն Ազգանուն" />
-                         <TableColumn fx:id="employmentColumn" minWidth="180.0" prefWidth="180.0" text="Ծառայություն" />
-                         <TableColumn fx:id="employeeColumn" minWidth="130.0" prefWidth="130.0" text="Աշխատող" />
                          <TableColumn fx:id="subscriptionColumn" minWidth="140.0" prefWidth="140.0" text="Աբոնեմենտ" />
+                         <TableColumn fx:id="nameColumn" minWidth="220.0" prefWidth="220.0" text="Անուն Ազգանուն" />
+                         <TableColumn fx:id="employeeColumn" minWidth="130.0" prefWidth="130.0" text="Աշխատող" />
+                         <TableColumn fx:id="employmentColumn" minWidth="180.0" prefWidth="180.0" text="Ծառայություն" />
                          <TableColumn fx:id="priceColumn" minWidth="100.0" prefWidth="100.0" text="Գումար" />
                      </columns>
                   <GridPane.margin>
@@ -106,24 +106,29 @@
                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                   </columnResizePolicy>
                  </TableView>
-                 <Button mnemonicParsing="false" text="Ջնջել" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                 <Button mnemonicParsing="false" text="Փոփոխել" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                 <Button fx:id="deleteButton" mnemonicParsing="false" text="Ջնջել" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                 <Button fx:id="editButton" mnemonicParsing="false" text="Փոփոխել" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
              </GridPane>
          </Tab>
      </tabs>
    </TabPane>
-    <GridPane hgap="5.0" vgap="5.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+    <GridPane hgap="30.0" maxHeight="-Infinity" maxWidth="-Infinity" vgap="5.0" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="NEVER" />
+            <ColumnConstraints hgrow="NEVER" />
+         <ColumnConstraints halignment="RIGHT" hgrow="NEVER" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints vgrow="SOMETIMES" />
             <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
-        <Label text="Այցերի քանակ" />
-        <Label text="Ընդհանուր գումար" GridPane.rowIndex="1" />
-        <Label fx:id="visitsQuantityLabel" text="0 այց" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-        <Label fx:id="totalPriceLabel" text="0 դրամ" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+        <Label style="-fx-font-weight: bold;" text="Ընդամենը" GridPane.rowSpan="2147483647">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Label>
+        <Label fx:id="visitsQuantityLabel" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+        <Label fx:id="totalPriceLabel" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Label text="այց" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+      <Label text="դրամ" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
     </GridPane>
 </fx:root>

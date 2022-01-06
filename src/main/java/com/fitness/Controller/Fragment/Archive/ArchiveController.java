@@ -2,7 +2,6 @@ package com.fitness.Controller.Fragment.Archive;
 
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Archive.Archive;
-import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Report.Report;
 import com.fitness.Model.Report.Salary;
@@ -20,13 +19,10 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -51,13 +47,17 @@ public class ArchiveController extends GridPane implements Controller {
     @FXML
     private TableColumn<Archive, String> nameColumn;
     @FXML
-    private TableColumn<Archive, Employment> employmentColumn;
+    private TableColumn<Archive, String> employmentColumn;
     @FXML
     private TableColumn<Archive, Employee> employeeColumn;
     @FXML
     private TableColumn<Archive, String> subscriptionColumn;
     @FXML
     private TableColumn<Archive, String> priceColumn;
+    @FXML
+    private Button deleteButton;
+    @FXML
+    private Button editButton;
     @FXML
     private Label visitsQuantityLabel;
     @FXML
@@ -78,37 +78,50 @@ public class ArchiveController extends GridPane implements Controller {
         });
 
         getReportButton.setOnAction(event -> {
-            progressIndicator.setVisible(true);
-
-            new Thread(() -> {
-                LocalDate startDate = startDatePicker.getValue();
-                LocalDate endDate = endDatePicker.getValue();
-                List<Archive> archives;
-
-                if(startDate == null || endDate == null || endDate.isBefore(startDate)) {
-                    progressIndicator.setVisible(false);
-                    return;
-                }
-
-                try {
-                    archives = archiveService.getByDateRange(startDate, endDate);
-                } catch (SQLException e) {
-                    System.err.println("Archives fetching error");
-                    progressIndicator.setVisible(false);
-                    return;
-                }
-                Platform.runLater(() -> {
-                    List<Report> reports = archiveService.getReports(archives);
-                    clearSalary();
-                    fillSalary(reports);
-                    clearHistory();
-                    fillHistory(archives);
-                    progressIndicator.setVisible(false);
-                });
-            }).start();
-
-
+            this.fillReport();
         });
+
+        deleteButton.setOnAction(event -> {
+            Archive archive = this.historyTableView.getSelectionModel().getSelectedItem();
+            try {
+                archiveService.remove(archive);
+                this.fillReport();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    private void fillReport() {
+        progressIndicator.setVisible(true);
+
+        new Thread(() -> {
+            LocalDate startDate = startDatePicker.getValue();
+            LocalDate endDate = endDatePicker.getValue();
+            List<Archive> archives;
+
+            if(startDate == null || endDate == null || endDate.isBefore(startDate)) {
+                progressIndicator.setVisible(false);
+                return;
+            }
+
+            try {
+                archives = archiveService.getByDateRange(startDate, endDate);
+            } catch (SQLException e) {
+                System.err.println("Archives fetching error");
+                progressIndicator.setVisible(false);
+                return;
+            }
+            Platform.runLater(() -> {
+                List<Report> reports = archiveService.getReports(archives);
+                clearSalary();
+                fillSalary(reports);
+                clearHistory();
+                fillHistory(archives);
+                progressIndicator.setVisible(false);
+            });
+        }).start();
     }
 
     private void initDatePickers() {
@@ -179,6 +192,7 @@ public class ArchiveController extends GridPane implements Controller {
 
             Employment employment = reports.get(row).getEmployment();
             Label employmentLabel = new Label(employment == null ? "" : employment.getName());
+            employmentLabel.setStyle("-fx-font-weight: bold");
             Separator separator = new Separator();
             separator.setOrientation(Orientation.HORIZONTAL);
             GridPane.setColumnSpan(separator, REMAINING);
@@ -189,16 +203,16 @@ public class ArchiveController extends GridPane implements Controller {
             totalQuantity += quantity;
             totalPrice += price;
 
-            salaryGridPane.add(new Label(quantity + " այց"), 1, rowIndex + 1);
-            salaryGridPane.add(new Label(price + " դրամ"), 2, rowIndex + 1);
+            salaryGridPane.add(new Label(quantity + ""), 1, rowIndex + 1);
+            salaryGridPane.add(new Label(price + ""), 2, rowIndex + 1);
 
             salaryGridPane.add(separator, 0, rowIndex);
             salaryGridPane.add(employmentLabel, 0, rowIndex + 1);
             salaryGridPane.add(salaryTableView, 0, rowIndex + 2);
         }
 
-        visitsQuantityLabel.setText(totalQuantity + " այց");
-        totalPriceLabel.setText(totalPrice + " դրամ");
+        visitsQuantityLabel.setText(totalQuantity + "");
+        totalPriceLabel.setText(totalPrice + "");
     }
 
     private void clearHistory() {
@@ -214,6 +228,10 @@ public class ArchiveController extends GridPane implements Controller {
         cardColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCustomer().getCard()));
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCustomer().getFullName()));
         employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));
+        employmentColumn.setCellValueFactory(cellData -> {
+            Employment employment = cellData.getValue().getEmployment();
+            return new SimpleStringProperty(employment == null ? "Գրանցում" : employment.getName());
+        });
         employeeColumn.setCellValueFactory(new PropertyValueFactory<>("employee"));
         subscriptionColumn.setCellValueFactory(cellData -> {
             Subscription subscription = cellData.getValue().getCustomer().getSubscription();
