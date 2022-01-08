@@ -163,4 +163,7 @@ public class CustomerService {
         CustomerService.selected = null;
     }
 
+    public boolean isBonus(Customer customer) throws SQLException {
+        return customerDAO.isBonus(customer);
+    }
 }

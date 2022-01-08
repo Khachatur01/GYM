@@ -39,6 +39,8 @@
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
+      <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
       <RowConstraints />
       <RowConstraints />
@@ -87,7 +89,8 @@
       <Label text="Հեռախոս 2֊րդ" GridPane.columnSpan="2" GridPane.rowIndex="9" />
       <Label text="Հասցե" GridPane.rowIndex="11" />
       <Label text="Աբոնեմենտ" GridPane.columnSpan="2" GridPane.rowIndex="13" />
-      <Label text="Վերջին այց" GridPane.columnSpan="2" GridPane.rowIndex="15" />
+      <Label text="Գրանցման օր" GridPane.rowIndex="15" />
+      <Label text="Վերջին այց" GridPane.columnSpan="2" GridPane.rowIndex="17" />
       <Label fx:id="fullNameLabel" text="" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
       <Separator prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="6" />
       <Label fx:id="phoneLabel" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
@@ -100,9 +103,11 @@
       <Label fx:id="addressLabel" text="" GridPane.columnIndex="2" GridPane.rowIndex="11" />
       <Separator prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="12" />
       <Label fx:id="subscriptionLabel" text="" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="13" />
-      <Separator GridPane.columnSpan="4" GridPane.rowIndex="14" />
-      <Label fx:id="lastVisitLabel" text="" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="15" />
-      <TableView fx:id="employmentQuantityTable" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="16" GridPane.valignment="CENTER">
+      <Separator GridPane.columnSpan="2147483647" GridPane.rowIndex="14" />
+      <Label fx:id="registrationDateLabel" text="" GridPane.columnIndex="2" GridPane.rowIndex="15" />
+      <Separator GridPane.columnSpan="4" GridPane.rowIndex="16" />
+      <Label fx:id="lastVisitLabel" text="" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
+      <TableView fx:id="employmentQuantityTable" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="18" GridPane.valignment="CENTER">
         <columns>
           <TableColumn fx:id="employmentColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="500.0" text="Ծառայություն" />
           <TableColumn fx:id="quantityColumn" editable="false" maxWidth="-1.0" minWidth="200.0" prefWidth="500.0" text="Քանակ" />
@@ -114,8 +119,8 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="enterButton" mnemonicParsing="false" styleClass="primary" text="Մուտք" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="17" />
-      <CheckBox fx:id="bonusCheckBox" mnemonicParsing="false" text="Բոնուս" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="17">
+      <Button fx:id="enterButton" mnemonicParsing="false" styleClass="primary" text="Մուտք" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="19" />
+      <CheckBox fx:id="bonusCheckBox" mnemonicParsing="false" text="Բոնուս" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="19">
          <font>
             <Font size="15.0" />
          </font>
@@ -123,7 +128,7 @@
             <Insets />
          </GridPane.margin>
       </CheckBox>
-      <GridPane hgap="10.0" GridPane.columnSpan="2" GridPane.rowIndex="17">
+      <GridPane hgap="10.0" GridPane.columnSpan="2" GridPane.rowIndex="19">
          <columnConstraints>
             <ColumnConstraints hgrow="NEVER" />
             <ColumnConstraints hgrow="SOMETIMES" />

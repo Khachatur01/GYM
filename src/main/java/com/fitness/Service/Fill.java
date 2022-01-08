@@ -29,7 +29,7 @@ public class Fill {
         Fill.person(customer, nameTextField, surnameTextField, phoneTextField, phone2TextField, addressTextField);
     }
 
-    public static void customerStatic(Customer customer, Label fullNameLabel, Label phoneLabel, Label phone2Label, Label addressLabel, Label subscriptionLabel, Label lastVisitLabel, TableView<EmploymentQuantity> employmentQuantityTable){
+    public static void customerStatic(Customer customer, Label fullNameLabel, Label phoneLabel, Label phone2Label, Label addressLabel, Label subscriptionLabel, Label registrationDateLabel, Label lastVisitLabel, TableView<EmploymentQuantity> employmentQuantityTable){
         fullNameLabel.setText(customer.getFullName());
         phoneLabel.setText(customer.getPhone());
 
@@ -41,12 +41,16 @@ public class Fill {
         subscriptionLabel.setText(customer.getSubscription().getName());
         try {
             lastVisitLabel.setText(customerService.getLastVisit(customer).toString());
-        } catch (SQLException | NullPointerException ignored){
+        } catch (SQLException | NullPointerException ignored) {
             lastVisitLabel.setText("");
         }
         try {
+            registrationDateLabel.setText(customerService.getRegistrationDate(customer).toString());
+        } catch (SQLException | NullPointerException e) {
+            registrationDateLabel.setText("");
+        }
+        try {
             List<EmploymentQuantity> availableEmploymentQuantities = customerService.getAvailableEmploymentQuantities(customer);
-
             employmentQuantityTable.setItems(
                     FXCollections.observableArrayList(
                             availableEmploymentQuantities

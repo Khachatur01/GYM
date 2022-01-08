@@ -44,6 +44,8 @@ public class WithCardController extends GridPane implements Controller {
     @FXML
     private Label subscriptionLabel;
     @FXML
+    private Label registrationDateLabel;
+    @FXML
     private Label lastVisitLabel;
     @FXML
     private TableView<EmploymentQuantity> employmentQuantityTable;
@@ -71,7 +73,7 @@ public class WithCardController extends GridPane implements Controller {
     private boolean fieldsAreClean = true;
     private Customer selectedCustomer = null;
 
-    public WithCardController() throws IOException{
+    public WithCardController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/enter/with_card.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -84,7 +86,7 @@ public class WithCardController extends GridPane implements Controller {
         this.backYearGridPane.add(timeMaskField, 2, 1);
     }
 
-    private void initListeners(){
+    private void initListeners() {
         cardTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             Customer customer = null;
             try {
@@ -99,6 +101,7 @@ public class WithCardController extends GridPane implements Controller {
                         phone2Label,
                         addressLabel,
                         subscriptionLabel,
+                        registrationDateLabel,
                         lastVisitLabel
                 );
                 Clear.table(employmentQuantityTable);
@@ -113,6 +116,7 @@ public class WithCardController extends GridPane implements Controller {
                         phone2Label,
                         addressLabel,
                         subscriptionLabel,
+                        registrationDateLabel,
                         lastVisitLabel,
                         employmentQuantityTable
                 );
@@ -153,12 +157,13 @@ public class WithCardController extends GridPane implements Controller {
                     datePicker.requestFocus();
                     return;
                 }
+                boolean isBonusCard = customerService.isBonus(selectedCustomer);
                 if(archiveService.add(
                         dateTime,
                         selectedCustomer,
                         employeeComboBox.getSelectionModel().getSelectedItem(),
                         employmentComboBox.getSelectionModel().getSelectedItem(),
-                        bonusCheckBox.isSelected()
+                        isBonusCard || bonusCheckBox.isSelected()
                     ) != null)
 
                     this.stop();
@@ -182,7 +187,7 @@ public class WithCardController extends GridPane implements Controller {
         employmentComboBox.setItems(employments);
     }
 
-    private void initTable(){
+    private void initTable() {
         employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
     }

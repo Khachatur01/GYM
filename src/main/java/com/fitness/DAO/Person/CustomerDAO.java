@@ -209,7 +209,8 @@ public class CustomerDAO implements DAO<Customer>{
         PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
                 "SELECT `date` FROM `archive`, `customer` WHERE " +
                         "`customer`.`id` = `archive`.`customer_id` AND " +
-                        "`customer`.`id` = ? " +
+                        "`customer`.`id` = ? AND " +
+                        "`archive`.`employee_id` IS NOT NULL AND `archive`.`employment_id` IS NOT NULL" +
                         "ORDER BY `archive`.`date` DESC LIMIT 1"
         );
         preparedStatement.setLong(1, customer.getId());
@@ -229,9 +230,25 @@ public class CustomerDAO implements DAO<Customer>{
         );
         preparedStatement.setLong(1, customer.getId());
         ResultSet result = preparedStatement.executeQuery();
-        if(result.next()){
+        if(result.next()) {
             date = result.getDate("archive.date");
         }
         return date;
+    }
+
+    public boolean isBonus(Customer customer) throws SQLException {
+        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+                "SELECT `bonus` FROM `archive` WHERE " +
+                        "`customer_id` = ? AND " +
+                        "`employee_id` IS NULL AND " +
+                        "`employment_id` IS NULL"
+        );
+
+        preparedStatement.setLong(1, customer.getId());
+        ResultSet result = preparedStatement.executeQuery();
+        if(result.next()) {
+            return result.getBoolean("bonus");
+        }
+        return false;
     }
 }
