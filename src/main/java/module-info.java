@@ -4,6 +4,7 @@ module com.fitness {
     requires java.sql;
     requires java.desktop;
     requires org.apache.poi.poi;
+    requires commons.jcs.core;
 
     opens com.fitness.Model.Archive to javafx.base;
     opens com.fitness.Model.Configuration to javafx.base;

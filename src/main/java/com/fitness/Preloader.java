@@ -1,6 +1,6 @@
 package com.fitness;
 
-import com.fitness.Controller.Constant.Page;
+import com.fitness.Constant.Page;
 import com.fitness.DataSource.DB;
 import javafx.application.Platform;
 import javafx.stage.Stage;

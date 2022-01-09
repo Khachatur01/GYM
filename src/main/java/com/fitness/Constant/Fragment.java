@@ -1,4 +1,4 @@
-package com.fitness.Controller.Constant;
+package com.fitness.Constant;
 
 public enum Fragment {
     WITH_CARD,

@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import java.lang.*?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0"
-          prefWidth="1090.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.fitness.Controller.MenuController" stylesheets="@style/main-menu.css">
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1090.0" stylesheets="@style/main-menu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fitness.Controller.MenuController">
    <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0"/>
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"/>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #FFF;">
-      <ImageView fitHeight="100.0" fitWidth="100.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true"
-                 preserveRatio="true">
-         <Image url="@assets/icon.png"/>
+      <ImageView fitHeight="100.0" fitWidth="100.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+         <Image url="@assets/icon.png" />
       </ImageView>
       <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
-         <Button fx:id="enterButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0"
-                 VBox.vgrow="ALWAYS">
+         <Button fx:id="enterButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0" VBox.vgrow="ALWAYS">
             <graphic>
                <HBox alignment="CENTER">
                   <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@assets/enter.png"/>
+                     <Image url="@assets/enter.png" />
                   </ImageView>
-                  <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT"
-                              prefWidth="300.0" styleClass="menu_button" text="Մուտք" textAlignment="CENTER"
-                              textFill="#367bf5" HBox.hgrow="ALWAYS">
+                  <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" prefWidth="300.0" styleClass="menu_button" text="Մուտք" textAlignment="CENTER" textFill="#367bf5" HBox.hgrow="ALWAYS">
                      <items>
                         <MenuItem>
                            <graphic>
                               <HBox styleClass="menu_item">
-                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                                            preserveRatio="true">
-                                    <Image url="@assets/card.png"/>
+                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@assets/card.png" />
                                  </ImageView>
-                                 <Button fx:id="cardButton" alignment="CENTER" contentDisplay="CENTER"
-                                         mnemonicParsing="false" styleClass="submenu_button" text="Քարտով">
+                                 <Button fx:id="cardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="submenu_button" text="Քարտով">
                                     <HBox.margin>
-                                       <Insets left="5.0"/>
+                                       <Insets left="5.0" />
                                     </HBox.margin>
                                  </Button>
                               </HBox>
@@ -53,16 +54,12 @@
                         <MenuItem mnemonicParsing="false">
                            <graphic>
                               <HBox styleClass="menu_item">
-                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                                            preserveRatio="true">
-                                    <Image url="@assets/without-card.png"/>
+                                 <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@assets/without-card.png" />
                                  </ImageView>
-                                 <Button fx:id="withoutCardButton" alignment="CENTER"
-                                         contentDisplay="CENTER" mnemonicParsing="false"
-                                         style="-fx-pref-width: 150px;" styleClass="submenu_button"
-                                         text="Առանց քարտ">
+                                 <Button fx:id="withoutCardButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" style="-fx-pref-width: 150px;" styleClass="submenu_button" text="Առանց քարտ">
                                     <HBox.margin>
-                                       <Insets left="5.0"/>
+                                       <Insets left="5.0" />
                                     </HBox.margin>
                                  </Button>
                               </HBox>
@@ -70,165 +67,152 @@
                         </MenuItem>
                      </items>
                      <font>
-                        <Font size="15.0"/>
+                        <Font size="15.0" />
                      </font>
                      <HBox.margin>
-                        <Insets/>
+                        <Insets />
                      </HBox.margin>
                   </MenuButton>
                </HBox>
             </graphic>
             <styleClass>
-               <String fx:value="menu_button"/>
-               <String fx:value="menu_item"/>
+               <String fx:value="menu_button" />
+               <String fx:value="menu_item" />
             </styleClass>
          </Button>
-         <Button fx:id="customersButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false"
-                 prefWidth="200.0">
+         <Button fx:id="customersButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
             <graphic>
                <HBox prefWidth="200.0">
-                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                             preserveRatio="true" HBox.hgrow="ALWAYS">
+                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT"/>
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
-                     <Image url="@assets/customer.png"/>
+                     <Image url="@assets/customer.png" />
                   </ImageView>
-                  <Label styleClass="menu_label" text="Հաճախորդներ"/>
+                  <Label styleClass="menu_label" text="Հաճախորդներ" />
                </HBox>
             </graphic>
             <styleClass>
-               <String fx:value="menu_button"/>
-               <String fx:value="menu_item"/>
+               <String fx:value="menu_button" />
+               <String fx:value="menu_item" />
             </styleClass>
          </Button>
-         <Button fx:id="employeesButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false"
-                 prefWidth="200.0">
+         <Button fx:id="employeesButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
             <graphic>
                <HBox prefWidth="200.0">
-                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                             preserveRatio="true" HBox.hgrow="ALWAYS">
+                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT"/>
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
-                     <Image url="@assets/employee.png"/>
+                     <Image url="@assets/employee.png" />
                   </ImageView>
-                  <Label styleClass="menu_label" text="Աշխատողներ"/>
+                  <Label styleClass="menu_label" text="Աշխատողներ" />
                </HBox>
             </graphic>
             <styleClass>
-               <String fx:value="menu_button"/>
-               <String fx:value="menu_item"/>
+               <String fx:value="menu_button" />
+               <String fx:value="menu_item" />
             </styleClass>
          </Button>
-         <Button fx:id="servicesButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false"
-                 prefWidth="200.0">
+         <Button fx:id="servicesButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
             <graphic>
                <HBox prefWidth="200.0">
-                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                             preserveRatio="true" HBox.hgrow="ALWAYS">
+                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT"/>
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
-                     <Image url="@assets/service.png"/>
+                     <Image url="@assets/service.png" />
                   </ImageView>
-                  <Label styleClass="menu_label" text="Ծառայություններ"/>
+                  <Label styleClass="menu_label" text="Ծառայություններ" />
                </HBox>
             </graphic>
             <styleClass>
-               <String fx:value="menu_button"/>
-               <String fx:value="menu_item"/>
+               <String fx:value="menu_button" />
+               <String fx:value="menu_item" />
             </styleClass>
          </Button>
-         <Button fx:id="positionsButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false"
-                 prefWidth="200.0">
+         <Button fx:id="positionsButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
             <graphic>
                <HBox prefWidth="200.0">
-                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                             preserveRatio="true" HBox.hgrow="ALWAYS">
+                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT"/>
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
-                     <Image url="@assets/position.png"/>
+                     <Image url="@assets/position.png" />
                   </ImageView>
-                  <Label styleClass="menu_label" text="Հաստիքներ"/>
+                  <Label styleClass="menu_label" text="Հաստիքներ" />
                </HBox>
             </graphic>
             <styleClass>
-               <String fx:value="menu_button"/>
-               <String fx:value="menu_item"/>
+               <String fx:value="menu_button" />
+               <String fx:value="menu_item" />
             </styleClass>
          </Button>
-         <Button fx:id="subscriptionButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false"
-                 prefWidth="200.0">
+         <Button fx:id="subscriptionButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
             <graphic>
                <HBox prefWidth="200.0">
-                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                             preserveRatio="true" HBox.hgrow="ALWAYS">
+                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT"/>
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
-                     <Image url="@assets/subscription.png"/>
+                     <Image url="@assets/subscription.png" />
                   </ImageView>
-                  <Label styleClass="menu_label" text="Աբոնեմենտ"/>
+                  <Label styleClass="menu_label" text="Աբոնեմենտ" />
                </HBox>
             </graphic>
             <styleClass>
-               <String fx:value="menu_button"/>
-               <String fx:value="menu_item"/>
+               <String fx:value="menu_button" />
+               <String fx:value="menu_item" />
             </styleClass>
          </Button>
          <Button fx:id="reportButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
             <graphic>
                <HBox alignment="CENTER" prefWidth="200.0">
-                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true"
-                             preserveRatio="true" HBox.hgrow="ALWAYS">
+                  <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <cursor>
-                        <Cursor fx:constant="DEFAULT"/>
+                        <Cursor fx:constant="DEFAULT" />
                      </cursor>
-                     <Image url="@assets/report.png"/>
+                     <Image url="@assets/report.png" />
                   </ImageView>
-                  <Label styleClass="menu_label" text="Հաշվետվություն"/>
+                  <Label styleClass="menu_label" text="Հաշվետվություն" />
                </HBox>
             </graphic>
             <styleClass>
-               <String fx:value="menu_button"/>
-               <String fx:value="menu_item"/>
+               <String fx:value="menu_button" />
+               <String fx:value="menu_item" />
             </styleClass>
          </Button>
       </VBox>
       <Button fx:id="settingsButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
          <graphic>
             <HBox alignment="CENTER" prefWidth="200.0">
-               <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true"
-                          HBox.hgrow="ALWAYS">
+               <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                   <cursor>
-                     <Cursor fx:constant="DEFAULT"/>
+                     <Cursor fx:constant="DEFAULT" />
                   </cursor>
-                  <Image url="@assets/settings.png"/>
+                  <Image url="@assets/settings.png" />
                </ImageView>
-               <Label styleClass="menu_label" text="Կարգավորումներ"/>
+               <Label styleClass="menu_label" text="Կարգավորումներ" />
             </HBox>
          </graphic>
          <styleClass>
-            <String fx:value="menu_button"/>
-            <String fx:value="menu_item"/>
+            <String fx:value="menu_button" />
+            <String fx:value="menu_item" />
          </styleClass>
       </Button>
    </VBox>
-   <GridPane fx:id="activePane" alignment="CENTER" style="-fx-background-color: #F3F3F3;" GridPane.columnIndex="1"
-             GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+   <GridPane fx:id="activePane" alignment="CENTER" style="-fx-background-color: #F3F3F3;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
       <columnConstraints>
-         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES"/>
+         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
       </columnConstraints>
       <rowConstraints>
-         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
       <GridPane.margin>
-         <Insets/>
+         <Insets />
       </GridPane.margin>
       <padding>
-         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
       </padding>
    </GridPane>
 </GridPane>

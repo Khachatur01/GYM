@@ -1,4 +1,4 @@
-package com.fitness.Controller.Constant;
+package com.fitness.Constant;
 
 public enum Default {
     ID(-1);

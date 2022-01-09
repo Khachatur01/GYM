@@ -1,6 +1,6 @@
 package com.fitness.Controller;
 
-import com.fitness.Controller.Constant.Fragment;
+import com.fitness.Constant.Fragment;
 import com.fitness.Window;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

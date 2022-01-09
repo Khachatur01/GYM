@@ -1,6 +1,6 @@
 package com.fitness.Model.Person;
 
-import com.fitness.Controller.Constant.Default;
+import com.fitness.Constant.Default;
 
 public abstract class Person {
     public static class Name {

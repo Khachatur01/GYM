@@ -1,6 +1,6 @@
 package com.fitness.Controller.Fragment.Customer;
 
-import com.fitness.Controller.Constant.Fragment;
+import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
@@ -11,7 +11,6 @@ import com.fitness.Service.BackYear.BackYearService;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
-import com.fitness.Service.Verify;
 import com.fitness.Service.Work.SubscriptionService;
 import com.fitness.Window;
 import javafx.collections.FXCollections;

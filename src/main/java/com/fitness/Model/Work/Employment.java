@@ -1,6 +1,6 @@
 package com.fitness.Model.Work;
 
-import com.fitness.Controller.Constant.Default;
+import com.fitness.Constant.Default;
 
 public class Employment {
     private long id = Default.ID.getValue();

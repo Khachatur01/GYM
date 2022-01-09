@@ -1,6 +1,6 @@
 package com.fitness.Model.Work;
 
-import com.fitness.Controller.Constant.Default;
+import com.fitness.Constant.Default;
 
 import java.util.ArrayList;
 import java.util.List;

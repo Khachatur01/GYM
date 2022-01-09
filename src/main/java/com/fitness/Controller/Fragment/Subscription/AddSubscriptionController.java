@@ -1,6 +1,6 @@
 package com.fitness.Controller.Fragment.Subscription;
 
-import com.fitness.Controller.Constant.Fragment;
+import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;

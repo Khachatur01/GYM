@@ -1,6 +1,6 @@
 package com.fitness;
 
-import com.fitness.Controller.Constant.Fragment;
+import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.Controller.Fragment.Archive.ArchiveController;
 import com.fitness.Controller.Fragment.Customer.AddCustomerController;

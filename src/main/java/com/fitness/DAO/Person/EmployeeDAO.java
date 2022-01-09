@@ -82,6 +82,13 @@ public class EmployeeDAO implements DAO<Employee> {
             }
         }
         this.addPositions(employee);
+
+        preparedStatement = DB.getConnection().prepareStatement(
+                "INSERT INTO `working_days`(`employee_id`) " +
+                        "VALUES(?)"
+        );
+        preparedStatement.setLong(1, employee.getId());
+        preparedStatement.executeUpdate();
     }
 
     @Override
@@ -116,6 +123,12 @@ public class EmployeeDAO implements DAO<Employee> {
                     "UPDATE `employee` SET `archived` = 1 WHERE `id` = ?"
             );
         }
+        preparedStatement.setLong(1, employee.getId());
+        preparedStatement.executeUpdate();
+
+        preparedStatement = DB.getConnection().prepareStatement(
+                "DELETE FROM `working_days` WHERE `employee_id` = ?"
+        );
         preparedStatement.setLong(1, employee.getId());
         preparedStatement.executeUpdate();
     }
