@@ -12,6 +12,7 @@ import com.fitness.Model.Database.LocalConnection;
 import com.fitness.Model.Database.RemoteConnection;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Configuration.SettingsService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -26,6 +27,8 @@ import java.util.List;
 public class SettingsController extends GridPane implements Controller {
     @FXML
     private GridPane workingDaysGridPane;
+    @FXML
+    private ProgressIndicator connectionProgressIndicator;
     @FXML
     private Label connectionStatusLabel;
 
@@ -132,12 +135,10 @@ public class SettingsController extends GridPane implements Controller {
                 String password = localPasswordField.getText();
 
                 LocalConnection localConnection = new LocalConnection(port, database, username, password);
-
                 DBMemory.storeConnection(localConnection);
-                DB.connect();
-                this.stop();
-                this.start();
-            } catch (NumberFormatException | SQLException e) {
+
+                this.checkConnectionAsync();
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         });
@@ -149,12 +150,10 @@ public class SettingsController extends GridPane implements Controller {
                 String password = remotePasswordField.getText();
 
                 RemoteConnection remoteConnection = new RemoteConnection(URI, database, username, password);
-
                 DBMemory.storeConnection(remoteConnection);
-                DB.connect();
-                this.stop();
-                this.start();
-            } catch (NumberFormatException | SQLException e) {
+
+                this.checkConnectionAsync();
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
 
@@ -169,15 +168,10 @@ public class SettingsController extends GridPane implements Controller {
         });
         fileConnectButton.setOnAction(event -> {
             String URL = fileTextField.getText();
-            try {
-                FileConnection fileConnection = new FileConnection(URL);
-                DBMemory.storeConnection(fileConnection);
-                DB.connect();
-                this.stop();
-                this.start();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            FileConnection fileConnection = new FileConnection(URL);
+            DBMemory.storeConnection(fileConnection);
+
+            this.checkConnectionAsync();
         });
         disconnectButton.setOnAction(event -> {
             DBMemory.deleteConnection();
@@ -224,6 +218,22 @@ public class SettingsController extends GridPane implements Controller {
         } else {
             connectionStatusLabel.setText(Status.NOT_CONNECTED.toString());
         }
+    }
+
+    private void checkConnectionAsync() {
+        connectionProgressIndicator.setVisible(true);
+        new Thread(() -> {
+            try {
+                DB.connect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            Platform.runLater(() -> {
+                connectionProgressIndicator.setVisible(false);
+                this.stop();
+                this.start();
+            });
+        }).start();
     }
 
     @Override
