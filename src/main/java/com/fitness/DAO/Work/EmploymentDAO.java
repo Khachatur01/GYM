@@ -5,10 +5,7 @@ import com.fitness.DataSource.DB;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Create;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +13,10 @@ public class EmploymentDAO implements DAO<Employment> {
     @Override
     public void add(Employment employment) throws SQLException {
         if(employment == null) return;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `employment`(`name`, `price`) VALUES(?, ?)",
                 Statement.RETURN_GENERATED_KEYS
         );
@@ -33,7 +33,10 @@ public class EmploymentDAO implements DAO<Employment> {
     }
     @Override
     public void edit(Employment employment) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "UPDATE `employment` SET `name` = ?, `price` = ? WHERE `id` = ?"
         );
         preparedStatement.setString(1, employment.getName());
@@ -44,13 +47,16 @@ public class EmploymentDAO implements DAO<Employment> {
     @Override
     public void remove(Employment employment, boolean removeHistory) throws SQLException {
         PreparedStatement preparedStatement;
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
         if(removeHistory) {
             /* when employment deleted, position, employee, employee's customers and customer visits will be deleted */
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "DELETE FROM `employment` WHERE `id` = ?"
             );
         } else {
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "UPDATE `employment` SET `archived` = 1 WHERE `id` = ?"
             );
         }
@@ -60,7 +66,10 @@ public class EmploymentDAO implements DAO<Employment> {
 
     public List<Employment> get(boolean actual) throws SQLException {
         List<Employment> employments = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `employment`" + (actual ? " WHERE `archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();

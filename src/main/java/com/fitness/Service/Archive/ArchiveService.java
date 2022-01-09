@@ -65,11 +65,11 @@ public class ArchiveService {
 
         if(result.isPresent())
             if(result.get() == delete)
-                if(archive.isRegistration()) {
+                if(archive.isRegistration())
                     customerService.remove(archive.getCustomer(), true);
-                } else {
+                else
                     archiveDAO.remove(archive, true);
-                }
+
 
     }
 

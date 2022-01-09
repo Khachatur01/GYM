@@ -1,6 +1,7 @@
 package com.fitness.Controller.Fragment.Employment;
 
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.EmploymentButton;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Clear;
@@ -73,7 +74,7 @@ public class EmploymentController extends GridPane implements Controller {
             try {
                 employment = employmentService.edit(employment, employmentNameTextField, priceTextField);
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't edit employment");
             }
             EmploymentButton.editSelected(employment);
         });
@@ -83,13 +84,13 @@ public class EmploymentController extends GridPane implements Controller {
             try {
                 employmentService.remove(employmentButton.getEmployment());
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't delete employment");
             }
             EmploymentButton.removeSelected();
             try {
                 initGridPane();
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't fetch employments");
             }
         });
         addButton.setOnAction(event -> {
@@ -97,7 +98,7 @@ public class EmploymentController extends GridPane implements Controller {
             try {
                 employment = employmentService.add(employmentNameTextField, priceTextField);
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't add employment");
             }
             if(employment != null)
                 addEmploymentToGrid(employment);
@@ -123,7 +124,7 @@ public class EmploymentController extends GridPane implements Controller {
         try {
             initGridPane();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error("Can't fetch employment");
         }
         initListeners();
     }

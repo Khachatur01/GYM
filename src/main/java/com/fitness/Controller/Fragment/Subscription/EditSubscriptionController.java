@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Subscription;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.SubscriptionButton;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
@@ -119,7 +120,7 @@ public class EditSubscriptionController extends GridPane implements Controller {
                     Window.getFragment(Fragment.SUBSCRIPTION).start();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't edit subscription");
             }
         });
         previousButton.setOnAction(event -> {
@@ -138,7 +139,7 @@ public class EditSubscriptionController extends GridPane implements Controller {
         try {
             initComboBox();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error("Can't fetch actual employments");
         }
         initListeners();
     }

@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Customer;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Work.Subscription;
@@ -17,6 +18,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -93,7 +95,7 @@ public class EditCustomerController extends GridPane implements Controller {
                     Window.getFragment(Fragment.CUSTOMER).start();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't edit customer data");
             }
         });
 
@@ -112,7 +114,7 @@ public class EditCustomerController extends GridPane implements Controller {
         try {
             loadOldData();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error("Can't fetch customer data");
         }
         initListeners();
     }

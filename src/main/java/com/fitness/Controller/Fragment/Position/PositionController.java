@@ -1,6 +1,7 @@
 package com.fitness.Controller.Fragment.Position;
 
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.PositionButton;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
@@ -85,12 +86,12 @@ public class PositionController extends GridPane implements Controller {
         Grid.addColumns(positionsGridPane, POSITIONS_PER_ROW);
         Grid.addRows(positionsGridPane, (int)Math.ceil(positions.size() / POSITIONS_PER_ROW));
 
-        for(Position position: positions){
+        for(Position position: positions) {
             addPositionToGrid(position);
         }
     }
 
-    private void initListeners(){
+    private void initListeners() {
         addPositionButton.setOnAction(event -> {
             Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
             if(!employments.contains(employment))
@@ -108,7 +109,7 @@ public class PositionController extends GridPane implements Controller {
                 PositionButton.editSelected(position);
                 this.start();
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't edit position");
             }
         });
         addButton.setOnAction(event -> {
@@ -124,7 +125,7 @@ public class PositionController extends GridPane implements Controller {
                 PositionButton.removeSelected();
                 initGridPane();
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't delete position");
             }
         });
     }
@@ -151,7 +152,7 @@ public class PositionController extends GridPane implements Controller {
             initGridPane();
             initComboBox();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.warning("Can't fetch positions");
         }
         initListeners();
     }

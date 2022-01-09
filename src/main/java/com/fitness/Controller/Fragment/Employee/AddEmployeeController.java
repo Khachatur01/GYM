@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Employee;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Clear;
@@ -103,7 +104,7 @@ public class AddEmployeeController extends GridPane implements Controller {
                     Window.getFragment(Fragment.EMPLOYEE).start();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't add employee");
             }
         });
 
@@ -113,7 +114,7 @@ public class AddEmployeeController extends GridPane implements Controller {
         });
     }
 
-    public void initComboBox() throws SQLException {
+    public void initPositionComboBox() throws SQLException {
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
     }
 
@@ -129,9 +130,9 @@ public class AddEmployeeController extends GridPane implements Controller {
         initListeners();
         initTable();
         try {
-            initComboBox();
+            initPositionComboBox();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error("Can't fetch positions");
         }
     }
 

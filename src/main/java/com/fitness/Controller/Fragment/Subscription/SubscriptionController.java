@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Subscription;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.SubscriptionButton;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Grid;
@@ -62,7 +63,7 @@ public class SubscriptionController extends GridPane implements Controller {
         }
     }
 
-    private void initListeners(){
+    private void initListeners() {
         editButton.setOnAction(event -> {
             if(SubscriptionButton.getSelected() != null){
                 Window.getFragment(Fragment.EDIT_SUBSCRIPTION).start();
@@ -74,13 +75,13 @@ public class SubscriptionController extends GridPane implements Controller {
             try {
                 subscriptionService.remove(subscription.getSubscription());
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't delete subscription");
             }
             SubscriptionButton.removeSelected();
             try {
                 initGridPane();
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.warning("Can't fetch subscriptions");
             }
         });
         addButton.setOnAction(event -> {
@@ -107,7 +108,7 @@ public class SubscriptionController extends GridPane implements Controller {
         try {
             initGridPane();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.warning("Can't fetch subscriptions");
         }
         initListeners();
     }

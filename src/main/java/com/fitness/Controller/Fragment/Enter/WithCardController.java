@@ -1,6 +1,7 @@
 package com.fitness.Controller.Fragment.Enter;
 
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
@@ -79,7 +80,6 @@ public class WithCardController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
-
         timeMaskField = new MaskField();
         timeMaskField.setMask("DD:DD");
         timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
@@ -92,7 +92,7 @@ public class WithCardController extends GridPane implements Controller {
             try {
                 customer = customerService.getByCard(newValue);
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't fetch customer by card number");
             }
             if(!fieldsAreClean) {
                 Clear.label(
@@ -128,7 +128,7 @@ public class WithCardController extends GridPane implements Controller {
 
                     initEmploymentComboBox(customer);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    Log.error("Can't customer data");
                 }
             }
         });
@@ -141,7 +141,7 @@ public class WithCardController extends GridPane implements Controller {
                     )
                 );
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't fetch employees by employment");
             }
         });
 
@@ -168,7 +168,7 @@ public class WithCardController extends GridPane implements Controller {
 
                     this.stop();
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't enter with card");
             }
 
         });

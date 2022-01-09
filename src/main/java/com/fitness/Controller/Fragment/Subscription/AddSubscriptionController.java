@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Subscription;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Service.Clear;
@@ -101,7 +102,7 @@ public class AddSubscriptionController extends GridPane implements Controller {
                     Window.getFragment(Fragment.SUBSCRIPTION).start();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't add subscription");
             }
         });
         previousButton.setOnAction(event -> {
@@ -117,7 +118,7 @@ public class AddSubscriptionController extends GridPane implements Controller {
         try {
             initComboBox();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error("Can't fetch actual employments");
         }
         initListeners();
     }

@@ -1,5 +1,6 @@
 package com.fitness.Service;
 
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
@@ -57,7 +58,7 @@ public class Fill {
                     )
             );
         } catch (SQLException ignored) {
-
+            Log.error("Can't fetch customer available employments with quantities");
         }
     }
 

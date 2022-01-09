@@ -3,11 +3,14 @@ package com.fitness.DAO.Configuration;
 import com.fitness.Constant.Week;
 import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
+import com.fitness.DataSource.Log.Log;
+import com.fitness.Model.Archive.Archive;
 import com.fitness.Model.Configuration.Settings;
 import com.fitness.Model.Configuration.WeekDay;
 import com.fitness.Model.Configuration.WorkingDay;
 import com.fitness.Service.Create;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,10 +50,14 @@ public class SettingsDAO implements DAO<Settings> {
 
     public List<WorkingDay> getWorkingDays() throws SQLException {
         List<WorkingDay> workingDays = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
-                "SELECT * FROM `working_days`, `employee` " +
-                        "WHERE `working_days`.`employee_id` = `employee`.`id`"
-        );
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM `working_days`, `employee` " +
+                            "WHERE `working_days`.`employee_id` = `employee`.`id`"
+            );
         ResultSet result = preparedStatement.executeQuery();
 
         while (result.next()) {
@@ -73,7 +80,10 @@ public class SettingsDAO implements DAO<Settings> {
     }
 
     public void setWorkingDays(List<WorkingDay> workingDays) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "UPDATE `working_days` SET `monday` = ?, `tuesday` = ?, `wednesday` = ?, `thursday` = ?, `friday` = ?, `saturday` = ?, `sunday` = ? " +
                         "WHERE `employee_id` = ?"
         );

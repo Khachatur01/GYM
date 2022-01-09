@@ -9,10 +9,7 @@ import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Create;
 import com.fitness.Service.Work.SubscriptionService;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +20,10 @@ public class CustomerDAO implements DAO<Customer>{
     @Override
     public void add(Customer customer) throws SQLException {
         if(customer == null) return;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `customer`(`card`, `subscription_id`, `name`, `surname`, `phone`, `phone2`, `address`, `archived`) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
         );
@@ -45,7 +45,10 @@ public class CustomerDAO implements DAO<Customer>{
     }
     public void addGuest(Customer customer) throws SQLException {
         if(customer == null) return;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `customer`(`name`, `surname`, `phone`, `phone2`, `address`) VALUES(?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
         );
@@ -66,7 +69,10 @@ public class CustomerDAO implements DAO<Customer>{
     @Override
     public void edit(Customer customer) throws SQLException {
         if(customer == null) return;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "UPDATE `customer` SET `card` = ?, `subscription_id` = ?, `name` = ?, `surname` = ?, `phone` = ?, `phone2` = ?, `address` = ?, `archived` = ? WHERE `id` = ?",
                 Statement.RETURN_GENERATED_KEYS
         );
@@ -85,21 +91,24 @@ public class CustomerDAO implements DAO<Customer>{
     @Override
     public void remove(Customer customer, boolean removeHistory) throws SQLException {
         PreparedStatement preparedStatement;
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
         if(removeHistory) {
             /* when customer deleted, customer visits will be deleted */
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "DELETE FROM `customer` WHERE `id` = ?"
             );
             preparedStatement.setLong(1, customer.getId());
             preparedStatement.executeUpdate();
 
 
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "DELETE FROM `archive` WHERE `customer_id` = ?"
             );
 
         } else {
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "UPDATE `customer` SET `archived` = 1 WHERE `id` = ?"
             );
         }
@@ -110,7 +119,10 @@ public class CustomerDAO implements DAO<Customer>{
     @Override
     public List<Customer> get(boolean actual) throws SQLException {
         List<Customer> customers = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `customer`, `subscription` WHERE " +
                         "`customer`.`subscription_id` = `subscription`.`id`" +
                         (actual ? " AND `customer`.`archived` = 0" : "")
@@ -138,7 +150,10 @@ public class CustomerDAO implements DAO<Customer>{
 
     /* get non bonus visits count by employment */
     private int getEmploymentQuantity(Customer customer, Employment employment) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT count(`archive`.`id`) AS 'quantity' FROM `archive` WHERE " +
                         "`archive`.`customer_id` = ? AND " +
                         "`archive`.`employment_id` = ? AND " +
@@ -154,7 +169,7 @@ public class CustomerDAO implements DAO<Customer>{
         return 0;
     }
 
-    public List<EmploymentQuantity> getAvailableEmploymentQuantities(Customer customer) throws SQLException{
+    public List<EmploymentQuantity> getAvailableEmploymentQuantities(Customer customer) throws SQLException {
         List<EmploymentQuantity> employmentQuantities = subscriptionService.getById(customer.getSubscription().getId()).getEmploymentsQuantities();
 
         for(EmploymentQuantity employmentQuantity: employmentQuantities){
@@ -170,7 +185,11 @@ public class CustomerDAO implements DAO<Customer>{
 
     public Customer getByCard(String card) throws SQLException {
         Customer customer = null;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `customer`, `subscription` WHERE " +
                         "`customer`.`subscription_id` = `subscription`.`id` AND " +
                         "`customer`.`card` = ?"
@@ -187,7 +206,11 @@ public class CustomerDAO implements DAO<Customer>{
 
     public Customer getByPhone(String phone) throws SQLException {
         Customer customer = null;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `customer`, `subscription` WHERE " +
                         "`customer`.`subscription_id` IS NULL AND " +
                         "`customer`.`phone` = ? OR `customer`.`phone2` = ?"
@@ -206,7 +229,11 @@ public class CustomerDAO implements DAO<Customer>{
 
     public Date getLastVisit(Customer customer) throws SQLException {
         Date date = null;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT `date` FROM `archive`, `customer` WHERE " +
                         "`customer`.`id` = `archive`.`customer_id` AND " +
                         "`customer`.`id` = ? AND " +
@@ -223,7 +250,10 @@ public class CustomerDAO implements DAO<Customer>{
 
     public Date getRegistrationDate(Customer customer) throws SQLException {
         Date date = null;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT `date` FROM `archive` WHERE " +
                         "`archive`.`customer_id` = ? AND " +
                         "(`archive`.`employee_id` IS NULL AND `archive`.`employment_id` IS NULL)" /* registration */
@@ -237,7 +267,10 @@ public class CustomerDAO implements DAO<Customer>{
     }
 
     public boolean isBonus(Customer customer) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT `bonus` FROM `archive` WHERE " +
                         "`customer_id` = ? AND " +
                         "`employee_id` IS NULL AND " +

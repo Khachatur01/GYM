@@ -4,6 +4,7 @@ import com.fitness.Constant.Status;
 import com.fitness.Constant.Week;
 import com.fitness.Controller.Controller;
 import com.fitness.DataSource.DB;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.DataSource.Memory.DBMemory;
 import com.fitness.Model.Configuration.WeekDay;
 import com.fitness.Model.Configuration.WorkingDay;
@@ -99,9 +100,21 @@ public class SettingsController extends GridPane implements Controller {
         }
     }
 
-    private void initWorkingDaysGridPane() throws SQLException {
+    private void clearWorkingDaysGridPane() {
+        workingDaysGridPane.setGridLinesVisible(false);
+        workingDaysGridPane.getChildren().clear();
+        workingDaysGridPane.setGridLinesVisible(true);
+    }
+
+    private void initWorkingDaysGridPane() {
         initWorkingDaysHeader();
-        this.workingDays = settingsService.getWorkingDays();
+        try {
+            this.workingDays = settingsService.getWorkingDays();
+        } catch (SQLException e) {
+            Log.warning("Can't init working days grid pane");
+            clearWorkingDaysGridPane();
+            return;
+        }
         int row = 1;
         for(WorkingDay workingDay: this.workingDays) {
             Label employeeNameLabel = new Label(workingDay.getEmployee().getName().toString());
@@ -137,9 +150,9 @@ public class SettingsController extends GridPane implements Controller {
                 LocalConnection localConnection = new LocalConnection(port, database, username, password);
                 DBMemory.storeConnection(localConnection);
 
-                this.checkConnectionAsync();
+                this.checkConnectionAsync(Status.LOCAL);
             } catch (NumberFormatException e) {
-                e.printStackTrace();
+                Log.error("Local port must be number");
             }
         });
         remoteConnectButton.setOnAction(event -> {
@@ -152,9 +165,9 @@ public class SettingsController extends GridPane implements Controller {
                 RemoteConnection remoteConnection = new RemoteConnection(URI, database, username, password);
                 DBMemory.storeConnection(remoteConnection);
 
-                this.checkConnectionAsync();
+                this.checkConnectionAsync(Status.REMOTE);
             } catch (NumberFormatException e) {
-                e.printStackTrace();
+                Log.error("Remote port must be number");
             }
 
         });
@@ -171,18 +184,18 @@ public class SettingsController extends GridPane implements Controller {
             FileConnection fileConnection = new FileConnection(URL);
             DBMemory.storeConnection(fileConnection);
 
-            this.checkConnectionAsync();
+            this.checkConnectionAsync(Status.FILE);
         });
         disconnectButton.setOnAction(event -> {
             DBMemory.deleteConnection();
-            this.stop();
-            this.start();
+
+            initWorkingDaysGridPane();
         });
         confirmChangesButton.setOnAction(event -> {
             try {
                 settingsService.setWorkingDays(this.workingDays);
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't save settings");
             }
         });
     }
@@ -220,18 +233,21 @@ public class SettingsController extends GridPane implements Controller {
         }
     }
 
-    private void checkConnectionAsync() {
+    private void checkConnectionAsync(Status status) {
         connectionProgressIndicator.setVisible(true);
         new Thread(() -> {
-            try {
-                DB.connect();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            boolean connected = DB.connect();
             Platform.runLater(() -> {
+                if(!connected) {
+                    DBMemory.deleteConnection();
+                    DB.disconnect();
+                    connectionStatusLabel.setText(Status.NOT_CONNECTED.toString());
+                } else {
+                    connectionStatusLabel.setText(status.toString());
+                }
                 connectionProgressIndicator.setVisible(false);
-                this.stop();
-                this.start();
+
+                initWorkingDaysGridPane();
             });
         }).start();
     }
@@ -241,18 +257,12 @@ public class SettingsController extends GridPane implements Controller {
         makeActive();
         initListeners();
         initStatus();
-        try {
-            initWorkingDaysGridPane();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        initWorkingDaysGridPane();
     }
 
     @Override
     public void stop() {
-        workingDaysGridPane.setGridLinesVisible(false);
-        workingDaysGridPane.getChildren().clear();
-        workingDaysGridPane.setGridLinesVisible(true);
+        clearWorkingDaysGridPane();
 
         Clear.textField(
                 localPortTextField,

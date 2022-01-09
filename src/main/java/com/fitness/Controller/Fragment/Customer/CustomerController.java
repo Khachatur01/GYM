@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Customer;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Person;
 import com.fitness.Model.Work.Subscription;
@@ -69,7 +70,7 @@ public class CustomerController extends GridPane implements Controller {
             try {
                 customerService.remove(customer);
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't delete customer");
             }
             customers.remove(customer);
         });
@@ -96,7 +97,7 @@ public class CustomerController extends GridPane implements Controller {
         try {
             initTable();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.warning("Can't fetch customers");
         }
         initListeners();
     }

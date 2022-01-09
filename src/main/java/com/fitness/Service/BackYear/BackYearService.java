@@ -1,5 +1,6 @@
 package com.fitness.Service.BackYear;
 
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Work.DateTime;
 import com.fitness.Service.Verify;
@@ -13,7 +14,7 @@ public class BackYearService {
             hour = Byte.parseByte(timeArray[0]);
             minute = Byte.parseByte(timeArray[1]);
         } catch (NumberFormatException e) {
-            e.printStackTrace(); // TODO print error message
+            Log.error("Can't parse time");
             timeMaskField.requestFocus();
             return null;
         }

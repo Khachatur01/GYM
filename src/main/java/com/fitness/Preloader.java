@@ -2,6 +2,7 @@ package com.fitness;
 
 import com.fitness.Constant.Page;
 import com.fitness.DataSource.DB;
+import com.fitness.DataSource.Log.Log;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -18,12 +19,13 @@ public class Preloader extends Thread {
 
     @Override
     public void run(){
+        Log.initLogger();
         try {
             /* heavy tasks */
             DB.connect();
             window.initMenuPanes();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            Log.info("connection error");
         }
         Platform.runLater(() -> {
             try {
@@ -35,7 +37,7 @@ public class Preloader extends Thread {
 
                 window.open(Page.MENU.getValue(), stage);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.info("connection error");
             }
         });
     }

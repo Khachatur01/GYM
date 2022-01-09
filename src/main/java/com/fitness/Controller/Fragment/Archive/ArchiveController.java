@@ -1,6 +1,7 @@
 package com.fitness.Controller.Fragment.Archive;
 
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Model.Archive.Archive;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Report.Report;
@@ -86,7 +87,7 @@ public class ArchiveController extends GridPane implements Controller {
                 archiveService.remove(archive);
                 this.fillReport();
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't delete archive record");
             }
         });
 
@@ -108,7 +109,7 @@ public class ArchiveController extends GridPane implements Controller {
             try {
                 archives = archiveService.getByDateRange(startDate, endDate);
             } catch (SQLException e) {
-                System.err.println("Archives fetching error");
+                Log.error("Can't fetch archive records by date range");
                 progressIndicator.setVisible(false);
                 return;
             }

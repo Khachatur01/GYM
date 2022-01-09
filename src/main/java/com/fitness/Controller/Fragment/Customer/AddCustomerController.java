@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Customer;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Work.DateTime;
@@ -46,7 +47,7 @@ public class AddCustomerController extends GridPane implements Controller {
     @FXML
     private ComboBox<Subscription> subscriptionComboBox;
     @FXML
-    private CheckBox bonusCheckBox; /* TODO */
+    private CheckBox bonusCheckBox;
     @FXML
     private CheckBox backYearCheckBox;
     @FXML
@@ -101,7 +102,7 @@ public class AddCustomerController extends GridPane implements Controller {
             try {
                 customer = customerService.getByCard(newValue);
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.warning("Can't fetch customer data by card number");
             }
             System.out.println(customer);
             if(!fieldsAreClean) {
@@ -149,7 +150,7 @@ public class AddCustomerController extends GridPane implements Controller {
                     Window.getFragment(Fragment.CUSTOMER).start();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't add customer");
             }
 
         });
@@ -169,7 +170,7 @@ public class AddCustomerController extends GridPane implements Controller {
 
 
     }
-    public void initComboBox() throws SQLException {
+    public void initSubscriptionComboBox() throws SQLException {
         subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
     }
 
@@ -186,9 +187,9 @@ public class AddCustomerController extends GridPane implements Controller {
         makeActive();
         initDatePicker();
         try {
-            initComboBox();
+            initSubscriptionComboBox();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error("Can't fetch actual subscriptions");
         }
         initListeners();
     }

@@ -1,7 +1,7 @@
 package com.fitness.DataSource.Memory;
 
-import com.fitness.Constant.Status;
 import com.fitness.DataSource.DB;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Model.Database.FileConnection;
 import com.fitness.Model.Database.LocalConnection;
 import com.fitness.Model.Database.RemoteConnection;
@@ -21,9 +21,9 @@ public class DBMemory {
         try {
             return new ObjectInputStream(new FileInputStream(DBMemory.cacheDir)).readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            Log.warning("Can't read from serialized cache");
+            return null;
         }
-        return null;
     }
 
     public static Connection fetchConnection() {
@@ -44,8 +44,10 @@ public class DBMemory {
                 String URL = "jdbc:sqlite:" + fileConnection.getFile();
                 connection = DriverManager.getConnection(URL);
             }
-        } catch (IOException | ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            Log.warning("Can't read connection from serialized cache");
+        } catch (SQLException e) {
+            Log.warning("Can't connect to database");
         }
         return connection;
     }
@@ -58,7 +60,7 @@ public class DBMemory {
             objectOutputStream.writeObject(connection);
             objectOutputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error("Can't write serialized object");
         }
     }
     public static void deleteConnection() {
@@ -67,8 +69,8 @@ public class DBMemory {
             writer.print("");
             writer.close();
             DB.disconnect();
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            Log.error("Can't disconnect from database");
         }
     }
 }

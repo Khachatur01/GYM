@@ -1,6 +1,7 @@
 package com.fitness.Controller.Fragment.Enter;
 
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
@@ -96,7 +97,7 @@ public class WithoutCardController extends GridPane implements Controller {
         try {
             this.customer = customerService.getByPhone(newValue);
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.warning("Can't fetch guest customer by phone number");
         }
         if(!fieldsAreClean) {
             Clear.textField(
@@ -142,7 +143,7 @@ public class WithoutCardController extends GridPane implements Controller {
                 );
                 priceTextField.setText(selectedEmployment.getPrice() + "");
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't fetch employees by employment");
             }
         });
         enterButton.setOnAction(event -> {
@@ -167,7 +168,7 @@ public class WithoutCardController extends GridPane implements Controller {
 
                     this.stop();
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't enter without card");
             }
         });
 
@@ -191,14 +192,14 @@ public class WithoutCardController extends GridPane implements Controller {
                         addressTextField
                 );
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't add guest customer");
             }
         }
         return this.customer;
     }
 
 
-    private void initComboBoxes() throws SQLException{
+    private void initEmploymentComboBox() throws SQLException{
         employmentComboBox.setItems(
                 FXCollections.observableArrayList(
                         employmentService.getActual()
@@ -219,9 +220,9 @@ public class WithoutCardController extends GridPane implements Controller {
         makeActive();
         initDatePicker();
         try {
-            initComboBoxes();
+            initEmploymentComboBox();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error("Can't fetch actual employments");
         }
 
         initListeners();

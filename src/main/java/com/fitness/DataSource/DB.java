@@ -1,5 +1,6 @@
 package com.fitness.DataSource;
 
+import com.fitness.DataSource.Log.Log;
 import com.fitness.DataSource.Memory.DBMemory;
 
 import java.sql.Connection;
@@ -8,12 +9,13 @@ import java.sql.SQLException;
 public class DB {
     private static Connection connection = null;
 
-    public static boolean connect() throws SQLException {
+    public static boolean connect() {
         connection = DBMemory.fetchConnection();
         if(connection != null) {
-            System.out.println("connected to db");
+            Log.info("Connected to database");
             return true;
         }
+        Log.error("Can't connect to database");
         return false;
     }
 
@@ -24,12 +26,16 @@ public class DB {
         return connection;
     }
 
-    public static void disconnect() throws SQLException {
+    public static void disconnect() {
         if(connection != null) {
-            connection.close();
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                Log.error("Can't disconnect from database");
+            }
             connection = null;
+        } else {
+            Log.info("Disconnected from database");
         }
-        System.out.println("disconnected from db");
     }
-
 }

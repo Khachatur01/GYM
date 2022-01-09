@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Employee;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.Position;
@@ -111,7 +112,7 @@ public class EditEmployeeController extends GridPane implements Controller {
                     Window.getFragment(Fragment.EMPLOYEE).start();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't edit employee data");
             }
         });
 
@@ -122,12 +123,12 @@ public class EditEmployeeController extends GridPane implements Controller {
         });
     }
 
-    public void initComboBox() throws SQLException {
+    public void initPositionComboBox() throws SQLException {
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
     }
 
 
-    private void initTable() throws SQLException {
+    private void initEmployeePositionTable() throws SQLException {
         positions.addAll(employeeService.getPositions(employeeService.getSelected(), true));
         positionColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         employeePositionTable.setItems(positions);
@@ -138,11 +139,11 @@ public class EditEmployeeController extends GridPane implements Controller {
         makeActive();
         initListeners();
         try {
-            initTable();
-            initComboBox();
+            initPositionComboBox();
+            initEmployeePositionTable();
             loadOldData();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.error("Can't fetch employee data");
         }
     }
 

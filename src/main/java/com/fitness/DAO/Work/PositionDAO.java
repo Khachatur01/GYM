@@ -6,17 +6,17 @@ import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Create;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PositionDAO implements DAO<Position> {
     private List<Employment> getEmployments(Position position) throws SQLException {
         List<Employment> employments = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `position`, `employment` WHERE " +
                         "`employment`.`position_id` = `position`.`id` AND " +
                         "`employment`.`position_id` = ?"
@@ -30,8 +30,11 @@ public class PositionDAO implements DAO<Position> {
         return employments;
     }
     private void addEmployments(Position position) throws SQLException {
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
         for(Employment employment: position.getEmployments()){
-            PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+            PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE `employment` SET `position_id` = ? WHERE `id` = ?"
             );
             preparedStatement.setLong(1, position.getId());
@@ -40,7 +43,10 @@ public class PositionDAO implements DAO<Position> {
         }
     }
     private void removeEmployments(Position position) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "UPDATE `employment` SET `position_id` = null WHERE `position_id` = ?"
         );
         preparedStatement.setLong(1, position.getId());
@@ -52,7 +58,10 @@ public class PositionDAO implements DAO<Position> {
     }
     @Override
     public void add(Position position) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `position`(`name`) VALUES(?)",
                 Statement.RETURN_GENERATED_KEYS
         );
@@ -68,8 +77,12 @@ public class PositionDAO implements DAO<Position> {
 
     @Override
     public void edit(Position position) throws SQLException {
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
         this.editEmployments(position);
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "UPDATE `position` SET `name` = ? WHERE `id` = ?"
         );
         preparedStatement.setString(1, position.getName());
@@ -79,13 +92,16 @@ public class PositionDAO implements DAO<Position> {
     @Override
     public void remove(Position position, boolean removeHistory) throws SQLException {
         PreparedStatement preparedStatement;
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
         if(removeHistory) {
             /* when position deleted, employment, employee, customer and customer visits will be deleted */
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "DELETE FROM `position` WHERE `id` = ?"
             );
         } else {
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "UPDATE `position` SET `archived` = 1 WHERE `id` = ?"
             );
         }
@@ -96,7 +112,10 @@ public class PositionDAO implements DAO<Position> {
     @Override
     public List<Position> get(boolean actual) throws SQLException {
         List<Position> positions = new ArrayList<>();
-        Statement statement = DB.getConnection().createStatement();
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(
                 "SELECT * FROM `position` "
                     + (actual ? " WHERE `position`.`archived` = 0" : "")

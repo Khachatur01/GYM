@@ -23,7 +23,9 @@ public class ArchiveDAO implements DAO<Archive> {
 
     @Override
     public void add(Archive archive) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `archive`(`date`, `customer_id`, `employee_id`, `employment_id`, `bonus`) " +
                         "VALUES (?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
@@ -64,7 +66,9 @@ public class ArchiveDAO implements DAO<Archive> {
 
     @Override
     public void remove(Archive archive, boolean removeHistory) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "DELETE FROM `archive` WHERE `id` = ?"
         );
         preparedStatement.setLong(1, archive.getId());
@@ -89,7 +93,10 @@ public class ArchiveDAO implements DAO<Archive> {
 
     public List<Archive> getByDateRange(LocalDate startDate, LocalDate endDate) throws SQLException {
         List<Archive> archives = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT " +
                         "(`employment_id` IS NULL AND `employee_id` IS NULL) AS registration, " +
                         "(`customer`.`subscription_id` IS NULL) AS without_card, " +

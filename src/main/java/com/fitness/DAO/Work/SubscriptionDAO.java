@@ -6,17 +6,18 @@ import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Create;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriptionDAO implements DAO<Subscription> {
     private List<EmploymentQuantity> getEmploymentsQuantities(Subscription subscription) throws SQLException {
         List<EmploymentQuantity> employmentQuantities = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * from `employment`, `subscription_employment` WHERE " +
                         "`subscription_employment`.`employment_id` = `employment`.`id` AND " +
                         "`subscription_employment`.`subscription_id` = ?"
@@ -33,7 +34,11 @@ public class SubscriptionDAO implements DAO<Subscription> {
     private void addEmploymentsQuantities(Subscription subscription) throws SQLException {
         long subscriptionId = subscription.getId();
         List<EmploymentQuantity> employmentQuantities = subscription.getEmploymentsQuantities();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `subscription_employment`(`subscription_id`, `employment_id`, `quantity`, `price`) VALUES (?, ?, ?, ?)"
         );
 
@@ -50,7 +55,10 @@ public class SubscriptionDAO implements DAO<Subscription> {
     }
 
     private void removeEmploymentsQuantities(Subscription subscription) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "DELETE FROM `subscription_employment` WHERE `subscription_id` = ?"
         );
         preparedStatement.setLong(1, subscription.getId());
@@ -65,7 +73,10 @@ public class SubscriptionDAO implements DAO<Subscription> {
     @Override
     public void add(Subscription subscription) throws SQLException {
         if(subscription == null) return;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `subscription`(`name`) VALUES (?)",
                 Statement.RETURN_GENERATED_KEYS
         );
@@ -84,7 +95,11 @@ public class SubscriptionDAO implements DAO<Subscription> {
     @Override
     public void edit(Subscription subscription) throws SQLException {
         this.editEmploymentsQuantities(subscription);
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "UPDATE `subscription` SET `name` = ? WHERE `id` = ?"
         );
         preparedStatement.setString(1, subscription.getName());
@@ -94,13 +109,16 @@ public class SubscriptionDAO implements DAO<Subscription> {
     @Override
     public void remove(Subscription subscription, boolean removeHistory) throws  SQLException {
         PreparedStatement preparedStatement;
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
         if(removeHistory) {
             /* when subscription deleted, subscription quantities, customer and customer visits will be deleted */
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "DELETE FROM `subscription` WHERE `id` = ?"
             );
         } else {
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "UPDATE `subscription` SET `archived` = 1 WHERE `id` = ?"
             );
         }
@@ -111,7 +129,11 @@ public class SubscriptionDAO implements DAO<Subscription> {
     @Override
     public List<Subscription> get(boolean actual) throws SQLException {
         List<Subscription> subscriptions = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `subscription`" + (actual ? " WHERE `archived` = 0" : "")
         );
         ResultSet result = preparedStatement.executeQuery();
@@ -137,7 +159,10 @@ public class SubscriptionDAO implements DAO<Subscription> {
 
     public Subscription getById(long id) throws SQLException {
         Subscription subscription = null;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `subscription` WHERE `id` = ?"
         );
         preparedStatement.setLong(1, id);

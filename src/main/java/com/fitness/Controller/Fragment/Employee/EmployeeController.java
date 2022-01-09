@@ -2,6 +2,7 @@ package com.fitness.Controller.Fragment.Employee;
 
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
+import com.fitness.DataSource.Log.Log;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Person.Person;
 import com.fitness.Service.Person.EmployeeService;
@@ -46,6 +47,19 @@ public class EmployeeController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
     }
+    private void initEmployeesTable() throws SQLException {
+        fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        phone2Column.setCellValueFactory(new PropertyValueFactory<>("phone2"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+
+        employeesTable.getItems().clear();
+
+        employees.setAll(employeeService.getAll());
+
+        employeesTable.setItems(employees);
+    }
+
     private void initListeners(){
         editButton.setOnAction(event -> {
             Employee employee = employeesTable.getSelectionModel().getSelectedItem();
@@ -63,7 +77,7 @@ public class EmployeeController extends GridPane implements Controller {
             try {
                 employeeService.remove(employee);
             } catch (SQLException e) {
-                e.printStackTrace();
+                Log.error("Can't delete employee");
             }
             employees.remove(employee);
         });
@@ -73,24 +87,11 @@ public class EmployeeController extends GridPane implements Controller {
     public void start() {
         makeActive();
         try {
-            initTable();
+            initEmployeesTable();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Log.warning("Can't fetch employees");
         }
         initListeners();
-    }
-
-    private void initTable() throws SQLException {
-        fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        phone2Column.setCellValueFactory(new PropertyValueFactory<>("phone2"));
-        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-
-        employeesTable.getItems().clear();
-
-        employees.setAll(employeeService.getAll());
-
-        employeesTable.setItems(employees);
     }
 
     @Override

@@ -7,10 +7,7 @@ import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Create;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +15,11 @@ public class EmployeeDAO implements DAO<Employee> {
     public List<Position> getPositions(Employee employee, boolean actual) throws SQLException {
         if(employee == null) return null;
         List<Position> positions = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `position`, `employee_position` WHERE " +
                         "`position`.`id` = `employee_position`.`position_id` AND " +
                         "`employee_position`.`employee_id` = ?" +
@@ -33,14 +34,20 @@ public class EmployeeDAO implements DAO<Employee> {
     }
 
     private void removePositions(Employee employee) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "DELETE FROM `employee_position` WHERE `employee_id` = ?"
         );
         preparedStatement.setLong(1, employee.getId());
         preparedStatement.executeUpdate();
     }
     private void addPositions(Employee employee) throws SQLException {
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `employee_position`(`employee_id`, `position_id`) " +
                         "VALUES(?, ?)"
         );
@@ -62,7 +69,10 @@ public class EmployeeDAO implements DAO<Employee> {
     @Override
     public void add(Employee employee) throws SQLException {
         if(employee == null) return;
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `employee`(`name`, `surname`, `phone`, `phone2`, `address`, `archived`) " +
                         "VALUES(?, ?, ?, ?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
@@ -94,8 +104,11 @@ public class EmployeeDAO implements DAO<Employee> {
     @Override
     public void edit(Employee employee) throws SQLException {
         if(employee == null) return;
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
         this.editPositions(employee);
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "UPDATE `employee` SET " +
                         "`name` = ?, `surname` = ?, `phone` = ?, `phone2` = ?, `address` = ?, `archived` = ? WHERE" +
                         "`id` = ?"
@@ -113,20 +126,23 @@ public class EmployeeDAO implements DAO<Employee> {
     @Override
     public void remove(Employee employee, boolean removeHistory) throws SQLException {
         PreparedStatement preparedStatement;
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
         if(removeHistory) {
             /* when employee deleted, employee's customers visits will be deleted */
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "DELETE FROM `employee` WHERE `id` = ?"
             );
         } else {
-            preparedStatement = DB.getConnection().prepareStatement(
+            preparedStatement = connection.prepareStatement(
                     "UPDATE `employee` SET `archived` = 1 WHERE `id` = ?"
             );
         }
         preparedStatement.setLong(1, employee.getId());
         preparedStatement.executeUpdate();
 
-        preparedStatement = DB.getConnection().prepareStatement(
+        preparedStatement = connection.prepareStatement(
                 "DELETE FROM `working_days` WHERE `employee_id` = ?"
         );
         preparedStatement.setLong(1, employee.getId());
@@ -136,7 +152,10 @@ public class EmployeeDAO implements DAO<Employee> {
     @Override
     public List<Employee> get(boolean actual) throws SQLException {
         List<Employee> employees = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `employee` " +
                         (actual ? " WHERE `employee`.`archived` = 0" : "")
         );
@@ -160,9 +179,13 @@ public class EmployeeDAO implements DAO<Employee> {
     }
 
     public List<Employee> getBy(Employment employment, boolean actual) throws SQLException {
-        if(employment == null) return new ArrayList<>();
+        Connection connection = DB.getConnection();
         List<Employee> employees = new ArrayList<>();
-        PreparedStatement preparedStatement = DB.getConnection().prepareStatement(
+
+        if(employment == null) return employees;
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM `employee`, `employee_position`, `position`, `employment` WHERE " +
                         "`employment`.`position_id` = `position`.`id` AND " +
                         "`employee_position`.`position_id` = `position`.`id` AND " +
