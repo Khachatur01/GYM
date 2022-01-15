@@ -8,6 +8,7 @@ import com.fitness.Model.Archive.Archive;
 import com.fitness.Model.Configuration.Settings;
 import com.fitness.Model.Configuration.WeekDay;
 import com.fitness.Model.Configuration.WorkingDay;
+import com.fitness.Model.Person.Employee;
 import com.fitness.Service.Create;
 
 import java.sql.Connection;
@@ -48,6 +49,36 @@ public class SettingsDAO implements DAO<Settings> {
         return null;
     }
 
+    public WorkingDay getWorkingDay(Employee employee) throws SQLException {
+        Connection connection = DB.getConnection();
+        if(connection == null) throw new SQLException();
+
+        PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM `working_days`, `employee` " +
+                        "WHERE `working_days`.`employee_id` = `employee`.`id` AND " +
+                        "`employee`.`id` = ?"
+        );
+        preparedStatement.setLong(1, employee.getId());
+        ResultSet result = preparedStatement.executeQuery();
+
+        if(result.next()) {
+            WorkingDay workingDay = new WorkingDay();
+            workingDay.setEmployee(Create.employee(result));
+
+            List<WeekDay> employeeWorkingDays = new ArrayList<>();
+            for(Week week: Week.values()) {
+                WeekDay weekDay = new WeekDay();
+                weekDay.setWeek(week);
+                weekDay.setWorkingDay(result.getBoolean("working_days." + week.toString()));
+                employeeWorkingDays.add(weekDay);
+            }
+
+            workingDay.setWorkingDays(employeeWorkingDays);
+            return workingDay;
+        }
+
+        return null;
+    }
     public List<WorkingDay> getWorkingDays() throws SQLException {
         List<WorkingDay> workingDays = new ArrayList<>();
 
@@ -60,7 +91,7 @@ public class SettingsDAO implements DAO<Settings> {
             );
         ResultSet result = preparedStatement.executeQuery();
 
-        while (result.next()) {
+        while(result.next()) {
             WorkingDay workingDay = new WorkingDay();
             workingDay.setEmployee(Create.employee(result));
 

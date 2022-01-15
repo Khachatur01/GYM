@@ -1,5 +1,6 @@
 package com.fitness.Model.Work;
 
+import com.fitness.Constant.Week;
 import javafx.util.StringConverter;
 
 import java.sql.Timestamp;
@@ -7,8 +8,31 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 public class DateTime extends Timestamp {
+    public static Week getCurrentWeek() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+        switch (day) {
+            case Calendar.SUNDAY:
+                return Week.SUNDAY;
+            case Calendar.MONDAY:
+                return Week.MONDAY;
+            case Calendar.TUESDAY:
+                return Week.TUESDAY;
+            case Calendar.WEDNESDAY:
+                return Week.WEDNESDAY;
+            case Calendar.THURSDAY:
+                return Week.THURSDAY;
+            case Calendar.FRIDAY:
+                return Week.FRIDAY;
+            case Calendar.SATURDAY:
+                return Week.SATURDAY;
+        }
+        return null;
+    }
     public DateTime(long date) {
         super(date);
     }

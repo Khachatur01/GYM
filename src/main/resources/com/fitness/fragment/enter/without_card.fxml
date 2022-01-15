@@ -7,6 +7,8 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -56,8 +58,8 @@
             <Font size="18.0" />
          </font>
       </TextField>
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Արժեք" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM" />
-      <TextField fx:id="priceTextField" alignment="CENTER" editable="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="TOP">
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Արժեք" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="BOTTOM" />
+      <TextField fx:id="priceTextField" alignment="CENTER" editable="false" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="9" GridPane.valignment="TOP">
          <font>
             <Font size="18.0" />
          </font>
@@ -67,8 +69,13 @@
       </TextField>
       <Label alignment="CENTER" contentDisplay="CENTER" text="Ծառայություն *" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
       <ComboBox fx:id="employmentComboBox" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Աշխատող *" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-      <ComboBox fx:id="employeeComboBox" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="TOP" />
+      <ToggleButton fx:id="todayEmployeesToggleButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="Այսօրվանը" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
+         <toggleGroup>
+            <ToggleGroup fx:id="employeeToggle" />
+         </toggleGroup>
+      </ToggleButton>
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Աշխատող *" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM" />
+      <ComboBox fx:id="employeeComboBox" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="TOP" />
       <Button fx:id="enterButton" mnemonicParsing="false" styleClass="primary" text="Մուտք" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="12" />
       <CheckBox fx:id="bonusCheckBox" mnemonicParsing="false" text="Բոնուս այց" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="11">
          <font>
@@ -106,5 +113,6 @@
             </GridPane>
          </children>
       </GridPane>
+      <ToggleButton fx:id="allEmployeesToggleButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Բոլորը" toggleGroup="$employeeToggle" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
    </children>
 </fx:root>

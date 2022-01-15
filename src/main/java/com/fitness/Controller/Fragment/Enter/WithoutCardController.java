@@ -1,8 +1,11 @@
 package com.fitness.Controller.Fragment.Enter;
 
+import com.fitness.Constant.Week;
 import com.fitness.Controller.Controller;
 import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
+import com.fitness.Model.Configuration.WeekDay;
+import com.fitness.Model.Configuration.WorkingDay;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.DateTime;
@@ -10,11 +13,13 @@ import com.fitness.Model.Work.Employment;
 import com.fitness.Service.Archive.ArchiveService;
 import com.fitness.Service.BackYear.BackYearService;
 import com.fitness.Service.Clear;
+import com.fitness.Service.Configuration.SettingsService;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
 import com.fitness.Service.Person.EmployeeService;
 import com.fitness.Service.Work.EmploymentService;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -26,6 +31,7 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class WithoutCardController extends GridPane implements Controller {
     @FXML
@@ -43,6 +49,10 @@ public class WithoutCardController extends GridPane implements Controller {
     @FXML
     private ComboBox<Employment> employmentComboBox;
     @FXML
+    private ToggleButton todayEmployeesToggleButton;
+    @FXML
+    private ToggleButton allEmployeesToggleButton;
+    @FXML
     private ComboBox<Employee> employeeComboBox;
     @FXML
     private CheckBox bonusCheckBox;
@@ -53,17 +63,20 @@ public class WithoutCardController extends GridPane implements Controller {
     @FXML
     private DatePicker datePicker;
     private MaskField timeMaskField;
-
     @FXML
     private Button enterButton;
 
     private boolean fieldsAreClean = true;
     private Customer customer;
 
+    private SettingsService settingsService = new SettingsService();
     private CustomerService customerService = new CustomerService();
     private EmployeeService employeeService = new EmployeeService();
     private EmploymentService employmentService = new EmploymentService();
     private ArchiveService archiveService = new ArchiveService();
+
+    private ObservableList<Employee> allEmployees = null;
+    private ObservableList<Employee> todayEmployees = null;
 
     public WithoutCardController() throws IOException{
         FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/fitness/fragment/enter/without_card.fxml"));
@@ -133,14 +146,32 @@ public class WithoutCardController extends GridPane implements Controller {
                 phoneMaskFieldListener(newValue);
         });
 
+        todayEmployeesToggleButton.setOnAction(event -> {
+            employeeComboBox.setItems(this.todayEmployees);
+            employeeComboBox.getSelectionModel().selectFirst();
+        });
+        allEmployeesToggleButton.setOnAction(event -> {
+            employeeComboBox.setItems(this.allEmployees);
+            employeeComboBox.getSelectionModel().selectFirst();
+        });
         employmentComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, selectedEmployment) -> {
             if(selectedEmployment == null) return;
             try {
-                employeeComboBox.setItems(
-                        FXCollections.observableArrayList(
-                                employeeService.getBy(selectedEmployment, true)
-                        )
-                );
+                this.allEmployees = FXCollections.observableArrayList(employeeService.getBy(selectedEmployment, true));
+                if(todayEmployeesToggleButton.isSelected()) {
+                    this.todayEmployees = FXCollections.observableArrayList();
+                    Week currentWeek = DateTime.getCurrentWeek();
+                    for(WorkingDay workingDay: settingsService.getWorkingDays())
+                        for(WeekDay weekDay: workingDay.getWorkingDays())
+                            if(weekDay.getWeek() == currentWeek && weekDay.isWorkingDay())
+                                this.todayEmployees.add(workingDay.getEmployee());
+                    employeeComboBox.setItems(this.todayEmployees);
+                    employeeComboBox.getSelectionModel().selectFirst();
+                } else {
+                    employeeComboBox.setItems(this.allEmployees);
+                    employeeComboBox.getSelectionModel().selectFirst();
+                }
+
                 priceTextField.setText(selectedEmployment.getPrice() + "");
             } catch (SQLException e) {
                 Log.error("Can't fetch employees by employment");

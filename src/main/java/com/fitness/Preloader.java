@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class Preloader extends Thread {
     private final Stage stage;
@@ -25,7 +24,7 @@ public class Preloader extends Thread {
             DB.connect();
             window.initMenuPanes();
         } catch (IOException e) {
-            Log.info("connection error");
+            Log.error("connection error");
         }
         Platform.runLater(() -> {
             try {
@@ -37,7 +36,7 @@ public class Preloader extends Thread {
 
                 window.open(Page.MENU.getValue(), stage);
             } catch (IOException e) {
-                Log.info("connection error");
+                Log.error("connection error");
             }
         });
     }

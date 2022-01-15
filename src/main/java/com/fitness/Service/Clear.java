@@ -26,7 +26,7 @@ public class Clear {
     }
     public static void comboBox(ComboBox ...comboBoxes){
         for(ComboBox comboBox: comboBoxes) {
-            comboBox.getSelectionModel().select(null);
+            comboBox.getItems().clear();
             comboBox.getStyleClass().remove("combo-box_error");
         }
     }

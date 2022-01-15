@@ -1,8 +1,11 @@
 package com.fitness.Controller.Fragment.Enter;
 
+import com.fitness.Constant.Week;
 import com.fitness.Controller.Controller;
 import com.fitness.DataSource.Log.Log;
 import com.fitness.Element.MaskField;
+import com.fitness.Model.Configuration.WeekDay;
+import com.fitness.Model.Configuration.WorkingDay;
 import com.fitness.Model.Person.Customer;
 import com.fitness.Model.Person.Employee;
 import com.fitness.Model.Work.DateTime;
@@ -11,6 +14,7 @@ import com.fitness.Model.Work.EmploymentQuantity;
 import com.fitness.Service.Archive.ArchiveService;
 import com.fitness.Service.BackYear.BackYearService;
 import com.fitness.Service.Clear;
+import com.fitness.Service.Configuration.SettingsService;
 import com.fitness.Service.Fill;
 import com.fitness.Service.Person.CustomerService;
 import com.fitness.Service.Person.EmployeeService;
@@ -32,6 +36,10 @@ public class WithCardController extends GridPane implements Controller {
     private TextField cardTextField;
     @FXML
     private ComboBox<Employment> employmentComboBox;
+    @FXML
+    private ToggleButton todayEmployeesToggleButton;
+    @FXML
+    private ToggleButton allEmployeesToggleButton;
     @FXML
     private ComboBox<Employee> employeeComboBox;
     @FXML
@@ -67,12 +75,15 @@ public class WithCardController extends GridPane implements Controller {
     @FXML
     private Button enterButton;
 
+    private SettingsService settingsService = new SettingsService();
     private CustomerService customerService = new CustomerService();
     private EmployeeService employeeService = new EmployeeService();
     private ArchiveService archiveService = new ArchiveService();
 
     private boolean fieldsAreClean = true;
     private Customer selectedCustomer = null;
+    private ObservableList<Employee> allEmployees = null;
+    private ObservableList<Employee> todayEmployees = null;
 
     public WithCardController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/enter/with_card.fxml"));
@@ -133,16 +144,43 @@ public class WithCardController extends GridPane implements Controller {
             }
         });
 
+        todayEmployeesToggleButton.setOnAction(event -> {
+            employeeComboBox.setItems(this.todayEmployees);
+            employeeComboBox.getSelectionModel().selectFirst();
+        });
+        allEmployeesToggleButton.setOnAction(event -> {
+            employeeComboBox.setItems(this.allEmployees);
+            employeeComboBox.getSelectionModel().selectFirst();
+        });
         employmentComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, selectedEmployment) -> {
+            if(selectedEmployment == null) return;
             try {
-                employeeComboBox.setItems(
-                        FXCollections.observableArrayList(
-                            employeeService.getBy(selectedEmployment, true)
-                    )
-                );
+                this.allEmployees = FXCollections.observableArrayList(employeeService.getBy(selectedEmployment, true));
+                if(todayEmployeesToggleButton.isSelected()) {
+                    this.todayEmployees = FXCollections.observableArrayList();
+                    Week currentWeek = DateTime.getCurrentWeek();
+                    for(WorkingDay workingDay: settingsService.getWorkingDays())
+                        for(WeekDay weekDay: workingDay.getWorkingDays())
+                            if(weekDay.getWeek() == currentWeek && weekDay.isWorkingDay())
+                                this.todayEmployees.add(workingDay.getEmployee());
+                    employeeComboBox.setItems(this.todayEmployees);
+                    employeeComboBox.getSelectionModel().selectFirst();
+                } else {
+                    employeeComboBox.setItems(this.allEmployees);
+                    employeeComboBox.getSelectionModel().selectFirst();
+                }
             } catch (SQLException e) {
                 Log.error("Can't fetch employees by employment");
             }
+//            try {
+//                employeeComboBox.setItems(
+//                        FXCollections.observableArrayList(
+//                            employeeService.getBy(selectedEmployment, true)
+//                    )
+//                );
+//            } catch (SQLException e) {
+//                Log.error("Can't fetch employees by employment");
+//            }
         });
 
         enterButton.setOnAction(event -> {
