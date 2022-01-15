@@ -1,16 +1,21 @@
 package com.fitness.Controller;
 
 import com.fitness.Constant.Fragment;
+import com.fitness.Model.Work.DateTime;
 import com.fitness.Window;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
+    @FXML
+    private Label calendarLabel;
     @FXML
     private Button enterButton;
     @FXML
@@ -37,6 +42,8 @@ public class MenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Window.setActivePane(activePane);
+
+        calendarLabel.setText(Objects.requireNonNull(DateTime.getCurrentWeek()).getArmFullName());
 
         cardButton.setOnAction(event -> {
             Window.stopActiveController();

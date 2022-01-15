@@ -28,6 +28,14 @@
       <ImageView fitHeight="100.0" fitWidth="100.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
          <Image url="@assets/icon.png" />
       </ImageView>
+      <Label fx:id="calendarLabel" text="չորեքշաբթի">
+         <font>
+            <Font size="28.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin>
+      </Label>
       <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
          <Button fx:id="enterButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0" VBox.vgrow="ALWAYS">
             <graphic>
