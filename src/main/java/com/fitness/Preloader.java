@@ -32,7 +32,7 @@ public class Preloader extends Thread {
 
                 Stage stage = new Stage();
                 stage.setMinWidth(1450);
-                stage.setMinHeight(730);
+                stage.setMinHeight(800);
 
                 window.open(Page.MENU.getValue(), stage);
             } catch (IOException e) {

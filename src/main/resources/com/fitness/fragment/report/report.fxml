@@ -107,7 +107,6 @@
                   </columnResizePolicy>
                  </TableView>
                  <Button fx:id="deleteButton" mnemonicParsing="false" text="Ջնջել" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-                 <Button fx:id="editButton" mnemonicParsing="false" text="Փոփոխել" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
              </GridPane>
          </Tab>
      </tabs>
@@ -131,4 +130,5 @@
       <Label text="այց" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
       <Label text="դրամ" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
     </GridPane>
+     <Button fx:id="printButton" mnemonicParsing="false" text="Տպել" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
 </fx:root>

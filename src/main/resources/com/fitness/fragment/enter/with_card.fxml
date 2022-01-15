@@ -84,11 +84,17 @@
          <toggleGroup>
             <ToggleGroup fx:id="employeeToggle" />
          </toggleGroup>
+         <font>
+            <Font size="8.0" />
+         </font>
       </ToggleButton>
       <ToggleButton fx:id="todayEmployeesToggleButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="Այսօրվանը" toggleGroup="$employeeToggle" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets right="10.0" />
          </GridPane.margin>
+         <font>
+            <Font size="8.0" />
+         </font>
       </ToggleButton>
       <Separator prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="4">
          <GridPane.margin>

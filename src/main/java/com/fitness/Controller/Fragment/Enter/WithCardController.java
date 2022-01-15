@@ -172,15 +172,6 @@ public class WithCardController extends GridPane implements Controller {
             } catch (SQLException e) {
                 Log.error("Can't fetch employees by employment");
             }
-//            try {
-//                employeeComboBox.setItems(
-//                        FXCollections.observableArrayList(
-//                            employeeService.getBy(selectedEmployment, true)
-//                    )
-//                );
-//            } catch (SQLException e) {
-//                Log.error("Can't fetch employees by employment");
-//            }
         });
 
         enterButton.setOnAction(event -> {

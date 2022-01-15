@@ -10,6 +10,7 @@ import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Subscription;
 import com.fitness.Service.Archive.ArchiveService;
+import com.fitness.Service.Report.Excel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -21,7 +22,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -55,15 +60,20 @@ public class ArchiveController extends GridPane implements Controller {
     @FXML
     private TableColumn<Archive, String> priceColumn;
     @FXML
-    private Button deleteButton;
+    private Button printButton;
     @FXML
-    private Button editButton;
+    private Button deleteButton;
     @FXML
     private Label visitsQuantityLabel;
     @FXML
     private Label totalPriceLabel;
 
     private final ArchiveService archiveService = new ArchiveService();
+
+    private List<Archive> archives = null;
+    private List<Report> reports = null;
+    private int totalPrice = 0;
+    private int totalVisits = 0;
 
     public ArchiveController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/report/report.fxml"));
@@ -73,14 +83,25 @@ public class ArchiveController extends GridPane implements Controller {
     }
 
     private void initListeners() {
-        startDatePicker.valueProperty().addListener((ov, oldValue, newValue) -> {
-            endDatePicker.setValue(newValue);
-        });
+        startDatePicker.valueProperty().addListener((ov, oldValue, newValue) -> endDatePicker.setValue(newValue));
 
-        getReportButton.setOnAction(event -> {
-            this.fillReport();
-        });
+        getReportButton.setOnAction(event -> this.fillReport());
 
+        printButton.setOnAction(event -> {
+            Excel excel = new Excel(this.reports);
+            HSSFWorkbook workbook = excel.getReportByEmployment();
+
+            File desktopDir = new File(System.getProperty("user.home"), "Desktop");
+            File desktopFile = new File(desktopDir.getPath() + File.separator + "Հաշվետվություն.xlsx");
+
+            FileOutputStream outFile = null;
+            try {
+                outFile = new FileOutputStream(desktopFile);
+                workbook.write(outFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         deleteButton.setOnAction(event -> {
             Archive archive = this.historyTableView.getSelectionModel().getSelectedItem();
             try {
@@ -90,7 +111,6 @@ public class ArchiveController extends GridPane implements Controller {
                 Log.error("Can't delete archive record");
             }
         });
-
     }
 
     private void fillReport() {
@@ -99,7 +119,6 @@ public class ArchiveController extends GridPane implements Controller {
         new Thread(() -> {
             LocalDate startDate = startDatePicker.getValue();
             LocalDate endDate = endDatePicker.getValue();
-            List<Archive> archives;
 
             if(startDate == null || endDate == null || endDate.isBefore(startDate)) {
                 progressIndicator.setVisible(false);
@@ -114,7 +133,7 @@ public class ArchiveController extends GridPane implements Controller {
                 return;
             }
             Platform.runLater(() -> {
-                List<Report> reports = archiveService.getReports(archives);
+                reports = archiveService.getReports(archives);
                 clearSalary();
                 fillSalary(reports);
                 clearHistory();
@@ -148,8 +167,6 @@ public class ArchiveController extends GridPane implements Controller {
     }
 
     private void fillSalary(List<Report> reports) {
-        int totalPrice = 0;
-        int totalQuantity = 0;
         for(int row = 0; row < reports.size(); row++) {
             TableView<Salary> salaryTableView = new TableView<>();
             salaryTableView.setMaxHeight(200);
@@ -182,7 +199,7 @@ public class ArchiveController extends GridPane implements Controller {
 
             int price = reports.get(row).getTotalPrice();
             int quantity = reports.get(row).getTotalQuantity();
-            totalQuantity += quantity;
+            totalVisits += quantity;
             totalPrice += price;
 
             salaryGridPane.add(new Label(quantity + ""), 1, rowIndex + 1);
@@ -193,7 +210,7 @@ public class ArchiveController extends GridPane implements Controller {
             salaryGridPane.add(salaryTableView, 0, rowIndex + 2);
         }
 
-        visitsQuantityLabel.setText(totalQuantity + "");
+        visitsQuantityLabel.setText(totalVisits + "");
         totalPriceLabel.setText(totalPrice + "");
     }
 
