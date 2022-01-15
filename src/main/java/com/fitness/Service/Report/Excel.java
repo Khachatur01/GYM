@@ -8,8 +8,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.RegionUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Excel {
@@ -17,7 +17,7 @@ public class Excel {
     public Excel(List<Report> reports) {
         this.reports = reports;
     }
-    public HSSFWorkbook getReportByEmployment() {
+    public HSSFWorkbook getReportByEmployment(LocalDate startDate, LocalDate endDate) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Հաշվետվություն");
         HSSFCellStyle centerAlignment = workbook.createCellStyle();
@@ -34,8 +34,12 @@ public class Excel {
         sheet.addMergedRegion(CellRangeAddress.valueOf("C2:C3"));
         sheet.addMergedRegion(CellRangeAddress.valueOf("D2:D3"));
 
+        Row dateHeaderRow = sheet.createRow(0);
         Row headerFirst = sheet.createRow(1);
         Row headerSecond = sheet.createRow(2);
+
+        Cell dateHeaderCell = dateHeaderRow.createCell(0);
+        dateHeaderCell.setCellValue(startDate + "-ից " + endDate);
 
         Cell employmentHeaderCell = headerFirst.createCell(0, CellType.STRING);
         employmentHeaderCell.setCellValue("Ծառայություն");

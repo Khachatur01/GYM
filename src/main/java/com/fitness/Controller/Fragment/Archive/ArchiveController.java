@@ -72,6 +72,8 @@ public class ArchiveController extends GridPane implements Controller {
 
     private List<Archive> archives = null;
     private List<Report> reports = null;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private int totalPrice = 0;
     private int totalVisits = 0;
 
@@ -89,10 +91,10 @@ public class ArchiveController extends GridPane implements Controller {
 
         printButton.setOnAction(event -> {
             Excel excel = new Excel(this.reports);
-            HSSFWorkbook workbook = excel.getReportByEmployment();
+            HSSFWorkbook workbook = excel.getReportByEmployment(startDate, endDate);
 
             File desktopDir = new File(System.getProperty("user.home"), "Desktop");
-            File desktopFile = new File(desktopDir.getPath() + File.separator + "Հաշվետվություն.xlsx");
+            File desktopFile = new File(desktopDir.getPath() + File.separator + startDate + "֊ից " + endDate + " Հաշվետվություն.xlsx");
 
             FileOutputStream outFile = null;
             try {
@@ -117,8 +119,8 @@ public class ArchiveController extends GridPane implements Controller {
         progressIndicator.setVisible(true);
 
         new Thread(() -> {
-            LocalDate startDate = startDatePicker.getValue();
-            LocalDate endDate = endDatePicker.getValue();
+            startDate = startDatePicker.getValue();
+            endDate = endDatePicker.getValue();
 
             if(startDate == null || endDate == null || endDate.isBefore(startDate)) {
                 progressIndicator.setVisible(false);
