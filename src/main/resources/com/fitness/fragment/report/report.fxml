@@ -41,7 +41,7 @@
           <Font name="System Italic" size="9.0" />
         </font>
     </Label>
-    <ProgressIndicator fx:id="progressIndicator" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+    <ProgressIndicator fx:id="progressIndicator" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
     <Button fx:id="getReportButton" mnemonicParsing="false" text="Ներկայացնել հաշվետվություն" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
    <TabPane tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
      <tabs>

@@ -90,19 +90,23 @@ public class ArchiveController extends GridPane implements Controller {
         getReportButton.setOnAction(event -> this.fillReport());
 
         printButton.setOnAction(event -> {
-            Excel excel = new Excel(this.reports);
-            HSSFWorkbook workbook = excel.getReportByEmployment(startDate, endDate);
+            progressIndicator.setVisible(true);
+            new Thread(() -> {
+                Excel excel = new Excel(this.reports);
+                HSSFWorkbook workbook = excel.getReportByEmployment(startDate, endDate);
+                Platform.runLater(() -> {
+                    File desktopDir = new File(System.getProperty("user.home"), "Desktop");
+                    File desktopFile = new File(desktopDir.getPath() + File.separator + startDate + "֊ից " + endDate + " Հաշվետվություն.xlsx");
 
-            File desktopDir = new File(System.getProperty("user.home"), "Desktop");
-            File desktopFile = new File(desktopDir.getPath() + File.separator + startDate + "֊ից " + endDate + " Հաշվետվություն.xlsx");
-
-            FileOutputStream outFile = null;
-            try {
-                outFile = new FileOutputStream(desktopFile);
-                workbook.write(outFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                    try {
+                        FileOutputStream outFile = new FileOutputStream(desktopFile);
+                        workbook.write(outFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    progressIndicator.setVisible(false);
+                });
+            }).start();
         });
         deleteButton.setOnAction(event -> {
             Archive archive = this.historyTableView.getSelectionModel().getSelectedItem();
@@ -251,6 +255,7 @@ public class ArchiveController extends GridPane implements Controller {
 
     @Override
     public void stop() {
-
+        this.totalPrice = 0;
+        this.totalVisits = 0;
     }
 }
