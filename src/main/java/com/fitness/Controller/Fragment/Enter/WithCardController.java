@@ -255,7 +255,7 @@ public class WithCardController extends GridPane implements Controller {
         Clear.checkBox(bonusCheckBox);
         fieldsAreClean = true;
         selectedCustomer = null;
-        allEmployees.clear();
-        todayEmployees.clear();
+        allEmployees = null;
+        todayEmployees = null;
     }
 }

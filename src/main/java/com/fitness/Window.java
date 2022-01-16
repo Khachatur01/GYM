@@ -12,6 +12,7 @@ import com.fitness.Controller.Fragment.Employee.EmployeeController;
 import com.fitness.Controller.Fragment.Employment.EmploymentController;
 import com.fitness.Controller.Fragment.Enter.WithCardController;
 import com.fitness.Controller.Fragment.Enter.WithoutCardController;
+import com.fitness.Controller.Fragment.GeneralController;
 import com.fitness.Controller.Fragment.Position.PositionController;
 import com.fitness.Controller.Fragment.SettingsController;
 import com.fitness.Controller.Fragment.Subscription.AddSubscriptionController;
@@ -53,6 +54,7 @@ public class Window {
     }
 
     public void initMenuPanes() throws IOException {
+        controllers.put(Fragment.GENERAL, new GeneralController());
         controllers.put(Fragment.WITH_CARD, new WithCardController());
         controllers.put(Fragment.WITHOUT_CARD, new WithoutCardController());
         controllers.put(Fragment.CUSTOMER, new CustomerController());

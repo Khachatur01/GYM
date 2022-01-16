@@ -17,6 +17,8 @@ public class MenuController implements Initializable {
     @FXML
     private Label calendarLabel;
     @FXML
+    private Button generalButton;
+    @FXML
     private Button enterButton;
     @FXML
     private Button cardButton;
@@ -44,6 +46,18 @@ public class MenuController implements Initializable {
         Window.setActivePane(activePane);
 
         calendarLabel.setText(Objects.requireNonNull(DateTime.getCurrentWeek()).getArmFullName());
+
+        Window.stopActiveController();
+        Controller defaultController = Window.getFragment(Fragment.GENERAL, generalButton);
+        Window.setActiveController(defaultController);
+        defaultController.start();
+
+        generalButton.setOnAction(event -> {
+            Window.stopActiveController();
+            Controller controller = Window.getFragment(Fragment.GENERAL, generalButton);
+            Window.setActiveController(controller);
+            controller.start();
+        });
 
         cardButton.setOnAction(event -> {
             Window.stopActiveController();

@@ -207,7 +207,6 @@ public class SettingsController extends GridPane implements Controller {
         if(fetchObject instanceof LocalConnection) {
             LocalConnection localConnection = (LocalConnection)fetchObject;
             checkConnectionAsync(Status.LOCAL);
-//            connectionStatusLabel.setText(Status.LOCAL.toString());
 
             localPortTextField.setText(localConnection.getPort() + "");
             localDatabaseTextField.setText(localConnection.getDatabase());
@@ -218,7 +217,6 @@ public class SettingsController extends GridPane implements Controller {
         } else if(fetchObject instanceof RemoteConnection) {
             RemoteConnection remoteConnection = (RemoteConnection)fetchObject;
             checkConnectionAsync(Status.REMOTE);
-//            connectionStatusLabel.setText(Status.REMOTE.toString());
 
             remoteURITextField.setText(remoteConnection.getURI());
             remoteDatabaseTextField.setText(remoteConnection.getDatabase());
@@ -229,7 +227,6 @@ public class SettingsController extends GridPane implements Controller {
         } else if(fetchObject instanceof FileConnection) {
             FileConnection fileConnection = (FileConnection)fetchObject;
             checkConnectionAsync(Status.FILE);
-//            connectionStatusLabel.setText(Status.LOCAL.toString());
 
             fileTextField.setText(fileConnection.getFile());
             databaseTabPane.getSelectionModel().select(fileTab);

@@ -1,6 +1,7 @@
 package com.fitness.Constant;
 
 public enum Fragment {
+    GENERAL,
     WITH_CARD,
     WITHOUT_CARD,
     CUSTOMER,

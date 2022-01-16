@@ -275,5 +275,7 @@ public class WithoutCardController extends GridPane implements Controller {
         );
         Clear.comboBox(employeeComboBox, employmentComboBox);
         fieldsAreClean = true;
+        allEmployees = null;
+        todayEmployees = null;
     }
 }

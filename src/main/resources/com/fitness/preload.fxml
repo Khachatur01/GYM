@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
@@ -12,6 +12,6 @@
             <Image url="@assets/preload.png" />
          </image>
       </ImageView>
-      <ProgressBar layoutX="-1.0" layoutY="390.0" prefHeight="10.0" prefWidth="600.0" style="-fx-border-image-width: 0;" />
+      <ProgressIndicator layoutX="449.0" layoutY="240.0" maxHeight="150.0" maxWidth="150.0" prefHeight="176.0" prefWidth="169.0" />
    </children>
 </Pane>
