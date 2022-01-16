@@ -101,9 +101,11 @@ public class Excel {
         }
 
         Cell totalQuantityCell = sheet.createRow(rowNumber + 1).createCell(4, CellType.FORMULA);
+        totalQuantityCell.setCellStyle(centerAlignment);
         totalQuantityCell.setCellFormula("SUM(E" + 4 + ":E" + (nextRowNumber) + ")");
 
         Cell totalPriceCell = sheet.getRow(rowNumber + 1).createCell(5, CellType.FORMULA);
+        totalPriceCell.setCellStyle(centerAlignment);
         totalPriceCell.setCellFormula("SUM(F" + 4 + ":F" + (nextRowNumber) + ")");
 
 
@@ -120,9 +122,10 @@ public class Excel {
             }
         }
 
-        for(int col = 0; col < 6; col++)
+        for(int col = 0; col < 6; col++) {
             sheet.autoSizeColumn(col, true);
-
+            sheet.setColumnWidth(col ,sheet.getColumnWidth(col) + 1000);
+        }
         HSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
         return workbook;
     }
