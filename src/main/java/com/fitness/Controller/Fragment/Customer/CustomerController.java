@@ -51,6 +51,8 @@ public class CustomerController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        initListeners();
     }
 
     private void initListeners(){
@@ -99,7 +101,6 @@ public class CustomerController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.warning("Can't fetch customers");
         }
-        initListeners();
     }
 
     @Override

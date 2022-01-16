@@ -78,6 +78,8 @@ public class AddEmployeeController extends GridPane implements Controller {
 
         this.add(phoneMaskField, 1, 4);
         this.add(phone2MaskField, 1, 5);
+
+        initListeners();
     }
 
     private void initListeners() {
@@ -127,7 +129,6 @@ public class AddEmployeeController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        initListeners();
         initTable();
         try {
             initPositionComboBox();

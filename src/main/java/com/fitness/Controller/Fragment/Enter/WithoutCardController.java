@@ -79,7 +79,7 @@ public class WithoutCardController extends GridPane implements Controller {
     private ObservableList<Employee> todayEmployees = null;
 
     public WithoutCardController() throws IOException{
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/fitness/fragment/enter/without_card.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/enter/without_card.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
@@ -103,6 +103,9 @@ public class WithoutCardController extends GridPane implements Controller {
         timeMaskField.setMask("DD:DD");
         timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
         this.backYearGridPane.add(timeMaskField, 2, 1);
+
+
+        initListeners();
     }
 
     private void phoneMaskFieldListener(String newValue) {
@@ -158,13 +161,14 @@ public class WithoutCardController extends GridPane implements Controller {
             if(selectedEmployment == null) return;
             try {
                 this.allEmployees = FXCollections.observableArrayList(employeeService.getBy(selectedEmployment, true));
+                this.todayEmployees = FXCollections.observableArrayList(employeeService.getTodayBy(selectedEmployment, true));
+                Week currentWeek = DateTime.getCurrentWeek();
+                for(WorkingDay workingDay: settingsService.getWorkingDays())
+                    for(WeekDay weekDay: workingDay.getWorkingDays())
+                        if(weekDay.getWeek() == currentWeek && weekDay.isWorkingDay() && workingDay.getEmployee().getId() == 0)
+                            this.todayEmployees.add(workingDay.getEmployee());
+
                 if(todayEmployeesToggleButton.isSelected()) {
-                    this.todayEmployees = FXCollections.observableArrayList();
-                    Week currentWeek = DateTime.getCurrentWeek();
-                    for(WorkingDay workingDay: settingsService.getWorkingDays())
-                        for(WeekDay weekDay: workingDay.getWorkingDays())
-                            if(weekDay.getWeek() == currentWeek && weekDay.isWorkingDay())
-                                this.todayEmployees.add(workingDay.getEmployee());
                     employeeComboBox.setItems(this.todayEmployees);
                     employeeComboBox.getSelectionModel().selectFirst();
                 } else {
@@ -255,8 +259,6 @@ public class WithoutCardController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.error("Can't fetch actual employments");
         }
-
-        initListeners();
     }
 
     @Override

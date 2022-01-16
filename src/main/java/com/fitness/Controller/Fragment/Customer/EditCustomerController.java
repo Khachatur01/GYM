@@ -70,6 +70,8 @@ public class EditCustomerController extends GridPane implements Controller {
 
         this.add(phoneMaskField, 1, 5);
         this.add(phone2MaskField, 1, 6);
+
+        initListeners();
     }
 
     public void loadOldData() throws SQLException {
@@ -116,7 +118,6 @@ public class EditCustomerController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.error("Can't fetch customer data");
         }
-        initListeners();
     }
 
     @Override

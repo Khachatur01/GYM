@@ -85,6 +85,8 @@ public class SettingsController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        initListeners();
     }
 
     private void initWorkingDaysHeader() {
@@ -204,7 +206,8 @@ public class SettingsController extends GridPane implements Controller {
         Object fetchObject = DBMemory.fetchObject();
         if(fetchObject instanceof LocalConnection) {
             LocalConnection localConnection = (LocalConnection)fetchObject;
-            connectionStatusLabel.setText(Status.LOCAL.toString());
+            checkConnectionAsync(Status.LOCAL);
+//            connectionStatusLabel.setText(Status.LOCAL.toString());
 
             localPortTextField.setText(localConnection.getPort() + "");
             localDatabaseTextField.setText(localConnection.getDatabase());
@@ -214,7 +217,8 @@ public class SettingsController extends GridPane implements Controller {
             databaseTabPane.getSelectionModel().select(localTab);
         } else if(fetchObject instanceof RemoteConnection) {
             RemoteConnection remoteConnection = (RemoteConnection)fetchObject;
-            connectionStatusLabel.setText(Status.REMOTE.toString());
+            checkConnectionAsync(Status.REMOTE);
+//            connectionStatusLabel.setText(Status.REMOTE.toString());
 
             remoteURITextField.setText(remoteConnection.getURI());
             remoteDatabaseTextField.setText(remoteConnection.getDatabase());
@@ -224,7 +228,8 @@ public class SettingsController extends GridPane implements Controller {
             databaseTabPane.getSelectionModel().select(remoteTab);
         } else if(fetchObject instanceof FileConnection) {
             FileConnection fileConnection = (FileConnection)fetchObject;
-            connectionStatusLabel.setText(Status.LOCAL.toString());
+            checkConnectionAsync(Status.FILE);
+//            connectionStatusLabel.setText(Status.LOCAL.toString());
 
             fileTextField.setText(fileConnection.getFile());
             databaseTabPane.getSelectionModel().select(fileTab);
@@ -255,7 +260,6 @@ public class SettingsController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        initListeners();
         initStatus();
         initWorkingDaysGridPane();
     }

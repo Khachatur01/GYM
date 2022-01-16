@@ -80,6 +80,8 @@ public class EditEmployeeController extends GridPane implements Controller {
 
         this.add(phoneMaskField, 1, 4);
         this.add(phone2MaskField, 1, 5);
+
+        initListeners();
     }
     public void loadOldData() throws SQLException {
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
@@ -137,7 +139,6 @@ public class EditEmployeeController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        initListeners();
         try {
             initPositionComboBox();
             initEmployeePositionTable();

@@ -46,6 +46,8 @@ public class EmploymentController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        initListeners();
     }
 
     private void initGridPane() throws SQLException {
@@ -126,7 +128,6 @@ public class EmploymentController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.error("Can't fetch employment");
         }
-        initListeners();
     }
 
     @Override

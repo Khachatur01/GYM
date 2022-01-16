@@ -62,6 +62,8 @@ public class PositionController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        initListeners();
     }
 
     private void initComboBox() throws SQLException {
@@ -154,7 +156,6 @@ public class PositionController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.warning("Can't fetch positions");
         }
-        initListeners();
     }
 
     @Override

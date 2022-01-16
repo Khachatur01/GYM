@@ -82,6 +82,8 @@ public class ArchiveController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        initListeners();
     }
 
     private void initListeners() {
@@ -248,7 +250,6 @@ public class ArchiveController extends GridPane implements Controller {
     @Override
     public void start() {
         makeActive();
-        initListeners();
         initDatePickers();
         initHistoryTable();
     }

@@ -62,6 +62,8 @@ public class EditSubscriptionController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        initListeners();
     }
 
     private void initTable(){
@@ -141,7 +143,6 @@ public class EditSubscriptionController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.error("Can't fetch actual employments");
         }
-        initListeners();
     }
 
     @Override

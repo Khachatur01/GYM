@@ -28,7 +28,7 @@
       <ImageView fitHeight="100.0" fitWidth="100.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
          <Image url="@assets/icon.png" />
       </ImageView>
-      <Label fx:id="calendarLabel" text="չորեքշաբթի">
+      <Label fx:id="calendarLabel">
          <font>
             <Font size="28.0" />
          </font>

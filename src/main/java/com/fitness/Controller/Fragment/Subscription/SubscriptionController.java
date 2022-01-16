@@ -42,6 +42,8 @@ public class SubscriptionController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        initListeners();
     }
 
     private void initGridPane() throws SQLException {
@@ -110,7 +112,6 @@ public class SubscriptionController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.warning("Can't fetch subscriptions");
         }
-        initListeners();
     }
 
     @Override

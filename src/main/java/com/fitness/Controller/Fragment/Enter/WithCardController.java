@@ -95,6 +95,8 @@ public class WithCardController extends GridPane implements Controller {
         timeMaskField.setMask("DD:DD");
         timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
         this.backYearGridPane.add(timeMaskField, 2, 1);
+
+        initListeners();
     }
 
     private void initListeners() {
@@ -156,13 +158,14 @@ public class WithCardController extends GridPane implements Controller {
             if(selectedEmployment == null) return;
             try {
                 this.allEmployees = FXCollections.observableArrayList(employeeService.getBy(selectedEmployment, true));
+                this.todayEmployees = FXCollections.observableArrayList(employeeService.getTodayBy(selectedEmployment, true));
+                Week currentWeek = DateTime.getCurrentWeek();
+                for(WorkingDay workingDay: settingsService.getWorkingDays())
+                    for(WeekDay weekDay: workingDay.getWorkingDays())
+                        if(weekDay.getWeek() == currentWeek && weekDay.isWorkingDay() && workingDay.getEmployee().getId() == 0)
+                            this.todayEmployees.add(workingDay.getEmployee());
+
                 if(todayEmployeesToggleButton.isSelected()) {
-                    this.todayEmployees = FXCollections.observableArrayList();
-                    Week currentWeek = DateTime.getCurrentWeek();
-                    for(WorkingDay workingDay: settingsService.getWorkingDays())
-                        for(WeekDay weekDay: workingDay.getWorkingDays())
-                            if(weekDay.getWeek() == currentWeek && weekDay.isWorkingDay())
-                                this.todayEmployees.add(workingDay.getEmployee());
                     employeeComboBox.setItems(this.todayEmployees);
                     employeeComboBox.getSelectionModel().selectFirst();
                 } else {
@@ -233,7 +236,6 @@ public class WithCardController extends GridPane implements Controller {
     public void start() {
         makeActive();
         initTable();
-        initListeners();
         initDatePicker();
     }
 
@@ -253,5 +255,7 @@ public class WithCardController extends GridPane implements Controller {
         Clear.checkBox(bonusCheckBox);
         fieldsAreClean = true;
         selectedCustomer = null;
+        allEmployees.clear();
+        todayEmployees.clear();
     }
 }

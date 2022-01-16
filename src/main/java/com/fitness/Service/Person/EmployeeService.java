@@ -91,8 +91,12 @@ public class EmployeeService {
     public List<Employee> getAll() throws SQLException{
         return employeeDAO.getAll();
     }
-    public List<Employee> getBy(Employment selectedEmployment, boolean actual) throws SQLException {
-        return employeeDAO.getBy(selectedEmployment, actual);
+    public List<Employee> getBy(Employment employment, boolean actual) throws SQLException {
+        return employeeDAO.getAllBy(employment, actual);
+    }
+
+    public List<Employee> getTodayBy(Employment employment, boolean actual) throws SQLException {
+        return employeeDAO.getTodayBy(employment, actual);
     }
 
     public Employee getSelected() {
@@ -102,7 +106,7 @@ public class EmployeeService {
     public void select(Employee selected) {
         EmployeeService.selected = selected;
     }
-    
+
     public void removeSelected(){
         EmployeeService.selected = null;
     }

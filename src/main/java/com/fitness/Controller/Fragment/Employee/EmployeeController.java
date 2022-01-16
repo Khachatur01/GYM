@@ -46,6 +46,8 @@ public class EmployeeController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+
+        initListeners();
     }
     private void initEmployeesTable() throws SQLException {
         fullNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullName"));
@@ -91,7 +93,6 @@ public class EmployeeController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.warning("Can't fetch employees");
         }
-        initListeners();
     }
 
     @Override

@@ -95,6 +95,8 @@ public class AddCustomerController extends GridPane implements Controller {
         timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
         this.backYearGridPane.add(timeMaskField, 2, 1);
 
+        initListeners();
+
     }
     private void initListeners(){
         oldCardTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -191,7 +193,6 @@ public class AddCustomerController extends GridPane implements Controller {
         } catch (SQLException e) {
             Log.error("Can't fetch actual subscriptions");
         }
-        initListeners();
     }
 
     @Override

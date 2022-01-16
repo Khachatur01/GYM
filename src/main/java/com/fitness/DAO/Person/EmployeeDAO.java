@@ -3,6 +3,7 @@ package com.fitness.DAO.Person;
 import com.fitness.DAO.DAO;
 import com.fitness.DataSource.DB;
 import com.fitness.Model.Person.Employee;
+import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.Position;
 import com.fitness.Service.Create;
@@ -178,7 +179,7 @@ public class EmployeeDAO implements DAO<Employee> {
         return this.get(true);
     }
 
-    public List<Employee> getBy(Employment employment, boolean actual) throws SQLException {
+    private List<Employee> getBy(Employment employment, boolean actual, String additionalCondition, String additionalTable) throws SQLException {
         Connection connection = DB.getConnection();
         List<Employee> employees = new ArrayList<>();
 
@@ -186,20 +187,33 @@ public class EmployeeDAO implements DAO<Employee> {
         if(connection == null) throw new SQLException();
 
         PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT * FROM `employee`, `employee_position`, `position`, `employment` WHERE " +
+                "SELECT * FROM `employee`, `employee_position`, `position`, `employment` " + additionalTable + " WHERE " +
                         "`employment`.`position_id` = `position`.`id` AND " +
                         "`employee_position`.`position_id` = `position`.`id` AND " +
                         "`employee_position`.`employee_id` = `employee`.`id` AND " +
+                        additionalCondition +
                         "`employment`.`id` = ? " +
                         (actual ? " AND `employee`.`archived` = 0" : "")
         );
         preparedStatement.setLong(1, employment.getId());
         ResultSet result = preparedStatement.executeQuery();
-        while(result.next()){
+        while(result.next()) {
             Employee employee = Create.employee(result);
             employees.add(employee);
         }
 
         return employees;
+    }
+
+    public List<Employee> getAllBy(Employment employment, boolean actual) throws SQLException {
+        return this.getBy(employment, actual, "", "");
+    }
+
+    public List<Employee> getTodayBy(Employment employment, boolean actual) throws SQLException {
+        return this.getBy(employment, actual,
+                "`employee_position`.`employee_id` = `working_days`.`employee_id` AND " +
+                        "`working_days`.`" + DateTime.getCurrentWeek().toString() + "` = 1 AND ",
+                ", `working_days` "
+        );
     }
 }
