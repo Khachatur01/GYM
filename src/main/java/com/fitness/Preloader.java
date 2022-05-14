@@ -21,7 +21,7 @@ public class Preloader extends Thread {
         Log.initLogger();
         try {
             /* heavy tasks */
-            if(!DB.connect())
+            if(!DB.canConnect())
                 Log.error("Can't connect to database");
 
             window.initMenuPanes();

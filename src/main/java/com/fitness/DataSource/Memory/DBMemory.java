@@ -17,7 +17,7 @@ public class DBMemory {
             System.getProperty("file.separator") +
             "gym_cache";
 
-    public static Object fetchObject() {
+    public static Object fetchConnection() {
         try {
             return new ObjectInputStream(new FileInputStream(DBMemory.cacheDir)).readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -26,7 +26,7 @@ public class DBMemory {
         }
     }
 
-    public static Connection fetchConnection() {
+    public static Connection createConnection() {
         Connection connection = null;
         try {
             Object fetched = new ObjectInputStream(new FileInputStream(DBMemory.cacheDir)).readObject();
