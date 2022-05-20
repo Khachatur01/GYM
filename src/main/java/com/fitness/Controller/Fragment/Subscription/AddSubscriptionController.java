@@ -3,8 +3,11 @@ package com.fitness.Controller.Fragment.Subscription;
 import com.fitness.Constant.Fragment;
 import com.fitness.Controller.Controller;
 import com.fitness.DataSource.Log.Log;
+import com.fitness.Model.Person.Customer;
+import com.fitness.Model.Work.DateTime;
 import com.fitness.Model.Work.Employment;
 import com.fitness.Model.Work.EmploymentQuantity;
+import com.fitness.Service.BackYear.BackYearService;
 import com.fitness.Service.Clear;
 import com.fitness.Service.Work.EmploymentService;
 import com.fitness.Service.Work.SubscriptionService;
@@ -15,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -60,23 +64,24 @@ public class AddSubscriptionController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
-        initListeners();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                nameTextField, quantityTextField, priceTextField,
+        });
+        this.initListeners();
     }
 
-    private void initTable(){
+    private void initTable() {
         employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         subscriptionEmploymentTable.setItems(employmentQuantities);
     }
-
     private void initComboBox() throws SQLException {
         employmentComboBox.setItems(FXCollections.observableArrayList(
                 employmentService.getActual()
         ));
     }
-
-    private void initListeners(){
+    private void initListeners() {
         addEmploymentButton.setOnAction(event -> {
             /* don't adds to database */
             EmploymentQuantity employmentQuantity = subscriptionService.addEmploymentQuantity(employmentComboBox, quantityTextField, priceTextField);
@@ -96,21 +101,28 @@ public class AddSubscriptionController extends GridPane implements Controller {
         });
 
         addSubscriptionButton.setOnAction(event -> {
-            try {
-                if(subscriptionService.add(
-                        nameTextField,
-                        employmentQuantities) != null) {
-                    this.stop();
-                    Window.getFragment(Fragment.SUBSCRIPTION).start();
-                }
-            } catch (SQLException e) {
-                Log.error("Can't add subscription");
-            }
+            this.confirm();
         });
         previousButton.setOnAction(event -> {
-            this.stop();
-            Window.getFragment(Fragment.SUBSCRIPTION).start();
+            this.back();
         });
+    }
+
+    private void confirm() {
+        try {
+            if (subscriptionService.add(
+                    nameTextField,
+                    employmentQuantities) != null) {
+                this.stop();
+                Window.getFragment(Fragment.SUBSCRIPTION).start();
+            }
+        } catch (SQLException e) {
+            Log.error("Can't add subscription", e);
+        }
+    }
+    private void back() {
+        this.stop();
+        Window.getFragment(Fragment.SUBSCRIPTION).start();
     }
 
     @Override
@@ -120,8 +132,16 @@ public class AddSubscriptionController extends GridPane implements Controller {
         try {
             initComboBox();
         } catch (SQLException e) {
-            Log.error("Can't fetch actual employments");
+            Log.error("Can't fetch actual employments", e);
         }
+
+        this.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.confirm();
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                this.back();
+            }
+        });
     }
 
     @Override

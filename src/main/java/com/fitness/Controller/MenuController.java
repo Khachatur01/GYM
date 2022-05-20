@@ -3,11 +3,16 @@ package com.fitness.Controller;
 import com.fitness.Constant.Fragment;
 import com.fitness.Model.Work.DateTime;
 import com.fitness.Window;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.util.Objects;
@@ -16,8 +21,6 @@ import java.util.ResourceBundle;
 public class MenuController implements Initializable {
     @FXML
     private Label calendarLabel;
-    @FXML
-    private Button generalButton;
     @FXML
     private Button enterButton;
     @FXML
@@ -46,18 +49,6 @@ public class MenuController implements Initializable {
         Window.setActivePane(activePane);
 
         calendarLabel.setText(Objects.requireNonNull(DateTime.getCurrentWeek()).getArmFullName());
-
-        Window.stopActiveController();
-        Controller defaultController = Window.getFragment(Fragment.GENERAL, generalButton);
-        Window.setActiveController(defaultController);
-        defaultController.start();
-
-        generalButton.setOnAction(event -> {
-            Window.stopActiveController();
-            Controller controller = Window.getFragment(Fragment.GENERAL, generalButton);
-            Window.setActiveController(controller);
-            controller.start();
-        });
 
         cardButton.setOnAction(event -> {
             Window.stopActiveController();
@@ -121,6 +112,12 @@ public class MenuController implements Initializable {
             Window.setActiveController(controller);
 
             controller.start();
+        });
+
+        Platform.runLater(() -> {
+            Controller defaultController = Window.getFragment(Fragment.WITH_CARD, enterButton);
+            Window.setActiveController(defaultController);
+            defaultController.start();
         });
     }
 }

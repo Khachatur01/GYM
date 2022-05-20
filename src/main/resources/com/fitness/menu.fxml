@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1090.0" stylesheets="@style/main-menu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fitness.Controller.MenuController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1090.0" stylesheets="@style/main-menu.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fitness.Controller.MenuController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -37,27 +37,6 @@
          </VBox.margin>
       </Label>
       <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
-         <Button fx:id="generalButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0">
-            <graphic>
-               <HBox prefWidth="200.0">
-                  <children>
-                     <ImageView disable="true" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-                        <cursor>
-                           <Cursor fx:constant="DEFAULT" />
-                        </cursor>
-                        <image>
-                           <Image url="@assets/home.png" />
-                        </image>
-                     </ImageView>
-                     <Label styleClass="menu_label" text="Գլխավոր" />
-                  </children>
-               </HBox>
-            </graphic>
-            <styleClass>
-               <String fx:value="menu_button" />
-               <String fx:value="menu_item" />
-            </styleClass>
-         </Button>
          <Button fx:id="enterButton" maxWidth="200.0" minWidth="200.0" mnemonicParsing="false" prefWidth="200.0" VBox.vgrow="ALWAYS">
             <graphic>
                <HBox alignment="CENTER">

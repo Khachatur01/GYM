@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -63,7 +64,10 @@ public class EditSubscriptionController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
-        initListeners();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                nameTextField, quantityTextField, priceTextField,
+        });
+        this.initListeners();
     }
 
     private void initTable(){
@@ -76,24 +80,20 @@ public class EditSubscriptionController extends GridPane implements Controller {
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         subscriptionEmploymentTable.setItems(employmentQuantities);
     }
-
     private void initTextFields() {
         nameTextField.setText(selectedSubscription.getName());
     }
-
     private void initComboBox() throws SQLException {
         employmentComboBox.setItems(FXCollections.observableArrayList(
                 employmentService.getAll()
         ));
     }
-
     private void initTotalPrice() {
         for(EmploymentQuantity employmentQuantity: subscriptionEmploymentTable.getItems())
             this.totalPrice += employmentQuantity.getPrice();
 
         totalPriceLabel.setText(this.totalPrice + " դրամ");
     }
-
     private void initListeners(){
         addEmploymentButton.setOnAction(event -> {
             EmploymentQuantity employmentQuantity = subscriptionService.addEmploymentQuantity(employmentComboBox, quantityTextField, priceTextField);
@@ -113,22 +113,29 @@ public class EditSubscriptionController extends GridPane implements Controller {
         });
 
         editSubscriptionButton.setOnAction(event -> {
-            try {
-                if(subscriptionService.edit(
-                        selectedSubscription,
-                        nameTextField,
-                        employmentQuantities) != null) {
-                    this.stop();
-                    Window.getFragment(Fragment.SUBSCRIPTION).start();
-                }
-            } catch (SQLException e) {
-                Log.error("Can't edit subscription");
-            }
+            this.confirm();
         });
         previousButton.setOnAction(event -> {
-            this.stop();
-            Window.getFragment(Fragment.SUBSCRIPTION).start();
+            this.back();
         });
+    }
+
+    private void confirm() {
+        try {
+            if (subscriptionService.edit(
+                    selectedSubscription,
+                    nameTextField,
+                    employmentQuantities) != null) {
+                this.stop();
+                Window.getFragment(Fragment.SUBSCRIPTION).start();
+            }
+        } catch (SQLException e) {
+            Log.error("Can't edit subscription", e);
+        }
+    }
+    private void back() {
+        this.stop();
+        Window.getFragment(Fragment.SUBSCRIPTION).start();
     }
 
     @Override
@@ -141,8 +148,16 @@ public class EditSubscriptionController extends GridPane implements Controller {
         try {
             initComboBox();
         } catch (SQLException e) {
-            Log.error("Can't fetch actual employments");
+            Log.error("Can't fetch actual employments", e);
         }
+
+        this.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.confirm();
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                this.back();
+            }
+        });
     }
 
     @Override

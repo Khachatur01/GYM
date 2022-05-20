@@ -57,8 +57,8 @@ public class Fill {
                             availableEmploymentQuantities
                     )
             );
-        } catch (SQLException ignored) {
-            Log.error("Can't fetch customer available employments with quantities");
+        } catch (SQLException e) {
+            Log.error("Can't fetch customer available employments with quantities", e);
         }
     }
 

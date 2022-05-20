@@ -24,7 +24,13 @@ public class ArchiveDAO implements DAO<Archive> {
     @Override
     public void add(Archive archive) throws SQLException {
         Connection connection = DB.getConnection();
-        if(connection == null) throw new SQLException();
+        if (archive.getCustomer().getSubscription() != null && (archive.getEmployee() == null || archive.getEmployment() == null)) {
+            throw new SQLException();
+        }
+        if (connection == null) {
+            throw new SQLException();
+        }
+
         PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO `archive`(`date`, `customer_id`, `employee_id`, `employment_id`, `bonus`) " +
                         "VALUES (?, ?, ?, ?, ?)",
@@ -33,21 +39,24 @@ public class ArchiveDAO implements DAO<Archive> {
         Employee employee = archive.getEmployee();
         Employment employment = archive.getEmployment();
 
-        if(archive.getDate() == null)
+        if(archive.getDate() == null) {
             preparedStatement.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-        else
+        } else {
             preparedStatement.setTimestamp(1, archive.getDate());
+        }
 
         preparedStatement.setLong(2, archive.getCustomer().getId());
 
-        if(employee == null)
+        if(employee == null) {
             preparedStatement.setNull(3, Types.BIGINT);
-        else
+        } else {
             preparedStatement.setLong(3, employee.getId());
-        if(employment == null)
+        }
+        if(employment == null) {
             preparedStatement.setNull(4, Types.BIGINT);
-        else
+        } else {
             preparedStatement.setLong(4, employment.getId());
+        }
 
         preparedStatement.setBoolean(5, archive.isBonus());
 

@@ -72,7 +72,7 @@ public class CustomerController extends GridPane implements Controller {
             try {
                 customerService.remove(customer);
             } catch (SQLException e) {
-                Log.error("Can't delete customer");
+                Log.error("Can't delete customer", e);
             }
             customers.remove(customer);
         });

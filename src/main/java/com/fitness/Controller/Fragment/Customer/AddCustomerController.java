@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
@@ -28,6 +29,7 @@ import javafx.util.StringConverter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class AddCustomerController extends GridPane implements Controller {
     @FXML
@@ -40,8 +42,8 @@ public class AddCustomerController extends GridPane implements Controller {
     private TextField surnameTextField;
 
     private MaskField phoneMaskField;
-    private MaskField phone2MaskField;
 
+    private MaskField phone2MaskField;
     @FXML
     private TextField addressTextField;
     @FXML
@@ -73,29 +75,37 @@ public class AddCustomerController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
-        phoneMaskField = new MaskField();
-        phoneMaskField.setMask("+374(DD) DD-DD-DD");
-        GridPane.setValignment(phoneMaskField, VPos.CENTER);
-        GridPane.setHalignment(phoneMaskField, HPos.RIGHT);
-        GridPane.setVgrow(phoneMaskField, Priority.ALWAYS);
-        GridPane.setHgrow(phoneMaskField, Priority.ALWAYS);
+        this.initMaskFields();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                oldCardTextField, cardTextField, nameTextField,
+                surnameTextField, phoneMaskField, phone2MaskField,
+                addressTextField,
+        });
+        this.initListeners();
+    }
 
-        phone2MaskField = new MaskField();
-        phone2MaskField.setMask("+374(DD) DD-DD-DD");
-        GridPane.setValignment(phone2MaskField, VPos.CENTER);
-        GridPane.setHalignment(phone2MaskField, HPos.RIGHT);
-        GridPane.setVgrow(phone2MaskField, Priority.ALWAYS);
-        GridPane.setHgrow(phone2MaskField, Priority.ALWAYS);
+    private void initMaskFields() {
+        this.phoneMaskField = new MaskField();
+        this.phoneMaskField.setMask("+374(DD) DD-DD-DD");
+        GridPane.setValignment(this.phoneMaskField, VPos.CENTER);
+        GridPane.setHalignment(this.phoneMaskField, HPos.RIGHT);
+        GridPane.setVgrow(this.phoneMaskField, Priority.ALWAYS);
+        GridPane.setHgrow(this.phoneMaskField, Priority.ALWAYS);
 
-        this.add(phoneMaskField, 1, 6);
-        this.add(phone2MaskField, 1, 7);
+        this.phone2MaskField = new MaskField();
+        this.phone2MaskField.setMask("+374(DD) DD-DD-DD");
+        GridPane.setValignment(this.phone2MaskField, VPos.CENTER);
+        GridPane.setHalignment(this.phone2MaskField, HPos.RIGHT);
+        GridPane.setVgrow(this.phone2MaskField, Priority.ALWAYS);
+        GridPane.setHgrow(this.phone2MaskField, Priority.ALWAYS);
 
-        timeMaskField = new MaskField();
-        timeMaskField.setMask("DD:DD");
-        timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
+        this.add(this.phoneMaskField, 1, 6);
+        this.add(this.phone2MaskField, 1, 7);
+
+        this.timeMaskField = new MaskField();
+        this.timeMaskField.setMask("DD:DD");
+        this.timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
         this.backYearGridPane.add(timeMaskField, 2, 1);
-
-        initListeners();
 
     }
     private void initListeners(){
@@ -128,60 +138,58 @@ public class AddCustomerController extends GridPane implements Controller {
         });
 
         addButton.setOnAction(event -> {
-            DateTime dateTime = null;
-            if(backYearCheckBox.isSelected()) {
-                dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
-                if(dateTime == null) return;
-            }
-
-            try {
-                Customer customer = customerService.add(
-                        cardTextField,
-                        nameTextField,
-                        surnameTextField,
-                        phoneMaskField,
-                        phone2MaskField,
-                        addressTextField,
-                        subscriptionComboBox
-                );
-
-                if(customer != null) {
-                    archiveService.add(dateTime, customer, null, null, bonusCheckBox.isSelected());
-
-                    this.stop();
-                    Window.getFragment(Fragment.CUSTOMER).start();
-                }
-            } catch (SQLException e) {
-                Log.error("Can't add customer");
-            }
-
+            this.confirm();
         });
 
         previousButton.setOnAction(event -> {
-            customerService.removeSelected();
-            this.stop();
-            Window.getFragment(Fragment.CUSTOMER).start();
-        });
-
-        surnameTextField.setOnKeyPressed(event -> {
-            if(event.getCode() == KeyCode.TAB)
-                phoneMaskField.requestFocus();
+            this.back();
         });
 
         backYearCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> backYearGridPane.setDisable(!newValue));
-
-
     }
-    public void initSubscriptionComboBox() throws SQLException {
+    private void initSubscriptionComboBox() throws SQLException {
         subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
     }
-
     private void initDatePicker() {
         StringConverter<LocalDate> converter = DateTime.getConverter();
 
         LocalDate localDate = LocalDate.now();
         datePicker.setConverter(converter);
         datePicker.setValue(localDate);
+    }
+
+    private void confirm() {
+        DateTime dateTime = null;
+        if(backYearCheckBox.isSelected()) {
+            dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
+            if(dateTime == null) return;
+        }
+
+        try {
+            Customer customer = customerService.add(
+                    cardTextField,
+                    nameTextField,
+                    surnameTextField,
+                    phoneMaskField,
+                    phone2MaskField,
+                    addressTextField,
+                    subscriptionComboBox
+            );
+
+            if(customer != null) {
+                archiveService.add(dateTime, customer, null, null, bonusCheckBox.isSelected());
+
+                this.stop();
+                Window.getFragment(Fragment.CUSTOMER).start();
+            }
+        } catch (SQLException e) {
+            Log.error("Can't add customer", e);
+        }
+    }
+    private void back() {
+        customerService.removeSelected();
+        this.stop();
+        Window.getFragment(Fragment.CUSTOMER).start();
     }
 
     @Override
@@ -191,8 +199,16 @@ public class AddCustomerController extends GridPane implements Controller {
         try {
             initSubscriptionComboBox();
         } catch (SQLException e) {
-            Log.error("Can't fetch actual subscriptions");
+            Log.error("Can't fetch actual subscriptions", e);
         }
+
+        this.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.confirm();
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                this.back();
+            }
+        });
     }
 
     @Override

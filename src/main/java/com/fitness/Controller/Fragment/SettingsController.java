@@ -88,7 +88,7 @@ public class SettingsController extends GridPane implements Controller {
 
     private final SettingsService settingsService = new SettingsService();
     private List<WorkingDay> workingDays;
-    private final String  NEW_DATABASE_POSTFIX = "_";
+    private final String NEW_DATABASE_POSTFIX = "_";
 
     public SettingsController() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fitness/fragment/settings.fxml"));
@@ -96,7 +96,19 @@ public class SettingsController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
-        initListeners();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                localPortTextField, localDatabaseTextField, localUsernameTextField, localPasswordField,
+        });
+        this.initTextFieldFocusingByKey(new TextField[] {
+                remoteURITextField, remoteDatabaseTextField, remoteUsernameTextField, remotePasswordField
+        });
+        this.initListeners();
+    }
+
+    private void clearWorkingDaysGridPane() {
+        workingDaysGridPane.setGridLinesVisible(false);
+        workingDaysGridPane.getChildren().clear();
+        workingDaysGridPane.setGridLinesVisible(true);
     }
 
     private void initWorkingDaysHeader() {
@@ -111,13 +123,6 @@ public class SettingsController extends GridPane implements Controller {
             workingDaysGridPane.add(weekHeaderLabel, weekNumber++, 0);
         }
     }
-
-    private void clearWorkingDaysGridPane() {
-        workingDaysGridPane.setGridLinesVisible(false);
-        workingDaysGridPane.getChildren().clear();
-        workingDaysGridPane.setGridLinesVisible(true);
-    }
-
     private void initWorkingDaysGridPane() {
         initWorkingDaysHeader();
         try {
@@ -150,68 +155,6 @@ public class SettingsController extends GridPane implements Controller {
         }
 
     }
-
-    private void initListeners() {
-        localConnectButton.setOnAction(event -> {
-            try {
-                int port = Integer.parseInt(localPortTextField.getText());
-                String database = localDatabaseTextField.getText();
-                String username = localUsernameTextField.getText();
-                String password = localPasswordField.getText();
-
-                LocalConnection localConnection = new LocalConnection(port, database, username, password);
-                DB.connect(localConnection);
-
-                this.checkConnectionAsync(Status.LOCAL);
-            } catch (NumberFormatException e) {
-                Log.error("Local port must be number");
-            }
-        });
-        remoteConnectButton.setOnAction(event -> {
-            try {
-                String URI = remoteURITextField.getText();
-                String database = remoteDatabaseTextField.getText();
-                String username = remoteUsernameTextField.getText();
-                String password = remotePasswordField.getText();
-
-                RemoteConnection remoteConnection = new RemoteConnection(URI, database, username, password);
-                DB.connect(remoteConnection);
-
-                this.checkConnectionAsync(Status.REMOTE);
-            } catch (NumberFormatException e) {
-                Log.error("Remote port must be number");
-            }
-
-        });
-        browseFileButton.setOnAction(event -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Ընտրել ֆայլ");
-            File sqliteFile = fileChooser.showOpenDialog(this.getScene().getWindow());
-            if(sqliteFile != null) {
-                fileTextField.setText(sqliteFile.getPath());
-            }
-        });
-        fileConnectButton.setOnAction(event -> {
-            String URL = fileTextField.getText();
-            FileConnection fileConnection = new FileConnection(URL);
-            DB.connect(fileConnection);
-
-            this.checkConnectionAsync(Status.FILE);
-        });
-        disconnectButton.setOnAction(event -> {
-            DBMemory.deleteConnection();
-
-            initWorkingDaysGridPane();
-        });
-        confirmChangesButton.setOnAction(event -> {
-            try {
-                settingsService.setWorkingDays(this.workingDays);
-            } catch (SQLException e) {
-                Log.error("Can't save settings");
-            }
-        });
-    }
-
     private void initStatus() {
         Object fetchObject = DBMemory.fetchConnection();
         if(fetchObject instanceof LocalConnection) {
@@ -244,6 +187,127 @@ public class SettingsController extends GridPane implements Controller {
             connectionStatusLabel.setText(Status.NOT_CONNECTED.toString());
         }
     }
+    private void initDatabase() throws SQLException, IOException {
+        Object connectionObject = DBMemory.fetchConnection();
+        Connection connection = null;
+        if(connectionObject instanceof LocalConnection) {
+            LocalConnection localConnection = (LocalConnection) connectionObject;
+            localConnection.setDatabase(localConnection.getDatabase() + NEW_DATABASE_POSTFIX);
+
+            String URL = "jdbc:mysql://localhost:" + localConnection.getPort();
+            connection = DriverManager.getConnection(URL, localConnection.getUsername(), localConnection.getPassword());
+            connection.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS " + localConnection.getDatabase());
+            connection.createStatement().executeUpdate("USE " + localConnection.getDatabase());
+
+            DB.connect(localConnection);
+            localDatabaseTextField.setText(localConnection.getDatabase() + NEW_DATABASE_POSTFIX);
+        } else if(connectionObject instanceof RemoteConnection) {
+            RemoteConnection remoteConnection = (RemoteConnection) connectionObject;
+            remoteConnection.setDatabase(remoteConnection.getDatabase() + NEW_DATABASE_POSTFIX);
+
+            String URL = "jdbc:mysql://" + remoteConnection.getURI();
+            connection = DriverManager.getConnection(URL, remoteConnection.getUsername(), remoteConnection.getPassword());
+            connection.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS " + remoteConnection.getDatabase());
+            connection.createStatement().executeUpdate("USE " + remoteConnection.getDatabase());
+
+            DB.connect(remoteConnection);
+            remoteDatabaseTextField.setText(remoteConnection.getDatabase() + NEW_DATABASE_POSTFIX);
+        } else if(connectionObject instanceof FileConnection) {
+            FileConnection fileConnection = (FileConnection) connectionObject;
+            Files.copy(
+                    new File(fileConnection.getFile()).toPath(),
+                    new File(fileConnection.getFile() + NEW_DATABASE_POSTFIX).toPath(),
+                    StandardCopyOption.COPY_ATTRIBUTES
+            );
+            fileConnection.setFile(fileConnection.getFile() + NEW_DATABASE_POSTFIX);
+
+            String URL = "jdbc:sqlite:" + fileConnection.getFile();
+            connection = DriverManager.getConnection(URL);
+
+            DB.connect(fileConnection);
+            remoteDatabaseTextField.setText(fileConnection.getFile() + NEW_DATABASE_POSTFIX);
+        }
+
+        if (connection != null) {
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(getClass().getResource("/com/fitness/database/dump.empty.sql").openStream())
+            );
+            String line;
+            StringBuilder query = new StringBuilder();
+            while ((line = bufferedReader.readLine()) != null) {
+                query.append(line + "\n");
+            }
+            bufferedReader.close();
+            String[] commands = query.toString().split(";");
+
+            for (String command: commands) {
+                try {
+                    connection.createStatement().execute(command);
+                } catch (SQLSyntaxErrorException ignored) {}
+            }
+        }
+
+    }
+    private void initListeners() {
+        localConnectButton.setOnAction(event -> {
+            try {
+                int port = Integer.parseInt(localPortTextField.getText());
+                String database = localDatabaseTextField.getText();
+                String username = localUsernameTextField.getText();
+                String password = localPasswordField.getText();
+
+                LocalConnection localConnection = new LocalConnection(port, database, username, password);
+                DB.connect(localConnection);
+
+                this.checkConnectionAsync(Status.LOCAL);
+            } catch (NumberFormatException e) {
+                Log.error("Local port must be number", e);
+            }
+        });
+        remoteConnectButton.setOnAction(event -> {
+            try {
+                String URI = remoteURITextField.getText();
+                String database = remoteDatabaseTextField.getText();
+                String username = remoteUsernameTextField.getText();
+                String password = remotePasswordField.getText();
+
+                RemoteConnection remoteConnection = new RemoteConnection(URI, database, username, password);
+                DB.connect(remoteConnection);
+
+                this.checkConnectionAsync(Status.REMOTE);
+            } catch (NumberFormatException e) {
+                Log.error("Remote port must be number", e);
+            }
+
+        });
+        browseFileButton.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Ընտրել ֆայլ");
+            File sqliteFile = fileChooser.showOpenDialog(this.getScene().getWindow());
+            if(sqliteFile != null) {
+                fileTextField.setText(sqliteFile.getPath());
+            }
+        });
+        fileConnectButton.setOnAction(event -> {
+            String URL = fileTextField.getText();
+            FileConnection fileConnection = new FileConnection(URL);
+            DB.connect(fileConnection);
+
+            this.checkConnectionAsync(Status.FILE);
+        });
+        disconnectButton.setOnAction(event -> {
+            DBMemory.deleteConnection();
+
+            initWorkingDaysGridPane();
+        });
+        confirmChangesButton.setOnAction(event -> {
+            try {
+                settingsService.setWorkingDays(this.workingDays);
+            } catch (SQLException e) {
+                Log.error("Can't save settings", e);
+            }
+        });
+    }
 
     private void checkConnectionAsync(Status status) {
         connectionProgressIndicator.setVisible(true);
@@ -274,7 +338,6 @@ public class SettingsController extends GridPane implements Controller {
             });
         }).start();
     }
-
     private boolean invalidDatabase(String database) {
         List<String> validTables = DB.getValidTables();
         List<String> existingTables = DB.getExistingTables(database);
@@ -287,68 +350,6 @@ public class SettingsController extends GridPane implements Controller {
             }
         }
         return false;
-    }
-
-    private void initDatabase() throws SQLException, IOException {
-        Object connectionObject = DBMemory.fetchConnection();
-        Connection connection = null;
-        if(connectionObject instanceof LocalConnection) {
-            LocalConnection localConnection = (LocalConnection) connectionObject;
-            localConnection.setDatabase(localConnection.getDatabase() + NEW_DATABASE_POSTFIX);
-
-            String URL = "jdbc:mysql://localhost:" + localConnection.getPort();
-            connection = DriverManager.getConnection(URL, localConnection.getUsername(), localConnection.getPassword());
-            connection.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS " + localConnection.getDatabase());
-            connection.createStatement().executeUpdate("USE " + localConnection.getDatabase());
-
-            DB.connect(localConnection);
-            localDatabaseTextField.setText(localConnection.getDatabase() + NEW_DATABASE_POSTFIX);
-        } else if(connectionObject instanceof RemoteConnection) {
-            RemoteConnection remoteConnection = (RemoteConnection) connectionObject;
-            remoteConnection.setDatabase(remoteConnection.getDatabase() + NEW_DATABASE_POSTFIX);
-
-            String URL = "jdbc:mysql://" + remoteConnection.getURI();
-            connection = DriverManager.getConnection(URL, remoteConnection.getUsername(), remoteConnection.getPassword());
-            connection.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS " + remoteConnection.getDatabase());
-            connection.createStatement().executeUpdate("USE " + remoteConnection.getDatabase());
-
-            DB.connect(remoteConnection);
-            remoteDatabaseTextField.setText(remoteConnection.getDatabase() + NEW_DATABASE_POSTFIX);
-        } else if(connectionObject instanceof FileConnection) {
-            FileConnection fileConnection = (FileConnection) connectionObject;
-            Files.copy(
-                new File(fileConnection.getFile()).toPath(),
-                new File(fileConnection.getFile() + NEW_DATABASE_POSTFIX).toPath(),
-                StandardCopyOption.COPY_ATTRIBUTES
-            );
-            fileConnection.setFile(fileConnection.getFile() + NEW_DATABASE_POSTFIX);
-
-            String URL = "jdbc:sqlite:" + fileConnection.getFile();
-            connection = DriverManager.getConnection(URL);
-
-            DB.connect(fileConnection);
-            remoteDatabaseTextField.setText(fileConnection.getFile() + NEW_DATABASE_POSTFIX);
-        }
-
-        if (connection != null) {
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(getClass().getResource("/com/fitness/database/dump.empty.sql").openStream())
-            );
-            String line;
-            StringBuilder query = new StringBuilder();
-            while ((line = bufferedReader.readLine()) != null) {
-                query.append(line + "\n");
-            }
-            bufferedReader.close();
-            String[] commands = query.toString().split(";");
-
-            for (String command: commands) {
-                try {
-                    connection.createStatement().execute(command);
-                } catch (SQLSyntaxErrorException ignored) {}
-            }
-        }
-
     }
 
     @Override

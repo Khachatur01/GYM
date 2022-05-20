@@ -63,7 +63,10 @@ public class PositionController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
-        initListeners();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                positionNameTextField,
+        });
+        this.initListeners();
     }
 
     private void initComboBox() throws SQLException {
@@ -73,7 +76,6 @@ public class PositionController extends GridPane implements Controller {
         employmentColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         positionEmploymentTable.setItems(employments);
     }
-
     private void initGridPane() throws SQLException {
         row = 0; col = 0;
         positionsGridPane = new GridPane();
@@ -92,7 +94,6 @@ public class PositionController extends GridPane implements Controller {
             addPositionToGrid(position);
         }
     }
-
     private void initListeners() {
         addPositionButton.setOnAction(event -> {
             Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
@@ -111,7 +112,7 @@ public class PositionController extends GridPane implements Controller {
                 PositionButton.editSelected(position);
                 this.start();
             } catch (SQLException e) {
-                Log.error("Can't edit position");
+                Log.error("Can't edit position", e);
             }
         });
         addButton.setOnAction(event -> {
@@ -127,7 +128,7 @@ public class PositionController extends GridPane implements Controller {
                 PositionButton.removeSelected();
                 initGridPane();
             } catch (SQLException e) {
-                Log.error("Can't delete position");
+                Log.error("Can't delete position", e);
             }
         });
     }

@@ -79,7 +79,7 @@ public class EmployeeController extends GridPane implements Controller {
             try {
                 employeeService.remove(employee);
             } catch (SQLException e) {
-                Log.error("Can't delete employee");
+                Log.error("Can't delete employee", e);
             }
             employees.remove(employee);
         });

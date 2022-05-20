@@ -19,6 +19,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -32,11 +33,10 @@ public class EditEmployeeController extends GridPane implements Controller {
     private TextField surnameTextField;
 
     private MaskField phoneMaskField;
-    private MaskField phone2MaskField;
 
+    private MaskField phone2MaskField;
     @FXML
     private TextField addressTextField;
-
     @FXML
     private TableView<Position> employeePositionTable;
     @FXML
@@ -64,6 +64,20 @@ public class EditEmployeeController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
+        this.initMaskFields();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                nameTextField, surnameTextField, phoneMaskField,
+                phone2MaskField, addressTextField,
+        });
+        this.initListeners();
+    }
+    private void loadOldData() throws SQLException {
+        positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
+        Employee employee = employeeService.getSelected();
+        if(employee != null)
+            Fill.employee(employee, nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField);
+    }
+    private void initMaskFields() {
         phoneMaskField = new MaskField();
         phoneMaskField.setMask("+374(DD) DD-DD-DD");
         GridPane.setValignment(phoneMaskField, VPos.CENTER);
@@ -80,60 +94,59 @@ public class EditEmployeeController extends GridPane implements Controller {
 
         this.add(phoneMaskField, 1, 4);
         this.add(phone2MaskField, 1, 5);
-
-        initListeners();
     }
-    public void loadOldData() throws SQLException {
+    private void initPositionComboBox() throws SQLException {
         positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
-        Employee employee = employeeService.getSelected();
-        if(employee != null)
-            Fill.employee(employee, nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField);
     }
-    public void initListeners(){
+    private void initEmployeePositionTable() throws SQLException {
+        positions.addAll(employeeService.getPositions(employeeService.getSelected(), true));
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        employeePositionTable.setItems(positions);
+    }
+    private void initListeners() {
         addPositionButton.setOnAction(event -> {
             Position position = positionComboBox.getSelectionModel().getSelectedItem();
             if(!positions.contains(position))
                 positions.add(position);
         });
         deletePositionButton.setOnAction(event -> {
-            positions.remove(employeePositionTable.getSelectionModel().getSelectedItem());
+            this.deleteSelected();
         });
 
         editButton.setOnAction(event -> {
-            /* return null when something went wrong */
-            try {
-                if(employeeService.edit(
-                        employeeService.getSelected(),
-                        nameTextField,
-                        surnameTextField,
-                        phoneMaskField,
-                        phone2MaskField,
-                        addressTextField,
-                        positions) != null) {
-                    this.stop();
-                    Window.getFragment(Fragment.EMPLOYEE).start();
-                }
-            } catch (SQLException e) {
-                Log.error("Can't edit employee data");
-            }
+            this.confirm();
         });
 
         previousButton.setOnAction(event -> {
-            employeeService.removeSelected();
-            this.stop();
-            Window.getFragment(Fragment.EMPLOYEE).start();
+            this.back();
         });
     }
 
-    public void initPositionComboBox() throws SQLException {
-        positionComboBox.setItems(FXCollections.observableArrayList(positionService.getActual()));
+    private void confirm() {
+        /* return null when something went wrong */
+        try {
+            if(employeeService.edit(
+                    employeeService.getSelected(),
+                    nameTextField,
+                    surnameTextField,
+                    phoneMaskField,
+                    phone2MaskField,
+                    addressTextField,
+                    positions) != null) {
+                this.stop();
+                Window.getFragment(Fragment.EMPLOYEE).start();
+            }
+        } catch (SQLException e) {
+            Log.error("Can't edit employee data", e);
+        }
     }
-
-
-    private void initEmployeePositionTable() throws SQLException {
-        positions.addAll(employeeService.getPositions(employeeService.getSelected(), true));
-        positionColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        employeePositionTable.setItems(positions);
+    private void back() {
+        employeeService.removeSelected();
+        this.stop();
+        Window.getFragment(Fragment.EMPLOYEE).start();
+    }
+    private void deleteSelected() {
+        positions.remove(employeePositionTable.getSelectionModel().getSelectedItem());
     }
 
     @Override
@@ -144,8 +157,18 @@ public class EditEmployeeController extends GridPane implements Controller {
             initEmployeePositionTable();
             loadOldData();
         } catch (SQLException e) {
-            Log.error("Can't fetch employee data");
+            Log.error("Can't fetch employee data", e);
         }
+
+        this.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.confirm();
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                this.back();
+            } else if (event.getCode() == KeyCode.DELETE) {
+                this.deleteSelected();
+            }
+        });
     }
 
     @Override

@@ -14,7 +14,7 @@ public class BackYearService {
             hour = Byte.parseByte(timeArray[0]);
             minute = Byte.parseByte(timeArray[1]);
         } catch (NumberFormatException e) {
-            Log.error("Can't parse time");
+            Log.error("Can't parse time", e);
             timeMaskField.requestFocus();
             return null;
         }

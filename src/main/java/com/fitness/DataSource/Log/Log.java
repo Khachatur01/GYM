@@ -28,12 +28,13 @@ public class Log {
     }
 
     public static void info(String text) {
-        System.err.println(dateFormatter.format(new Date()) + " | INFO     | " +  text);
+        System.err.println(dateFormatter.format(new Date()) + " | INFO     | " + text);
     }
     public static void warning(String text) {
-        System.err.println(dateFormatter.format(new Date()) + " | WARNING  | " +  text);
+        System.err.println(dateFormatter.format(new Date()) + " | WARNING  | " + text);
     }
-    public static void error(String text) {
-        System.err.println(dateFormatter.format(new Date()) + " | ERROR    | " +  text);
+    public static void error(String text, Exception e) {
+        System.err.println(dateFormatter.format(new Date()) + " | ERROR    | " + text);
+        e.printStackTrace();
     }
 }

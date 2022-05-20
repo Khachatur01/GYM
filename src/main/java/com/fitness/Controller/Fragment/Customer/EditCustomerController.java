@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
@@ -54,6 +55,21 @@ public class EditCustomerController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
+        this.initMaskFields();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                cardTextField, nameTextField, surnameTextField,
+                phoneMaskField, phone2MaskField, addressTextField,
+        });
+        this.initListeners();
+    }
+
+    private void loadOldData() throws SQLException {
+        subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
+        customer = customerService.getSelected();
+        if(customer != null)
+            Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, subscriptionComboBox);
+    }
+    private void initMaskFields() {
         phoneMaskField = new MaskField();
         phoneMaskField.setMask("+374(DD) DD-DD-DD");
         GridPane.setValignment(phoneMaskField, VPos.CENTER);
@@ -70,44 +86,40 @@ public class EditCustomerController extends GridPane implements Controller {
 
         this.add(phoneMaskField, 1, 5);
         this.add(phone2MaskField, 1, 6);
-
-        initListeners();
     }
-
-    public void loadOldData() throws SQLException {
-        subscriptionComboBox.setItems(FXCollections.observableArrayList(subscriptionService.getActual()));
-        customer = customerService.getSelected();
-        if(customer != null)
-            Fill.customer(customer, cardTextField, nameTextField, surnameTextField, phoneMaskField, phone2MaskField, addressTextField, subscriptionComboBox);
-    }
-    public void initListeners(){
+    private void initListeners(){
         editButton.setOnAction(event -> {
-            //return null when something went wrong
-            try {
-                if(customerService.edit(
-                        customer,
-                        cardTextField,
-                        nameTextField,
-                        surnameTextField,
-                        phoneMaskField,
-                        phone2MaskField,
-                        addressTextField,
-                        subscriptionComboBox) != null) {
-                    this.stop();
-                    Window.getFragment(Fragment.CUSTOMER).start();
-                }
-            } catch (SQLException e) {
-                Log.error("Can't edit customer data");
-            }
+            this.confirm();
         });
 
         previousButton.setOnAction(event -> {
-            customerService.removeSelected();
-            this.stop();
-            Window.getFragment(Fragment.CUSTOMER).start();
+            this.back();
         });
+    }
 
-
+    private void confirm() {
+        //return null when something went wrong
+        try {
+            if(customerService.edit(
+                    customer,
+                    cardTextField,
+                    nameTextField,
+                    surnameTextField,
+                    phoneMaskField,
+                    phone2MaskField,
+                    addressTextField,
+                    subscriptionComboBox) != null) {
+                this.stop();
+                Window.getFragment(Fragment.CUSTOMER).start();
+            }
+        } catch (SQLException e) {
+            Log.error("Can't edit customer data", e);
+        }
+    }
+    private void back() {
+        customerService.removeSelected();
+        this.stop();
+        Window.getFragment(Fragment.CUSTOMER).start();
     }
 
     @Override
@@ -116,8 +128,16 @@ public class EditCustomerController extends GridPane implements Controller {
         try {
             loadOldData();
         } catch (SQLException e) {
-            Log.error("Can't fetch customer data");
+            Log.error("Can't fetch customer data", e);
         }
+
+        this.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.confirm();
+            } else if (event.getCode() == KeyCode.ESCAPE) {
+                this.back();
+            }
+        });
     }
 
     @Override

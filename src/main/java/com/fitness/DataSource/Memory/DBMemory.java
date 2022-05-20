@@ -60,7 +60,7 @@ public class DBMemory {
             objectOutputStream.writeObject(connection);
             objectOutputStream.close();
         } catch (IOException e) {
-            Log.error("Can't write serialized object");
+            Log.error("Can't write serialized object", e);
         }
     }
     public static void deleteConnection() {
@@ -70,7 +70,7 @@ public class DBMemory {
             writer.close();
             DB.disconnect();
         } catch (IOException e) {
-            Log.error("Can't disconnect from database");
+            Log.error("Can't disconnect from database", e);
         }
     }
 }

@@ -116,7 +116,7 @@ public class ArchiveController extends GridPane implements Controller {
                 archiveService.remove(archive);
                 this.fillReport();
             } catch (SQLException e) {
-                Log.error("Can't delete archive record");
+                Log.error("Can't delete archive record", e);
             }
         });
     }
@@ -136,7 +136,7 @@ public class ArchiveController extends GridPane implements Controller {
             try {
                 archives = archiveService.getByDateRange(startDate, endDate);
             } catch (SQLException e) {
-                Log.error("Can't fetch archive records by date range");
+                Log.error("Can't fetch archive records by date range", e);
                 progressIndicator.setVisible(false);
                 return;
             }

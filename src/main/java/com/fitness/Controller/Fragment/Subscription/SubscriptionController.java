@@ -77,7 +77,7 @@ public class SubscriptionController extends GridPane implements Controller {
             try {
                 subscriptionService.remove(subscription.getSubscription());
             } catch (SQLException e) {
-                Log.error("Can't delete subscription");
+                Log.error("Can't delete subscription", e);
             }
             SubscriptionButton.removeSelected();
             try {

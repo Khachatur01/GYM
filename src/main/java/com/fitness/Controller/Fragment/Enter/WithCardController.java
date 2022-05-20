@@ -22,8 +22,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
@@ -91,21 +93,47 @@ public class WithCardController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
+        this.initMaskFields();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                cardTextField,
+        });
+        this.initListeners();
+    }
+
+    private void initMaskFields() {
         timeMaskField = new MaskField();
         timeMaskField.setMask("DD:DD");
         timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
         this.backYearGridPane.add(timeMaskField, 2, 1);
-
-        initListeners();
     }
+    private void initEmploymentComboBox(Customer customer) throws SQLException {
+        ObservableList<Employment> employments = FXCollections.observableArrayList();
+        /* get non bonus visits count by employment */
+        for(EmploymentQuantity employmentQuantity : customerService.getAvailableEmploymentQuantities(customer))
+            if(employmentQuantity.getQuantity() != 0)
+                employments.add(employmentQuantity.getEmployment());
 
+
+        employmentComboBox.setItems(employments);
+    }
+    private void initTable() {
+        employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+    }
+    private void initDatePicker() {
+        StringConverter<LocalDate> converter = DateTime.getConverter();
+
+        LocalDate localDate = LocalDate.now();
+        datePicker.setConverter(converter);
+        datePicker.setValue(localDate);
+    }
     private void initListeners() {
         cardTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             Customer customer = null;
             try {
                 customer = customerService.getByCard(newValue);
             } catch (SQLException e) {
-                Log.error("Can't fetch customer by card number");
+                Log.error("Can't fetch customer by card number", e);
             }
             if(!fieldsAreClean) {
                 Clear.label(
@@ -141,7 +169,7 @@ public class WithCardController extends GridPane implements Controller {
 
                     initEmploymentComboBox(customer);
                 } catch (SQLException e) {
-                    Log.error("Can't customer data");
+                    Log.error("Can't customer data", e);
                 }
             }
         });
@@ -173,63 +201,42 @@ public class WithCardController extends GridPane implements Controller {
                     employeeComboBox.getSelectionModel().selectFirst();
                 }
             } catch (SQLException e) {
-                Log.error("Can't fetch employees by employment");
+                Log.error("Can't fetch employees by employment", e);
             }
         });
 
         enterButton.setOnAction(event -> {
-            DateTime dateTime = null;
-            if(backYearCheckBox.isSelected()) {
-                dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
-                if(dateTime == null) return;
-            }
-
-            try {
-                if(dateTime != null && dateTime.before(customerService.getRegistrationDate(selectedCustomer))) {
-                    datePicker.requestFocus();
-                    return;
-                }
-                boolean isBonusCard = customerService.isBonus(selectedCustomer);
-                if(archiveService.add(
-                        dateTime,
-                        selectedCustomer,
-                        employeeComboBox.getSelectionModel().getSelectedItem(),
-                        employmentComboBox.getSelectionModel().getSelectedItem(),
-                        isBonusCard || bonusCheckBox.isSelected()
-                    ) != null)
-
-                    this.stop();
-            } catch (SQLException e) {
-                Log.error("Can't enter with card");
-            }
-
+            this.confirm();
         });
 
         backYearCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> backYearGridPane.setDisable(!newValue));
     }
 
-    private void initEmploymentComboBox(Customer customer) throws SQLException {
-        ObservableList<Employment> employments = FXCollections.observableArrayList();
-        /* get non bonus visits count by employment */
-        for(EmploymentQuantity employmentQuantity : customerService.getAvailableEmploymentQuantities(customer))
-            if(employmentQuantity.getQuantity() != 0)
-                employments.add(employmentQuantity.getEmployment());
+    private void confirm() {
+        DateTime dateTime = null;
+        if(backYearCheckBox.isSelected()) {
+            dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
+            if(dateTime == null) return;
+        }
 
+        try {
+            if(dateTime != null && dateTime.before(customerService.getRegistrationDate(selectedCustomer))) {
+                datePicker.requestFocus();
+                return;
+            }
+            boolean isBonusCard = customerService.isBonus(selectedCustomer);
+            if(archiveService.add(
+                    dateTime,
+                    selectedCustomer,
+                    employeeComboBox.getSelectionModel().getSelectedItem(),
+                    employmentComboBox.getSelectionModel().getSelectedItem(),
+                    isBonusCard || bonusCheckBox.isSelected()
+            ) != null)
 
-        employmentComboBox.setItems(employments);
-    }
-
-    private void initTable() {
-        employmentColumn.setCellValueFactory(new PropertyValueFactory<>("employment"));
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-    }
-
-    private void initDatePicker() {
-        StringConverter<LocalDate> converter = DateTime.getConverter();
-
-        LocalDate localDate = LocalDate.now();
-        datePicker.setConverter(converter);
-        datePicker.setValue(localDate);
+                this.stop();
+        } catch (SQLException e) {
+            Log.error("Can't enter with card", e);
+        }
     }
 
     @Override
@@ -237,6 +244,12 @@ public class WithCardController extends GridPane implements Controller {
         makeActive();
         initTable();
         initDatePicker();
+
+        this.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.confirm();
+            }
+        });
     }
 
     @Override

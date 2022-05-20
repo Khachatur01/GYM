@@ -21,12 +21,15 @@ public class Preloader extends Thread {
         Log.initLogger();
         try {
             /* heavy tasks */
-            if(!DB.canConnect())
-                Log.error("Can't connect to database");
+            if(DB.canConnect()) {
+                DB.recoverLastConnection();
+            } else {
+                Log.error("Can't connect to database", new Exception("No saved Connection"));
+            }
 
             window.initMenuPanes();
         } catch (IOException e) {
-            Log.error("Pages initialization error");
+            Log.error("Pages initialization error", e);
         }
         Platform.runLater(() -> {
             try {
@@ -38,7 +41,7 @@ public class Preloader extends Thread {
 
                 window.open(Page.MENU.getValue(), stage);
             } catch (IOException e) {
-                Log.error("Can't start application");
+                Log.error("Can't start application", e);
             }
         });
     }

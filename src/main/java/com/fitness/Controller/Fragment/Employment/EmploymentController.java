@@ -47,7 +47,10 @@ public class EmploymentController extends GridPane implements Controller {
         loader.setController(this);
         loader.load();
 
-        initListeners();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                employmentNameTextField, priceTextField,
+        });
+        this.initListeners();
     }
 
     private void initGridPane() throws SQLException {
@@ -68,7 +71,6 @@ public class EmploymentController extends GridPane implements Controller {
             addEmploymentToGrid(employment);
         }
     }
-
     private void initListeners(){
         editButton.setOnAction(event -> {
             if(EmploymentButton.getSelected() == null) return;
@@ -76,7 +78,7 @@ public class EmploymentController extends GridPane implements Controller {
             try {
                 employment = employmentService.edit(employment, employmentNameTextField, priceTextField);
             } catch (SQLException e) {
-                Log.error("Can't edit employment");
+                Log.error("Can't edit employment", e);
             }
             EmploymentButton.editSelected(employment);
         });
@@ -86,13 +88,13 @@ public class EmploymentController extends GridPane implements Controller {
             try {
                 employmentService.remove(employmentButton.getEmployment());
             } catch (SQLException e) {
-                Log.error("Can't delete employment");
+                Log.error("Can't delete employment", e);
             }
             EmploymentButton.removeSelected();
             try {
                 initGridPane();
             } catch (SQLException e) {
-                Log.error("Can't fetch employments");
+                Log.error("Can't fetch employments", e);
             }
         });
         addButton.setOnAction(event -> {
@@ -100,7 +102,7 @@ public class EmploymentController extends GridPane implements Controller {
             try {
                 employment = employmentService.add(employmentNameTextField, priceTextField);
             } catch (SQLException e) {
-                Log.error("Can't add employment");
+                Log.error("Can't add employment", e);
             }
             if(employment != null)
                 addEmploymentToGrid(employment);
@@ -126,7 +128,7 @@ public class EmploymentController extends GridPane implements Controller {
         try {
             initGridPane();
         } catch (SQLException e) {
-            Log.error("Can't fetch employment");
+            Log.error("Can't fetch employment", e);
         }
     }
 

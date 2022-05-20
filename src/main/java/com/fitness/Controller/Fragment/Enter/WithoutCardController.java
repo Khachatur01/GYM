@@ -25,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.util.StringConverter;
 
@@ -83,29 +84,12 @@ public class WithoutCardController extends GridPane implements Controller {
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
-
-        phoneMaskField = new MaskField();
-        phoneMaskField.setMask("+374(DD) DD-DD-DD");
-        phoneMaskField.getStyleClass().add("textField");
-        GridPane.setValignment(phoneMaskField, VPos.TOP);
-        GridPane.setHalignment(phoneMaskField, HPos.LEFT);
-
-        phone2MaskField = new MaskField();
-        phone2MaskField.setMask("+374(DD) DD-DD-DD");
-        phone2MaskField.getStyleClass().add("textField");
-        GridPane.setValignment(phone2MaskField, VPos.TOP);
-        GridPane.setHalignment(phone2MaskField, HPos.LEFT);
-
-        this.add(phoneMaskField, 0, 7);
-        this.add(phone2MaskField, 0, 9);
-
-        timeMaskField = new MaskField();
-        timeMaskField.setMask("DD:DD");
-        timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
-        this.backYearGridPane.add(timeMaskField, 2, 1);
-
-
-        initListeners();
+        this.initMaskFields();
+        this.initTextFieldFocusingByKey(new TextField[] {
+                nameTextField, surnameTextField, phoneMaskField,
+                phone2MaskField, addressTextField
+        });
+        this.initListeners();
     }
 
     private void phoneMaskFieldListener(String newValue) {
@@ -139,6 +123,41 @@ public class WithoutCardController extends GridPane implements Controller {
         }
     }
 
+    private void initEmploymentComboBox() throws SQLException{
+        employmentComboBox.setItems(
+                FXCollections.observableArrayList(
+                        employmentService.getActual()
+                )
+        );
+    }
+    private void initDatePicker() {
+        StringConverter<LocalDate> converter = DateTime.getConverter();
+
+        LocalDate localDate = LocalDate.now();
+        datePicker.setConverter(converter);
+        datePicker.setValue(localDate);
+    }
+    private void initMaskFields() {
+        phoneMaskField = new MaskField();
+        phoneMaskField.setMask("+374(DD) DD-DD-DD");
+        phoneMaskField.getStyleClass().add("textField");
+        GridPane.setValignment(phoneMaskField, VPos.TOP);
+        GridPane.setHalignment(phoneMaskField, HPos.LEFT);
+
+        phone2MaskField = new MaskField();
+        phone2MaskField.setMask("+374(DD) DD-DD-DD");
+        phone2MaskField.getStyleClass().add("textField");
+        GridPane.setValignment(phone2MaskField, VPos.TOP);
+        GridPane.setHalignment(phone2MaskField, HPos.LEFT);
+
+        this.add(phoneMaskField, 0, 7);
+        this.add(phone2MaskField, 0, 9);
+
+        timeMaskField = new MaskField();
+        timeMaskField.setMask("DD:DD");
+        timeMaskField.setStyle("-fx-min-width: 100; -fx-pref-width: 100; -fx-max-width: 100; -fx-alignment: center");
+        this.backYearGridPane.add(timeMaskField, 2, 1);
+    }
     private void initListeners() {
         phoneMaskField.textProperty().addListener((observable, oldValue, newValue) -> {
             if(!phoneMaskField.isEmpty())
@@ -178,33 +197,11 @@ public class WithoutCardController extends GridPane implements Controller {
 
                 priceTextField.setText(selectedEmployment.getPrice() + "");
             } catch (SQLException e) {
-                Log.error("Can't fetch employees by employment");
+                Log.error("Can't fetch employees by employment", e);
             }
         });
         enterButton.setOnAction(event -> {
-            DateTime dateTime = null;
-            if(backYearCheckBox.isSelected()) {
-                dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
-                if(dateTime == null) return;
-            }
-
-            try {
-                Employee employee = employeeComboBox.getSelectionModel().getSelectedItem();
-                Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
-                if(employee == null || employment == null) return;
-
-                if(archiveService.add(
-                        dateTime,
-                        getCustomer(),
-                        employee,
-                        employment,
-                        bonusCheckBox.isSelected()
-                ) != null)
-
-                    this.stop();
-            } catch (SQLException e) {
-                Log.error("Can't enter without card");
-            }
+            this.confirm();
         });
 
         backYearCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> backYearGridPane.setDisable(!newValue));
@@ -227,27 +224,36 @@ public class WithoutCardController extends GridPane implements Controller {
                         addressTextField
                 );
             } catch (SQLException e) {
-                Log.error("Can't add guest customer");
+                Log.error("Can't add guest customer", e);
             }
         }
         return this.customer;
     }
 
+    private void confirm() {
+        DateTime dateTime = null;
+        if(backYearCheckBox.isSelected()) {
+            dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
+            if(dateTime == null) return;
+        }
 
-    private void initEmploymentComboBox() throws SQLException{
-        employmentComboBox.setItems(
-                FXCollections.observableArrayList(
-                        employmentService.getActual()
-                )
-        );
-    }
+        try {
+            Employee employee = employeeComboBox.getSelectionModel().getSelectedItem();
+            Employment employment = employmentComboBox.getSelectionModel().getSelectedItem();
+            if(employee == null || employment == null) return;
 
-    private void initDatePicker() {
-        StringConverter<LocalDate> converter = DateTime.getConverter();
+            if(archiveService.add(
+                    dateTime,
+                    getCustomer(),
+                    employee,
+                    employment,
+                    bonusCheckBox.isSelected()
+            ) != null)
 
-        LocalDate localDate = LocalDate.now();
-        datePicker.setConverter(converter);
-        datePicker.setValue(localDate);
+                this.stop();
+        } catch (SQLException e) {
+            Log.error("Can't enter without card", e);
+        }
     }
 
     @Override
@@ -257,8 +263,14 @@ public class WithoutCardController extends GridPane implements Controller {
         try {
             initEmploymentComboBox();
         } catch (SQLException e) {
-            Log.error("Can't fetch actual employments");
+            Log.error("Can't fetch actual employments", e);
         }
+
+        this.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.confirm();
+            }
+        });
     }
 
     @Override

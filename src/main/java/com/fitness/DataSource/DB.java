@@ -19,13 +19,27 @@ public class DB {
         return DBMemory.createConnection() != null;
     }
 
+    public static void recoverLastConnection() {
+        Object connectionObject = DBMemory.fetchConnection();
+        if(connectionObject instanceof LocalConnection) {
+            LocalConnection localConnection = (LocalConnection) connectionObject;
+            connect(localConnection);
+        } else if(connectionObject instanceof RemoteConnection) {
+            RemoteConnection remoteConnection = (RemoteConnection) connectionObject;
+            connect(remoteConnection);
+        } else if(connectionObject instanceof FileConnection) {
+            FileConnection fileConnection = (FileConnection) connectionObject;
+            connect(fileConnection);
+        }
+    }
+
     public static void connect(Serializable connection) {
         DBMemory.storeConnection(connection);
         DB.connection = DBMemory.createConnection();
         if(DB.connection != null) {
             Log.info("Connected to database");
         } else {
-            Log.error("Can't connect to database");
+            Log.error("Can't connect to database", null);
         }
     }
 
@@ -34,7 +48,7 @@ public class DB {
             Log.info("Connected to database");
             return true;
         }
-        Log.error("Can't connect to database");
+        Log.error("Can't connect to database", null);
         return false;
     }
     public static String getDatabase() throws SQLException {
@@ -64,7 +78,7 @@ public class DB {
             try {
                 connection.close();
             } catch (SQLException e) {
-                Log.error("Can't disconnect from database");
+                Log.error("Can't disconnect from database", e);
             }
             connection = null;
         } else {
@@ -90,10 +104,12 @@ public class DB {
                     preparedStatement.setString(1, database);
                 }
                 ResultSet result = preparedStatement.executeQuery();
-                if (result.next()) {
-                    tables.add(result.getString(0)); /* get first column. for sqlite column name is 'name'. For others 'TABLE_NAME' */
+                while (result.next()) {
+                    tables.add(result.getString(1)); /* get first column. for sqlite column name is 'name'. For others 'TABLE_NAME' */
                 }
-            } catch (SQLException ignored) {}
+            } catch (SQLException ignored) {
+                ignored.printStackTrace();
+            }
         }
         return tables;
     }
