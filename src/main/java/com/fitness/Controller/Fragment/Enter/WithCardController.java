@@ -213,6 +213,11 @@ public class WithCardController extends GridPane implements Controller {
     }
 
     private void confirm() {
+        if (this.selectedCustomer == null) {
+            Log.error("Customer not selected", new Exception("Customer not selected"));
+            return;
+        }
+
         DateTime dateTime = null;
         if(backYearCheckBox.isSelected()) {
             dateTime = BackYearService.getDateTime(timeMaskField, datePicker);
